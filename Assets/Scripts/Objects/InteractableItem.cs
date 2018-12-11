@@ -9,8 +9,8 @@ public class InteractableItem : MonoBehaviour
 	protected GameObject myUI;
     [SerializeField]
     protected GameObject myIcon;
-	protected int myFloor;
-	protected GameObject player;
+    protected int myFloor;
+    protected GameObject player;
     protected GameObject actionQueue;
 
 	protected void Init ()
@@ -29,7 +29,7 @@ public class InteractableItem : MonoBehaviour
         player.GetComponent<Player>().SetTarget(this.gameObject);
         myUI.SetActive(false);
         GameObject icon = Instantiate(myIcon, actionQueue.transform);
-        actionQueue.GetComponent<ActionQueue>().AddToQueue(icon);
+        ActionQueue.instance.GetComponent<ActionQueue>().AddToQueue(icon);
     }
 
 	public int GetFloor ()
@@ -40,6 +40,15 @@ public class InteractableItem : MonoBehaviour
     public GameObject GetMyUIObject()
     {
         return myUI;
+    }
+
+    public void PlayerMightBeNear()
+    {
+        if(Vector3.Distance(player.transform.position, transform.position) <= 0.5f)
+        {
+            Debug.Log("player has actually arrived at my position");
+            PlayerArrivedAtMyPosition();
+        }
     }
 
     public virtual void PlayerArrivedAtMyPosition()

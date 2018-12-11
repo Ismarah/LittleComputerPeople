@@ -10,6 +10,8 @@ TagManager:
   - Toilet
   - Computer
   - ActionQueue
+  - UI
+  - Background
   layers:
   - Default
   - TransparentFX

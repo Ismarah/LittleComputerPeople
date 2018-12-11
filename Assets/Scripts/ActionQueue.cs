@@ -5,6 +5,13 @@ using UnityEngine;
 public class ActionQueue : MonoBehaviour
 {
     public GameObject[] actionQueue;
+    public static ActionQueue instance;
+
+    void Awake()
+    {
+        if (instance == null) instance = this;
+        else if (instance != this) Destroy(gameObject);
+    }
 
     void Start()
     {
@@ -15,10 +22,10 @@ public class ActionQueue : MonoBehaviour
     {
         for (int i = 0; i < actionQueue.Length; i++)
         {
-            if(actionQueue[i] == null)
+            if (actionQueue[i] == null)
             {
                 actionQueue[i] = newAction;
-                if(i != 0)
+                if (i != 0)
                 {
                     newAction.transform.localPosition = actionQueue[i - 1].transform.localPosition + new Vector3(100, 0, 0);
                 }
@@ -38,7 +45,7 @@ public class ActionQueue : MonoBehaviour
                 actionQueue[i - 1] = actionQueue[i];
                 actionQueue[i] = null;
             }
-            if(actionQueue[i] = toRemove)
+            if (actionQueue[i] = toRemove)
             {
                 Destroy(transform.Find(actionQueue[i].name).gameObject);
                 actionQueue[i] = null;
@@ -54,12 +61,12 @@ public class ActionQueue : MonoBehaviour
 
         for (int i = 1; i < actionQueue.Length; i++)
         {
-           if(actionQueue[i] != null)
+            if (actionQueue[i] != null)
             {
                 actionQueue[i].transform.localPosition -= new Vector3(100, 0, 0);
                 actionQueue[i - 1] = actionQueue[i];
                 actionQueue[i] = null;
-            } 
+            }
         }
     }
 

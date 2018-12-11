@@ -12,6 +12,6 @@ public class Bed : InteractableItem
 
     public override void PlayerArrivedAtMyPosition()
     {
-        player.GetComponent<PlayerNeeds>().StartSleep(1, 2);
+        //player.GetComponent<PlayerNeeds>().StartSleep(1, 2);
     }
 }

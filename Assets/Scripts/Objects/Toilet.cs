@@ -13,6 +13,6 @@ public class Toilet : InteractableItem
 
     public override void PlayerArrivedAtMyPosition()
     {
-        player.GetComponent<PlayerNeeds>().StartUsingToilet(1, 12);
+        //player.GetComponent<PlayerNeeds>().StartUsingToilet(1, 12);
     }
 }

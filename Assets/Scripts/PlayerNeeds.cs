@@ -49,15 +49,15 @@ public class PlayerNeeds : MonoBehaviour {
 
     void Start () {
         StartCoroutine(DepleteHunger());
-        StartCoroutine(DepleteSleep());
-        StartCoroutine(DepleteToilet());
-        StartCoroutine(DepleteFun());
+        //StartCoroutine(DepleteSleep());
+        //StartCoroutine(DepleteToilet());
+        //StartCoroutine(DepleteFun());
 
-        havingFun = HaveFun(0, 0);
-        onTheToilet = UseToilet(0, 0);
+        //havingFun = HaveFun(0, 0);
+        //onTheToilet = UseToilet(0, 0);
         eating = Eat(0, 0);
-        sleeping = Sleep(0, 0);
-	}
+        //sleeping = Sleep(0, 0);
+    }
 
     private void Update()
     {
@@ -66,29 +66,29 @@ public class PlayerNeeds : MonoBehaviour {
         toilet = Mathf.Clamp(toilet, 0, 1);
         boredom = Mathf.Clamp(boredom, 0, 1);
 
-        if(hunger >= 0.4f && !goingToEatNow)
-        {
-            EventManager.TriggerEvent("playerNeedsFood");
-            goingToEatNow = true;
-        }
+        //if(hunger >= 0.4f && !goingToEatNow)
+        //{
+        //    EventManager.TriggerEvent("playerNeedsFood");
+        //    goingToEatNow = true;
+        //}
 
-        if(toilet >= 0.6f && !goingToToilet)
-        {
-            EventManager.TriggerEvent("playerNeedsToPee");
-            goingToToilet = true;
-        }
+        //if(toilet >= 0.6f && !goingToToilet)
+        //{
+        //    EventManager.TriggerEvent("playerNeedsToPee");
+        //    goingToToilet = true;
+        //}
 
-        if(sleep >= 0.7f && !goingToBed)
-        {
-            EventManager.TriggerEvent("playerIsTired");
-            goingToBed = true;
-        }
+        //if(sleep >= 0.7f && !goingToBed)
+        //{
+        //    EventManager.TriggerEvent("playerIsTired");
+        //    goingToBed = true;
+        //}
 
-        if(boredom >= 0.5f && !goingToHaveFun)
-        {
-            EventManager.TriggerEvent("playerIsBored");
-            goingToHaveFun = true;
-        }
+        //if(boredom >= 0.5f && !goingToHaveFun)
+        //{
+        //    EventManager.TriggerEvent("playerIsBored");
+        //    goingToHaveFun = true;
+        //}
     }
 
     private IEnumerator DepleteHunger()
@@ -101,128 +101,128 @@ public class PlayerNeeds : MonoBehaviour {
         }
     }
 
-    private IEnumerator DepleteSleep()
-    {
-        while (!decreasingSleep)
-        {
-            sleep += sleepDepletion / 100 * Time.deltaTime;
-            sleepBar.fillAmount = 1 - sleep; 
-            yield return null;
-        }
-    }
+    //private IEnumerator DepleteSleep()
+    //{
+    //    while (!decreasingSleep)
+    //    {
+    //        sleep += sleepDepletion / 100 * Time.deltaTime;
+    //        sleepBar.fillAmount = 1 - sleep; 
+    //        yield return null;
+    //    }
+    //}
 
-    private IEnumerator DepleteToilet()
-    {
-        while (!decreasingToilet)
-        {
-            toilet += toiletDepletion / 100 * Time.deltaTime;
-            toiletBar.fillAmount = 1 - toilet; 
-            yield return null;
-        }
-    }
+    //private IEnumerator DepleteToilet()
+    //{
+    //    while (!decreasingToilet)
+    //    {
+    //        toilet += toiletDepletion / 100 * Time.deltaTime;
+    //        toiletBar.fillAmount = 1 - toilet; 
+    //        yield return null;
+    //    }
+    //}
 
-    private IEnumerator DepleteFun()
-    {
-        while (!decreasingFun)
-        {
-            boredom += funDepletion / 100 * Time.deltaTime;
-            funBar.fillAmount = 1 - boredom;
-            yield return null;
-        }
-    }
+    //private IEnumerator DepleteFun()
+    //{
+    //    while (!decreasingFun)
+    //    {
+    //        boredom += funDepletion / 100 * Time.deltaTime;
+    //        funBar.fillAmount = 1 - boredom;
+    //        yield return null;
+    //    }
+    //}
 
-    public void StartHavingFun(float amount, float speed)
-    {
-        havingFun = HaveFun(amount, speed);
-        StartCoroutine(havingFun);
-    }
+    //public void StartHavingFun(float amount, float speed)
+    //{
+    //    havingFun = HaveFun(amount, speed);
+    //    StartCoroutine(havingFun);
+    //}
 
-    public void StopHavingFun()
-    {
-        StopCoroutine(havingFun);
-        decreasingFun = false;
-        goingToHaveFun = false;
-        StartCoroutine(DepleteFun());
-    }
+    //public void StopHavingFun()
+    //{
+    //    StopCoroutine(havingFun);
+    //    decreasingFun = false;
+    //    goingToHaveFun = false;
+    //    StartCoroutine(DepleteFun());
+    //}
 
-    private IEnumerator HaveFun(float amount, float speed)
-    {
-        havingFun = HaveFun(amount, speed);
-        decreasingFun = true;
-        float currentBoredom = boredom;
-        while (boredom > currentBoredom - amount && boredom > 0)
-        {
-            boredom -= 0.01f * speed * Time.deltaTime;
-            funBar.fillAmount = 1 - boredom;
-            yield return null;
-        }
-        decreasingFun = false;
-        goingToHaveFun = false;
-        StartCoroutine(DepleteFun());
-        GetComponent<Player>().ActionFinished();
-    }
+    //private IEnumerator HaveFun(float amount, float speed)
+    //{
+    //    havingFun = HaveFun(amount, speed);
+    //    decreasingFun = true;
+    //    float currentBoredom = boredom;
+    //    while (boredom > currentBoredom - amount && boredom > 0)
+    //    {
+    //        boredom -= 0.01f * speed * Time.deltaTime;
+    //        funBar.fillAmount = 1 - boredom;
+    //        yield return null;
+    //    }
+    //    decreasingFun = false;
+    //    goingToHaveFun = false;
+    //    StartCoroutine(DepleteFun());
+    //    GetComponent<Player>().ActionFinished();
+    //}
 
-    public void StartUsingToilet(float amount, float speed)
-    {
-        onTheToilet = UseToilet(amount, speed);
-        StartCoroutine(onTheToilet);
-    }
+    //public void StartUsingToilet(float amount, float speed)
+    //{
+    //    onTheToilet = UseToilet(amount, speed);
+    //    StartCoroutine(onTheToilet);
+    //}
 
-    public void StopUsingToilet()
-    {
-        StopCoroutine(onTheToilet);
-        decreasingToilet = false;
-        goingToToilet = false;
-        StartCoroutine(DepleteToilet());
-    }
+    //public void StopUsingToilet()
+    //{
+    //    StopCoroutine(onTheToilet);
+    //    decreasingToilet = false;
+    //    goingToToilet = false;
+    //    StartCoroutine(DepleteToilet());
+    //}
 
-    private IEnumerator UseToilet(float amount, float speed)
-    {
-        onTheToilet = UseToilet(amount, speed);
-        decreasingToilet = true;
-        float currentToilet = toilet;
-        while (toilet > currentToilet - amount && toilet > 0)
-        {
-            toilet -= 0.01f * speed * Time.deltaTime;
-            toiletBar.fillAmount = 1 - toilet;
-            yield return null;
-        }
-        decreasingToilet = false;
-        goingToToilet = false;
-        StartCoroutine(DepleteToilet());
-        GetComponent<Player>().ActionFinished();
-    }
+    //private IEnumerator UseToilet(float amount, float speed)
+    //{
+    //    onTheToilet = UseToilet(amount, speed);
+    //    decreasingToilet = true;
+    //    float currentToilet = toilet;
+    //    while (toilet > currentToilet - amount && toilet > 0)
+    //    {
+    //        toilet -= 0.01f * speed * Time.deltaTime;
+    //        toiletBar.fillAmount = 1 - toilet;
+    //        yield return null;
+    //    }
+    //    decreasingToilet = false;
+    //    goingToToilet = false;
+    //    StartCoroutine(DepleteToilet());
+    //    GetComponent<Player>().ActionFinished();
+    //}
 
-    public void StartSleep(float amount, float speed)
-    {
-        sleeping = Sleep(amount, speed);
-        StartCoroutine(sleeping);
-    }
+    //public void StartSleep(float amount, float speed)
+    //{
+    //    sleeping = Sleep(amount, speed);
+    //    StartCoroutine(sleeping);
+    //}
 
-    public void StopSleeping()
-    {
-        StopCoroutine(sleeping);
-        decreasingSleep = false;
-        goingToBed = false;
-        StartCoroutine(DepleteSleep());
-    }
+    //public void StopSleeping()
+    //{
+    //    StopCoroutine(sleeping);
+    //    decreasingSleep = false;
+    //    goingToBed = false;
+    //    StartCoroutine(DepleteSleep());
+    //}
 
-    private IEnumerator Sleep(float amount, float speed)
-    {
-        sleeping = Sleep(amount, speed);
-        decreasingSleep = true;
-        float currentSleep = sleep;
-        while (sleep > currentSleep - amount && sleep > 0)
-        {
-            sleep -= 0.01f * speed * Time.deltaTime;
-            sleepBar.fillAmount = 1 - sleep;
-            yield return null;
-        }
-        decreasingSleep = false;
-        goingToBed = false;
-        StartCoroutine(DepleteSleep());
-        GetComponent<Player>().ActionFinished();
-    }
+    //private IEnumerator Sleep(float amount, float speed)
+    //{
+    //    sleeping = Sleep(amount, speed);
+    //    decreasingSleep = true;
+    //    float currentSleep = sleep;
+    //    while (sleep > currentSleep - amount && sleep > 0)
+    //    {
+    //        sleep -= 0.01f * speed * Time.deltaTime;
+    //        sleepBar.fillAmount = 1 - sleep;
+    //        yield return null;
+    //    }
+    //    decreasingSleep = false;
+    //    goingToBed = false;
+    //    StartCoroutine(DepleteSleep());
+    //    GetComponent<Player>().ActionFinished();
+    //}
 
     public void StartEating(float amount, float speed)
     {

@@ -12,6 +12,6 @@ public class Computer : InteractableItem {
 
     public override void PlayerArrivedAtMyPosition()
     {
-        player.GetComponent<PlayerNeeds>().StartHavingFun(0.8f, 8);
+        //player.GetComponent<PlayerNeeds>().StartHavingFun(0.8f, 8);
     }
 }

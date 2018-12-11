@@ -5,13 +5,11 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     private GameObject lastObjectClicked;
-    private GameObject actionQueue;
     private GameObject player;
 
     private void Start()
     {
-        lastObjectClicked = new GameObject();
-        actionQueue = GameObject.FindGameObjectWithTag("ActionQueue");
+        lastObjectClicked = GameObject.FindGameObjectWithTag("UI").transform.GetChild(0).gameObject;
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
@@ -26,13 +24,22 @@ public class InputManager : MonoBehaviour
                 if (hit.collider.gameObject.GetComponent<InteractableItem>() != null)
                 {
                     lastObjectClicked.SetActive(false);
-                    //Debug.Log (hit.collider.gameObject.name);
                     hit.collider.gameObject.GetComponent<InteractableItem>().OnClick();
 
                     lastObjectClicked = hit.collider.gameObject.GetComponent<InteractableItem>().GetMyUIObject();
                 }
+                else if (hit.collider.tag == "Background")
+                {
+                    int floor = int.Parse(hit.collider.name);
+                    Debug.Log("Floor clicked: " + floor + " Player on floor: " + player.GetComponent<PlayerMovement>().currentFloor);
+                    player.GetComponent<PlayerMovement>().MoveToPos(hit.point, floor);
+                    lastObjectClicked.SetActive(false);
+                }
             }
+
         }
+
+
         if (Input.GetMouseButtonDown(1))
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -41,7 +48,7 @@ public class InputManager : MonoBehaviour
             {
                 if (hit.collider.gameObject.name.Contains("Icon"))
                 {
-                    actionQueue.GetComponent<ActionQueue>().RemoveFromQueue(hit.collider.gameObject);
+                    ActionQueue.instance.GetComponent<ActionQueue>().RemoveFromQueue(hit.collider.gameObject);
                     player.GetComponent<Player>().CancelNextTask();
                 }
             }

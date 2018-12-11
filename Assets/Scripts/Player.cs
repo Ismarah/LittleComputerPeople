@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     private bool waitingForActionFinished;
     private bool finished;
     private bool nothingToDo;
-    private IEnumerator bored;
+    //private IEnumerator bored;
 
     void Start()
     {
@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
         anim = GetComponent<Animator>();
         stairs = GameObject.FindGameObjectWithTag("Stairs");
         actionQueue = GameObject.FindGameObjectWithTag("ActionQueue");
-        bored = GettingBored();
+        //bored = GettingBored();
 
         currentFloor = 1;
 
@@ -46,7 +46,7 @@ public class Player : MonoBehaviour
         {
             if (nextTargets.Count != 0)
             {
-                StopCoroutine(bored);
+                //StopCoroutine(bored);
                 int floor = nextTargets.Peek().GetComponent<InteractableItem>().GetFloor();
 
                 if (floor != currentFloor)
@@ -75,7 +75,7 @@ public class Player : MonoBehaviour
                     {
                         if (!waitingForActionFinished)
                         {
-                            nextTargets.Peek().GetComponent<InteractableItem>().PlayerArrivedAtMyPosition();
+                            nextTargets.Peek().GetComponent<InteractableItem>().PlayerMightBeNear();
 
                             anim.SetBool("isWalking", false);
 
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
                             if (finished)
                             {
                                 nextTargets.Dequeue();
-                                actionQueue.GetComponent<ActionQueue>().FinishedAction();
+                                ActionQueue.instance.GetComponent<ActionQueue>().FinishedAction();
                                 waitingForActionFinished = false;
                                 finished = false;
                             }
@@ -97,27 +97,27 @@ public class Player : MonoBehaviour
             }
             else
             {
-                if (!nothingToDo)
-                {
-                    StartCoroutine(bored);
-                    nothingToDo = true;
-                }
+                //if (!nothingToDo)
+                //{
+                //    StartCoroutine(bored);
+                //    nothingToDo = true;
+                //}
             }
             yield return null;
         }
     }
 
-    private IEnumerator GettingBored()
-    {
-        Debug.Log("Getting bored...");
-        yield return new WaitForSeconds(3);
+    //private IEnumerator GettingBored()
+    //{
+    //    Debug.Log("Getting bored...");
+    //    yield return new WaitForSeconds(3);
 
-        if (nextTargets.Count == 0)
-        {
-            Debug.Log("Nothing to do....");
-            EventManager.TriggerEvent("playerIsBored");
-        }
-    }
+    //    if (nextTargets.Count == 0)
+    //    {
+    //        Debug.Log("Nothing to do....");
+    //        EventManager.TriggerEvent("playerIsBored");
+    //    }
+    //}
 
     public void ActionFinished()
     {
@@ -127,10 +127,9 @@ public class Player : MonoBehaviour
     public void CancelNextTask()
     {
         nextTargets.Dequeue();
-        GetComponent<PlayerNeeds>().StopHavingFun();
+        GetComponent<PlayerNeeds>().StopEating();
         anim.SetBool("isWalking", false);
         waitingForActionFinished = false;
-        finished = true;
     }
 
     public void SetTarget(GameObject _target)

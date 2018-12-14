@@ -61,22 +61,23 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\ActionQueue.cs" />
     <Compile Include="Assets\Scripts\Actions\Action.cs" />
     <Compile Include="Assets\Scripts\Actions\Eat.cs" />
     <Compile Include="Assets\Scripts\EventManager.cs" />
-    <Compile Include="Assets\Scripts\GOAPplanner.cs" />
-    <Compile Include="Assets\Scripts\InputManager.cs" />
+    <Compile Include="Assets\Scripts\NewPlayerNeeds.cs" />
     <Compile Include="Assets\Scripts\Objects\Bed.cs" />
     <Compile Include="Assets\Scripts\Objects\Computer.cs" />
     <Compile Include="Assets\Scripts\Objects\Drawer.cs" />
     <Compile Include="Assets\Scripts\Objects\Fridge.cs" />
     <Compile Include="Assets\Scripts\Objects\InteractableItem.cs" />
     <Compile Include="Assets\Scripts\Objects\Toilet.cs" />
-    <Compile Include="Assets\Scripts\Player.cs" />
-    <Compile Include="Assets\Scripts\PlayerMovement.cs" />
-    <Compile Include="Assets\Scripts\PlayerNeeds.cs" />
-    <Compile Include="Assets\Scripts\WorldState.cs" />
+    <Compile Include="Assets\Scripts\Old\ActionQueue.cs" />
+    <Compile Include="Assets\Scripts\Old\GOAPplanner.cs" />
+    <Compile Include="Assets\Scripts\Old\InputManager.cs" />
+    <Compile Include="Assets\Scripts\Old\Player.cs" />
+    <Compile Include="Assets\Scripts\Old\PlayerMovement.cs" />
+    <Compile Include="Assets\Scripts\Old\PlayerNeeds.cs" />
+    <Compile Include="Assets\Scripts\Old\WorldState.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>F:/_Dateien/Documents/Unity/LittleComputerPeople/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

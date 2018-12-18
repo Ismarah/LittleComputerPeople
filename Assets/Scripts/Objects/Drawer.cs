@@ -12,6 +12,6 @@ public class Drawer : InteractableItem
 
     public override void PlayerArrivedAtMyPosition()
     {
-        player.GetComponent<Player>().ChangeClothes();
+        //player.GetComponent<Player>().ChangeClothes();
     }
 }

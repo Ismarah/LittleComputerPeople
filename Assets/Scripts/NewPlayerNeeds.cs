@@ -33,8 +33,21 @@ public class NewPlayerNeeds : MonoBehaviour
     [SerializeField]
     private float funChange;
 
+    [SerializeField]
+    private float hungry;
+    [SerializeField]
+    private float sleepy;
+    [SerializeField]
+    private float needsToilet;
+    [SerializeField]
+    private float needsFun;
+
+    private GameObject manager;
+    private bool askedForAction;
+
     void Start()
     {
+        manager = GameObject.FindGameObjectWithTag("ActionQueue");
         StartCoroutine(NeedChange());
     }
 
@@ -44,6 +57,22 @@ public class NewPlayerNeeds : MonoBehaviour
         sleep.fillAmount = 1 - currentSleep;
         toilet.fillAmount = 1 - currentToilet;
         fun.fillAmount = 1 - currentFun;
+
+        if (!askedForAction)
+        {
+            if (currentHunger >= hungry)
+            {
+                askedForAction = true;
+                manager.GetComponent<GOAPplanner>().EatSomething();
+            }
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (currentHunger < 0) currentHunger = 0;
+        if (currentHunger > 1) currentHunger = 1;
+
     }
 
     private IEnumerator NeedChange()
@@ -57,5 +86,73 @@ public class NewPlayerNeeds : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void ManipulateNeedChange(int index, float change, float time)
+    {
+        StartCoroutine(NeedChangeForATime(index, change, time));
+    }
+
+    private IEnumerator NeedChangeForATime(int index, float change, float time)
+    {
+        switch (index)
+        {
+            case 0:
+                hungerChange += change;
+                break;
+            case 1:
+                sleepChange += change;
+                break;
+            case 2:
+                toiletChange += change;
+                break;
+            case 3:
+                funChange += change;
+                break;
+            default:
+                break;
+        }
+
+        yield return new WaitForSecondsRealtime(time);
+
+        switch (index)
+        {
+            case 0:
+                hungerChange -= change;
+                break;
+            case 1:
+                sleepChange -= change;
+                break;
+            case 2:
+                toiletChange -= change;
+                break;
+            case 3:
+                funChange -= change;
+                break;
+            default:
+                break;
+        }
+
+        manager.GetComponent<ActionQueue>().FinishedAction();
+    }
+
+    public float GetHunger()
+    {
+        return currentHunger;
+    }
+
+    public float GetSleep()
+    {
+        return currentSleep;
+    }
+
+    public float GetToilet()
+    {
+        return currentToilet;
+    }
+
+    public float GetFun()
+    {
+        return currentFun;
     }
 }

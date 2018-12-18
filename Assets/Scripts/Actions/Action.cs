@@ -2,25 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Action : MonoBehaviour {
+public class Action {
 
-	public virtual void Init()
+    private float[,] actionStats; //index 0 = hunger, index 1 = sleep, index 3 = toilet, index 4 = fun; second float: 0 = change, 1 = time
+    private float change; //which need does this satisfy
+    private float time; //how long does it take to change the need
+
+	public Action(float[,] _actionStats)
     {
-        
+        actionStats = _actionStats;
     }
 
-    public virtual void CalculateCost()
+    public float[,] GetStats()
     {
-
+        return actionStats;
     }
 
-    public virtual void CheckPrecondition()
+    public float GetCost()
     {
-
+        return time;
     }
 
-    public virtual void GetEffects()
+    public float GetChange()
     {
-
+        return change;
     }
+
 }

@@ -9,7 +9,6 @@ public class GOAPplanner : MonoBehaviour
     private GameObject toilet;
     private GameObject bed;
     private GameObject computer;
-    private GameObject actionQueue;
 
     void Start()
     {
@@ -18,51 +17,55 @@ public class GOAPplanner : MonoBehaviour
         toilet = GameObject.FindGameObjectWithTag("Toilet");
         bed = GameObject.FindGameObjectWithTag("Bed");
         computer = GameObject.FindGameObjectWithTag("Computer");
-        actionQueue = GameObject.FindGameObjectWithTag("ActionQueue");
-
-        EventManager.StartListening("playerNeedsFood", EatSomething);
-        EventManager.StartListening("playerNeedsToPee", UseToilet);
-        EventManager.StartListening("playerIsTired", GoToBed);
-        EventManager.StartListening("playerIsBored", HaveFun);
     }
 
-    void HaveFun()
+    public void HaveFun()
     {
-        if (!actionQueue.GetComponent<ActionQueue>().IsEnqueued("Computer"))
+        if (!GetComponent<ActionQueue>().IsEnqueued("Computer"))
         {
-            computer.GetComponent<Computer>().UseMe();
+
         }
     }
 
-    void EatSomething()
+    public void EatSomething()
     {
-        if (!actionQueue.GetComponent<ActionQueue>().IsEnqueued("Fridge"))
+        if (!GetComponent<ActionQueue>().IsEnqueued("Fridge"))
         {
             if (WorldState.state.GetState(0))
             {
                 //food is available in the fridge
-                fridge.GetComponent<Fridge>().UseMe();
+                float[] costs = fridge.GetComponent<InteractableItem>().GetActionCosts();
+                int lowestCostIndex = 0;
+                for (int i = 0; i < costs.Length; i++)
+                {
+                    if (costs[i] < lowestCostIndex)
+                    {
+                        lowestCostIndex = i;
+                    }
+                }
+
+                GetComponent<ActionQueue>().AddToQueue(fridge, lowestCostIndex);                
             }
         }
     }
 
-    void UseToilet()
+    public void UseToilet()
     {
-        if (!actionQueue.GetComponent<ActionQueue>().IsEnqueued("Toilet"))
+        if (!GetComponent<ActionQueue>().IsEnqueued("Toilet"))
         {
             if (WorldState.state.GetState(1))
             {
                 //the toilet is clean
-                toilet.GetComponent<Toilet>().UseMe();
+
             }
         }
     }
 
-    void GoToBed()
+    public void GoToBed()
     {
-        if (!actionQueue.GetComponent<ActionQueue>().IsEnqueued("Bed"))
+        if (!GetComponent<ActionQueue>().IsEnqueued("Bed"))
         {
-            bed.GetComponent<Bed>().UseMe();
+
         }
     }
 }

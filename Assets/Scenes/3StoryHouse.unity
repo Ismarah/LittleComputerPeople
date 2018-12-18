@@ -2636,7 +2636,6 @@ MonoBehaviour:
   sleepy: 0.7
   needsToilet: 0.4
   needsFun: 0.5
-  askedForAction: 0
 --- !u!114 &1215454276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2649,7 +2648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   floor: 0
-  movespeed: 1
+  movespeed: 3
 --- !u!1 &1216027956
 GameObject:
   m_ObjectHideFlags: 0

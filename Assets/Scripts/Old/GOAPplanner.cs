@@ -36,15 +36,17 @@ public class GOAPplanner : MonoBehaviour
                 //food is available in the fridge
                 float[] costs = fridge.GetComponent<InteractableItem>().GetActionCosts();
                 int lowestCostIndex = 0;
+                float lowestCost = float.MaxValue;
                 for (int i = 0; i < costs.Length; i++)
                 {
-                    if (costs[i] < lowestCostIndex)
+                    if (costs[i] != 0 && costs[i] < lowestCost)
                     {
                         lowestCostIndex = i;
+                        lowestCost = costs[i];
                     }
                 }
 
-                GetComponent<ActionQueue>().AddToQueue(fridge, lowestCostIndex);                
+                GetComponent<ActionQueue>().AddToQueue(fridge, lowestCostIndex);
             }
         }
     }

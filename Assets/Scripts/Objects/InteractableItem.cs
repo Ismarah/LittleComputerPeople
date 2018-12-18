@@ -78,7 +78,7 @@ public class InteractableItem : MonoBehaviour
         float[] costs = new float[actionCount];
         for (int i = 0; i < actionCount; i++)
         {
-            costs[i] = myActions[i].GetStats()[i, 1];
+            costs[i] = myActions[i].GetCost();
         }
         return costs;
     }

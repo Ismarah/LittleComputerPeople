@@ -27,6 +27,5 @@ public class Fridge : InteractableItem
         snackEffects[0, 1] = 2;
         snack = new Action(snackEffects);
         myActions[1] = snack;
-
     }
 }

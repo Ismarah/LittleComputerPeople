@@ -28,4 +28,14 @@ public class Toilet : InteractableItem
         cleanToilet = new Action(cleanToiletEffect);
         myActions[1] = cleanToilet;
     }
+
+    public override void UseMe()
+    {
+        useCount++;
+
+        if(useCount >= 3)
+        {
+
+        }
+    }
 }

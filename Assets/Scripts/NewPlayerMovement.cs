@@ -30,7 +30,7 @@ public class NewPlayerMovement : MonoBehaviour
     {
         target = newTarget;
         int targetFloor = newTarget.GetComponent<InteractableItem>().GetFloor();
-        if (targetFloor == floor && transform.position.x != target.transform.position.x)
+        if (targetFloor == floor)
         {
             //player is already on correct floor
             targetPos = new Vector2(newTarget.transform.position.x, transform.position.y);
@@ -129,9 +129,10 @@ public class NewPlayerMovement : MonoBehaviour
     private IEnumerator MoveToPos(Vector2 _targetPos)
     {
         anim.SetBool("isWalking", true);
-        while ((Vector2)transform.position != _targetPos)
+        Vector3 pos = new Vector3(_targetPos.x, _targetPos.y, transform.position.z);
+        while (transform.position != pos)
         {
-            transform.position = Vector2.MoveTowards(transform.position, _targetPos, movespeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime);
             yield return null;
         }
 

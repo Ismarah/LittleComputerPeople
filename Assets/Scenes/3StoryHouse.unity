@@ -2473,7 +2473,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1168509295}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.733, y: -1.069, z: 2}
+  m_LocalPosition: {x: 3.733, y: -1.069, z: 7}
   m_LocalScale: {x: 2.8383992, y: 0.10206, z: 1}
   m_Children: []
   m_Father: {fileID: 179257660}
@@ -2629,7 +2629,7 @@ MonoBehaviour:
   sleep: {fileID: 574898338}
   toilet: {fileID: 338800904}
   fun: {fileID: 1534458535}
-  currentHunger: 0.3
+  currentHunger: 0.46
   currentSleep: 0
   currentToilet: 0
   currentFun: 0
@@ -3842,7 +3842,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1635251905}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.07, y: 2.04, z: 2}
+  m_LocalPosition: {x: -1.07, y: 2.04, z: 7}
   m_LocalScale: {x: 2.8384, y: 0.10206, z: 1}
   m_Children: []
   m_Father: {fileID: 179257660}

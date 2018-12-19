@@ -17,6 +17,7 @@ public class InteractableItem : MonoBehaviour
     protected Action nextAction;
     protected Action[] myActions;
     protected int actionCount;
+    protected int useCount;
 
     protected void Init()
     {
@@ -24,33 +25,14 @@ public class InteractableItem : MonoBehaviour
         myActions = new Action[actionCount];
     }
 
-    public void OnClick()
-    {
-        myUI.SetActive(true);
-    }
-
     public int GetFloor()
     {
         return myFloor;
     }
 
-    public GameObject GetMyUIObject()
-    {
-        return myUI;
-    }
-
     public GameObject GetMyIcon()
     {
         return myIcon;
-    }
-
-    public void PlayerMightBeNear()
-    {
-        if (Vector3.Distance(player.transform.position, transform.position) <= 0.5f)
-        {
-            Debug.Log("player has actually arrived at my position");
-            PlayerArrivedAtMyPosition();
-        }
     }
 
     public virtual void PlayerArrivedAtMyPosition()
@@ -81,5 +63,9 @@ public class InteractableItem : MonoBehaviour
             costs[i] = myActions[i].GetCost();
         }
         return costs;
+    }
+
+    public virtual void UseMe()
+    {
     }
 }

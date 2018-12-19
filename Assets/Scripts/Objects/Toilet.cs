@@ -7,12 +7,12 @@ public class Toilet : InteractableItem
     Action useToilet;
     Action cleanToilet;
 
-	void Start ()
-	{
+    void Start()
+    {
         actionCount = 2;
-		myFloor = 0;
+        myFloor = 0;
 
-		Init ();
+        Init();
 
         //Possible action 1
         float[,] useToiletEffect = new float[4, 2];
@@ -26,6 +26,6 @@ public class Toilet : InteractableItem
         cleanToiletEffect[3, 0] = 0.3f;
         cleanToiletEffect[3, 1] = 3;
         cleanToilet = new Action(cleanToiletEffect);
-        myActions[0] = cleanToilet;
+        myActions[1] = cleanToilet;
     }
 }

@@ -7,12 +7,12 @@ public class Bed : InteractableItem
     Action sleep;
     Action doze;
 
-	private void Start ()
-	{
+    private void Start()
+    {
         actionCount = 2;
-		myFloor = 1;
+        myFloor = 2;
 
-		Init ();
+        Init();
 
         //Possible action 1
         float[,] sleepEffect = new float[4, 2];
@@ -26,6 +26,6 @@ public class Bed : InteractableItem
         dozeEffect[1, 0] = -0.3f;
         dozeEffect[1, 1] = 2;
         doze = new Action(dozeEffect);
-        myActions[0] = doze;
+        myActions[1] = doze;
     }
 }

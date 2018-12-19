@@ -39,7 +39,7 @@ public class ActionQueue : MonoBehaviour
                 GameObject newIcon = Instantiate(newAction.GetComponent<InteractableItem>().GetMyIcon(), transform, false);
                 actionQueue[i] = newAction;
                 actionIndices[i] = actionIndex;
-                Debug.Log("Enqueue action at index: " + actionIndex);
+                //Debug.Log("Enqueue action at index: " + actionIndex);
                 if (i != 0)
                 {
                     newAction.transform.localPosition = actionQueue[i - 1].GetComponent<InteractableItem>().GetMyIcon().transform.localPosition + new Vector3(100, 0, 0);

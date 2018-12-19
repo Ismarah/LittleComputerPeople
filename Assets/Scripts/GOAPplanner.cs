@@ -70,23 +70,12 @@ public class GOAPplanner : MonoBehaviour
             if (WorldState.state.GetState(1))
             {
                 //the toilet is clean
-                float[] costs = toilet.GetComponent<InteractableItem>().GetActionCosts();
-                int lowestCostIndex = 0;
-                float lowestCost = float.MaxValue;
-                for (int i = 0; i < costs.Length; i++)
-                {
-                    if (costs[i] != 0 && costs[i] < lowestCost)
-                    {
-                        lowestCostIndex = i;
-                        lowestCost = costs[i];
-                    }
-                }
-
-                GetComponent<ActionQueue>().AddToQueue(toilet, lowestCostIndex);
+                GetComponent<ActionQueue>().AddToQueue(toilet, 0);
             }
             else
             {
                 //the toilet has to be cleaned before using it again
+                GetComponent<ActionQueue>().AddToQueue(toilet, 1);
             }
         }
     }

@@ -1059,6 +1059,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1165362854264892, guid: 50bc1e9419cd91d498d044d7ca4d4770,
     type: 2}
   m_PrefabInternal: {fileID: 1053259792}
+--- !u!4 &483343313 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4735415866559392, guid: e90d5315d9c762146bfb7343ba450d84,
+    type: 2}
+  m_PrefabInternal: {fileID: 300856538}
 --- !u!1 &498340154
 GameObject:
   m_ObjectHideFlags: 0
@@ -2632,7 +2637,7 @@ MonoBehaviour:
   sleepChange: 0.005
   toiletChange: 0.007
   funChange: 0.02
-  hungry: 0.03
+  hungry: 0.3
   sleepy: 0.7
   needsToilet: 0.4
   needsFun: 0.5
@@ -2649,6 +2654,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floor: 0
   movespeed: 3
+  firstStairsLower: {fileID: 483343313}
+  firstStairsUpper: {fileID: 1920623021}
+  secondStairsLower: {fileID: 1223806726}
+  secondStairsUpper: {fileID: 1556102077}
 --- !u!1 &1216027956
 GameObject:
   m_ObjectHideFlags: 0
@@ -4650,6 +4659,11 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1918393011}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1920623021 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4563648920000390, guid: e90d5315d9c762146bfb7343ba450d84,
+    type: 2}
+  m_PrefabInternal: {fileID: 300856538}
 --- !u!1 &2059815468
 GameObject:
   m_ObjectHideFlags: 0

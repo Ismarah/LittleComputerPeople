@@ -23,7 +23,7 @@ public class Fridge : InteractableItem
 
         //Possible action 2
         float[,] snackEffects = new float[4, 2];
-        snackEffects[0, 0] = -0.03f;
+        snackEffects[0, 0] = -0.2f;
         snackEffects[0, 1] = 2;
         snack = new Action(snackEffects);
         myActions[1] = snack;

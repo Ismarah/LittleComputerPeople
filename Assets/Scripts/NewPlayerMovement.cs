@@ -30,7 +30,7 @@ public class NewPlayerMovement : MonoBehaviour
     {
         target = newTarget;
         int targetFloor = newTarget.GetComponent<InteractableItem>().GetFloor();
-        if (targetFloor == floor)
+        if (targetFloor == floor && transform.position.x != target.transform.position.x)
         {
             //player is already on correct floor
             targetPos = new Vector2(newTarget.transform.position.x, transform.position.y);
@@ -89,17 +89,41 @@ public class NewPlayerMovement : MonoBehaviour
                 if (targetFloor == floor - 1)
                 {
                     //target is one floor below player
+                    if (floor == 1)
+                    {
+                        yield return StartCoroutine(MoveToPos(firstStairsUpper.position));
+                        yield return StartCoroutine(MoveToPos(firstStairsLower.position));
+                        floor -= 1;
+                        targetPos = new Vector2(target.transform.position.x, transform.position.y);
+                        yield return StartCoroutine(MoveToPos(targetPos));
+                        yield break;
+                    }
+                    else if (floor == 2)
+                    {
+                        yield return StartCoroutine(MoveToPos(secondStairsUpper.position));
+                        yield return StartCoroutine(MoveToPos(secondStairsLower.position));
+                        floor -= 1;
+                        targetPos = new Vector2(target.transform.position.x, transform.position.y);
+                        yield return StartCoroutine(MoveToPos(targetPos));
+                        yield break;
+                    }
 
                 }
                 else if (targetFloor == floor - 2)
                 {
                     //target is two floors below player
-
+                    yield return StartCoroutine(MoveToPos(secondStairsUpper.position));
+                    yield return StartCoroutine(MoveToPos(secondStairsLower.position));
+                    floor -= 1;
+                    yield return StartCoroutine(MoveToPos(firstStairsUpper.position));
+                    yield return StartCoroutine(MoveToPos(firstStairsLower.position));
+                    floor -= 1;
+                    targetPos = new Vector2(target.transform.position.x, transform.position.y);
+                    yield return StartCoroutine(MoveToPos(targetPos));
                 }
             }
             yield return null;
         }
-        Debug.Log("Reached correct floor.");
     }
 
     private IEnumerator MoveToPos(Vector2 _targetPos)
@@ -116,6 +140,5 @@ public class NewPlayerMovement : MonoBehaviour
             target.GetComponent<InteractableItem>().PlayerArrivedAtMyPosition();
             anim.SetBool("isWalking", false);
         }
-        Debug.Log("Stop moving to position");
     }
 }

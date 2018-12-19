@@ -2629,7 +2629,7 @@ MonoBehaviour:
   sleep: {fileID: 574898338}
   toilet: {fileID: 338800904}
   fun: {fileID: 1534458535}
-  currentHunger: 0
+  currentHunger: 0.3
   currentSleep: 0
   currentToilet: 0
   currentFun: 0
@@ -2641,6 +2641,7 @@ MonoBehaviour:
   sleepy: 0.7
   needsToilet: 0.4
   needsFun: 0.5
+  askedForAction: 0
 --- !u!114 &1215454276
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2915,7 +2916,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1286969264}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.23, y: 4.33, z: 5.8955445}
+  m_LocalPosition: {x: -7.7, y: 4.89, z: 0.716}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2933,6 +2934,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionQueue: []
+  icons: []
 --- !u!114 &1286969269
 MonoBehaviour:
   m_ObjectHideFlags: 0

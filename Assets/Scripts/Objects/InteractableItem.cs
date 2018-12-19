@@ -60,9 +60,9 @@ public class InteractableItem : MonoBehaviour
         {
             if (temp[i, 0] != 0)
             {
-                index = 0;
-                change = temp[0, 0];
-                time = temp[0, 1];
+                index = i;
+                change = temp[i, 0];
+                time = temp[i, 1];
                 player.GetComponent<NewPlayerNeeds>().ManipulateNeedChange(index, change, time);
             }
         }

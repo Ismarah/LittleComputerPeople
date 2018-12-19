@@ -6,6 +6,7 @@ public class ActionQueue : MonoBehaviour
 {
     public GameObject[] actionQueue;
     private int[] actionIndices;
+    public GameObject[] icons;
     private GameObject player;
     private bool processingAction;
 
@@ -13,20 +14,17 @@ public class ActionQueue : MonoBehaviour
     {
         actionQueue = new GameObject[10];
         actionIndices = new int[10];
+        icons = new GameObject[10];
         player = GameObject.FindGameObjectWithTag("Player");
     }
 
-    private IEnumerator ActionsQueued()
+    private void ActionsQueued()
     {
-        while (actionQueue[0] != null)
+        if (!processingAction)
         {
-            if (!processingAction)
-            {
-                player.GetComponent<NewPlayerMovement>().NewTarget(actionQueue[0]);
-                actionQueue[0].GetComponent<InteractableItem>().PlanAction(actionIndices[0]);
-                processingAction = true;
-            }
-            yield return null;
+            actionQueue[0].GetComponent<InteractableItem>().PlanAction(actionIndices[0]);
+            player.GetComponent<NewPlayerMovement>().NewTarget(actionQueue[0]);
+            processingAction = true;
         }
     }
 
@@ -36,17 +34,18 @@ public class ActionQueue : MonoBehaviour
         {
             if (actionQueue[i] == null)
             {
-                GameObject newIcon = Instantiate(newAction.GetComponent<InteractableItem>().GetMyIcon(), transform, false);
+                GameObject newIcon = Instantiate(newAction.GetComponent<InteractableItem>().GetMyIcon(), transform.position, Quaternion.identity, transform);
                 actionQueue[i] = newAction;
                 actionIndices[i] = actionIndex;
+                icons[i] = newIcon;
                 //Debug.Log("Enqueue action at index: " + actionIndex);
                 if (i != 0)
                 {
-                    newAction.transform.localPosition = actionQueue[i - 1].GetComponent<InteractableItem>().GetMyIcon().transform.localPosition + new Vector3(100, 0, 0);
+                    icons[i].transform.localPosition = icons[i - 1].transform.localPosition + new Vector3(1.4f, 0, 0);
                 }
                 else
                 {
-                    StartCoroutine(ActionsQueued());
+                    ActionsQueued();
                 }
                 break;
             }
@@ -80,22 +79,34 @@ public class ActionQueue : MonoBehaviour
 
     public void FinishedAction()
     {
-        Destroy(transform.GetChild(0).gameObject);
+        Destroy(icons[0]);
         actionQueue[0] = null;
         actionIndices[0] = -1;
+        icons[0] = null;
 
         for (int i = 1; i < actionQueue.Length; i++)
         {
             if (actionQueue[i] != null)
             {
-                actionQueue[i].GetComponent<InteractableItem>().GetMyIcon().transform.localPosition -= new Vector3(100, 0, 0);
+                icons[i].transform.localPosition -= new Vector3(1.4f, 0, 0);
                 actionQueue[i - 1] = actionQueue[i];
                 actionQueue[i] = null;
+
+                actionIndices[i - 1] = actionIndices[i];
+                actionIndices[i] = -1;
+
+                icons[i - 1] = icons[i];
+                icons[i] = null;
             }
         }
 
         processingAction = false;
         player.GetComponent<NewPlayerNeeds>().ActionFinished();
+
+        if(actionQueue[0] != null)
+        {
+            ActionsQueued();
+        }
     }
 
     public bool IsEnqueued(string action)

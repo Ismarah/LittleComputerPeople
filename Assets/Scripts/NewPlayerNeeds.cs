@@ -43,7 +43,7 @@ public class NewPlayerNeeds : MonoBehaviour
     private float needsFun;
 
     private GameObject manager;
-    private bool askedForAction;
+    public bool askedForAction;
 
     void Start()
     {
@@ -57,29 +57,25 @@ public class NewPlayerNeeds : MonoBehaviour
         sleep.fillAmount = 1 - currentSleep;
         toilet.fillAmount = 1 - currentToilet;
         fun.fillAmount = 1 - currentFun;
-
-        if (!askedForAction)
+        if (currentHunger >= hungry)
         {
-            if (currentHunger >= hungry)
-            {
-                askedForAction = true;
-                manager.GetComponent<GOAPplanner>().EatSomething();
-            }
-            if(currentSleep >= sleepy)
-            {
-                askedForAction = true;
-                manager.GetComponent<GOAPplanner>().GoToBed();
-            }
-            if(currentToilet >= needsToilet)
-            {
-                askedForAction = true;
-                manager.GetComponent<GOAPplanner>().UseToilet();
-            }
-            if(currentFun >= needsFun)
-            {
-                askedForAction = true;
-                manager.GetComponent<GOAPplanner>().HaveFun();
-            }
+            askedForAction = true;
+            manager.GetComponent<GOAPplanner>().EatSomething();
+        }
+        if (currentSleep >= sleepy)
+        {
+            askedForAction = true;
+            manager.GetComponent<GOAPplanner>().GoToBed();
+        }
+        if (currentToilet >= needsToilet)
+        {
+            askedForAction = true;
+            manager.GetComponent<GOAPplanner>().UseToilet();
+        }
+        if (currentFun >= needsFun)
+        {
+            askedForAction = true;
+            manager.GetComponent<GOAPplanner>().HaveFun();
         }
     }
 
@@ -92,6 +88,12 @@ public class NewPlayerNeeds : MonoBehaviour
     {
         if (currentHunger < 0) currentHunger = 0;
         if (currentHunger > 1) currentHunger = 1;
+        if (currentSleep < 0) currentSleep = 0;
+        if (currentSleep > 1) currentSleep = 1;
+        if (currentToilet < 0) currentToilet = 0;
+        if (currentToilet > 1) currentToilet = 1;
+        if (currentFun < 0) currentFun = 0;
+        if (currentFun > 1) currentFun = 1;
 
     }
 

@@ -4,14 +4,20 @@ using UnityEngine;
 
 public class Computer : InteractableItem {
 
+    Action playGames;
+
     void Start()
     {
-        Init();
+        actionCount = 1;
         myFloor = 1;
-    }
 
-    public override void PlayerArrivedAtMyPosition()
-    {
-        //player.GetComponent<PlayerNeeds>().StartHavingFun(0.8f, 8);
+        Init();
+
+        //Possible action 1
+        float[,] playGamesEffect = new float[4, 2];
+        playGamesEffect[3, 0] = -0.5f;
+        playGamesEffect[3, 1] = 5;
+        playGames = new Action(playGamesEffect);
+        myActions[0] = playGames;
     }
 }

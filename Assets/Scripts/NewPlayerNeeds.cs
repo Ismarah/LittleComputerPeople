@@ -65,7 +65,27 @@ public class NewPlayerNeeds : MonoBehaviour
                 askedForAction = true;
                 manager.GetComponent<GOAPplanner>().EatSomething();
             }
+            if(currentSleep >= sleepy)
+            {
+                askedForAction = true;
+                manager.GetComponent<GOAPplanner>().GoToBed();
+            }
+            if(currentToilet >= needsToilet)
+            {
+                askedForAction = true;
+                manager.GetComponent<GOAPplanner>().UseToilet();
+            }
+            if(currentFun >= needsFun)
+            {
+                askedForAction = true;
+                manager.GetComponent<GOAPplanner>().HaveFun();
+            }
         }
+    }
+
+    public void ActionFinished()
+    {
+        askedForAction = false;
     }
 
     private void LateUpdate()

@@ -95,6 +95,7 @@ public class ActionQueue : MonoBehaviour
         }
 
         processingAction = false;
+        player.GetComponent<NewPlayerNeeds>().ActionFinished();
     }
 
     public bool IsEnqueued(string action)

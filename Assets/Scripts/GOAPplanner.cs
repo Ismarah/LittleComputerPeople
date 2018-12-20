@@ -76,6 +76,7 @@ public class GOAPplanner : MonoBehaviour
             {
                 //the toilet has to be cleaned before using it again
                 GetComponent<ActionQueue>().AddToQueue(toilet, 1);
+                GetComponent<ActionQueue>().AddToQueue(toilet, 0);
             }
         }
     }

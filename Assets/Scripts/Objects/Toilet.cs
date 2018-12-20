@@ -33,9 +33,10 @@ public class Toilet : InteractableItem
     {
         useCount++;
 
-        if(useCount >= 3)
+        if (useCount >= 3)
         {
-
+            useCount = 0;
+            WorldState.state.ChangeState(1, false);
         }
     }
 }

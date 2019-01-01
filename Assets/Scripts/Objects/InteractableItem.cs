@@ -30,6 +30,11 @@ public class InteractableItem : MonoBehaviour
         return myFloor;
     }
 
+    public Action GetAction(int index)
+    {
+        return myActions[index];
+    }
+
     public GameObject GetMyIcon()
     {
         return myIcon;
@@ -45,7 +50,7 @@ public class InteractableItem : MonoBehaviour
                 index = i;
                 change = temp[i, 0];
                 time = temp[i, 1];
-                player.GetComponent<NewPlayerNeeds>().ManipulateNeedChange(index, change, time);
+                player.GetComponent<PlayerState>().ManipulateNeedChange(index, change, time);
             }
         }
     }

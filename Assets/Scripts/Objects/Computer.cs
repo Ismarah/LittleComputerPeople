@@ -13,11 +13,11 @@ public class Computer : InteractableItem {
 
         Init();
 
-        //Possible action 1
-        float[,] playGamesEffect = new float[4, 2];
-        playGamesEffect[3, 0] = -0.15f;
-        playGamesEffect[3, 1] = 5;
-        playGames = new Action(playGamesEffect);
-        myActions[0] = playGames;
+        ////Possible action 1
+        //float[,] playGamesEffect = new float[4, 2];
+        //playGamesEffect[3, 0] = -0.15f;
+        //playGamesEffect[3, 1] = 5;
+        //playGames = new Action(playGamesEffect);
+        //myActions[0] = playGames;
     }
 }

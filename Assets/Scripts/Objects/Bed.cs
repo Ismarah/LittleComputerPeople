@@ -13,19 +13,5 @@ public class Bed : InteractableItem
         myFloor = 2;
 
         Init();
-
-        //Possible action 1
-        float[,] sleepEffect = new float[4, 2];
-        sleepEffect[1, 0] = -0.2f;
-        sleepEffect[1, 1] = 10;
-        sleep = new Action(sleepEffect);
-        myActions[0] = sleep;
-
-        //Possible action 2
-        float[,] dozeEffect = new float[4, 2];
-        dozeEffect[1, 0] = -0.2f;
-        dozeEffect[1, 1] = 2;
-        doze = new Action(dozeEffect);
-        myActions[1] = doze;
     }
 }

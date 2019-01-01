@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /*
- * states[0] = foodInfridge
- * states[1] = toiletIsClean
+ * states[0] = snackInFridge
+ * states[1] = IngredientsInFridge
+ * states[2] = FoodCooked
+ * states[3] = toiletIsClean
+ * states[4] = daytime
  */
 
 public class WorldState : MonoBehaviour {
@@ -16,14 +19,33 @@ public class WorldState : MonoBehaviour {
     {
         state = this;
         
-        states = new bool[2];
-        states[0] = true;
+        states = new bool[4];
+        states[0] = false;
         states[1] = true;
+        states[2] = true;
+        states[3] = true;
 	}
 	
 	public void ChangeState(int i, bool newState)
     {
         states[i] = newState;
+    }
+
+    public int GetNumberOfStates()
+    {
+        return states.Length;
+    }
+
+    public void SwitchState(int index)
+    {
+        if(states[index] == true)
+        {
+            states[index] = false;
+        }
+        else
+        {
+            states[index] = true;
+        }
     }
 
     public bool GetState(int i)

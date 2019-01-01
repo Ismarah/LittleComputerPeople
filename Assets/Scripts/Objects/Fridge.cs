@@ -6,26 +6,24 @@ public class Fridge : InteractableItem
 {
     Action meal;
     Action snack;
+    Action refill;
 
     void Start()
     {
-        actionCount = 2;
+        actionCount = 3;
         myFloor = 0;
 
         Init();
+    }
 
-        //Possible action 1
-        float[,] mealEffects = new float[4, 2];
-        mealEffects[0, 0] = -0.3f;
-        mealEffects[0, 1] = 4;
-        meal = new Action(mealEffects);
-        myActions[0] = meal;
+    public override void UseMe()
+    {
+        useCount++;
 
-        //Possible action 2
-        float[,] snackEffects = new float[4, 2];
-        snackEffects[0, 0] = -0.2f;
-        snackEffects[0, 1] = 2;
-        snack = new Action(snackEffects);
-        myActions[1] = snack;
+        if (useCount >= 1)
+        {
+            useCount = 0;
+            WorldState.state.ChangeState(0, false);
+        }
     }
 }

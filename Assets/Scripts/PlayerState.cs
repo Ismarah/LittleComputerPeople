@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NewPlayerNeeds : MonoBehaviour
+public class PlayerState : MonoBehaviour
 {
 
     [SerializeField]
@@ -14,6 +14,8 @@ public class NewPlayerNeeds : MonoBehaviour
     private Image toilet;
     [SerializeField]
     private Image fun;
+    [SerializeField]
+    private Image hygene;
 
     [SerializeField]
     private float currentHunger;
@@ -23,6 +25,8 @@ public class NewPlayerNeeds : MonoBehaviour
     private float currentToilet;
     [SerializeField]
     private float currentFun;
+    [SerializeField]
+    private float currentHygene;
 
     [SerializeField]
     private float hungerChange;
@@ -32,6 +36,8 @@ public class NewPlayerNeeds : MonoBehaviour
     private float toiletChange;
     [SerializeField]
     private float funChange;
+    [SerializeField]
+    private float hygeneChange;
 
     [SerializeField]
     private float hungry;
@@ -41,9 +47,11 @@ public class NewPlayerNeeds : MonoBehaviour
     private float needsToilet;
     [SerializeField]
     private float needsFun;
+    [SerializeField]
+    private float needsHygene;
 
     private GameObject manager;
-    public bool askedForAction;
+    private bool askedForAction;
 
     void Start()
     {
@@ -57,29 +65,36 @@ public class NewPlayerNeeds : MonoBehaviour
         sleep.fillAmount = 1 - currentSleep;
         toilet.fillAmount = 1 - currentToilet;
         fun.fillAmount = 1 - currentFun;
+        hygene.fillAmount = 1 - currentHygene;
+
         if (currentHunger >= hungry)
         {
             askedForAction = true;
-            manager.GetComponent<GOAPplanner>().EatSomething();
+            //manager.GetComponent<GOAPplanner>().EatSomething();
         }
         if (currentSleep >= sleepy)
         {
             askedForAction = true;
-            manager.GetComponent<GOAPplanner>().GoToBed();
+            //manager.GetComponent<GOAPplanner>().GoToBed();
         }
         if (currentToilet >= needsToilet)
         {
             askedForAction = true;
-            manager.GetComponent<GOAPplanner>().UseToilet();
+            //manager.GetComponent<GOAPplanner>().UseToilet();
         }
         if (currentFun >= needsFun)
         {
             askedForAction = true;
-            manager.GetComponent<GOAPplanner>().HaveFun();
+            //manager.GetComponent<GOAPplanner>().HaveFun();
+        }
+        if(currentHygene >= needsHygene)
+        {
+            askedForAction = true;
+            //manager.GetComponent<GOAPplanner>
         }
     }
 
-    public void ActionFinished()
+    public void ActionPlanned()
     {
         askedForAction = false;
     }
@@ -94,6 +109,8 @@ public class NewPlayerNeeds : MonoBehaviour
         if (currentToilet > 1) currentToilet = 1;
         if (currentFun < 0) currentFun = 0;
         if (currentFun > 1) currentFun = 1;
+        if (currentHygene < 0) currentHygene = 0;
+        if (currentHygene > 1) currentHygene = 1;
 
     }
 
@@ -105,6 +122,7 @@ public class NewPlayerNeeds : MonoBehaviour
             currentSleep += sleepChange * Time.deltaTime;
             currentToilet += toiletChange * Time.deltaTime;
             currentFun += funChange * Time.deltaTime;
+            currentHygene += hygeneChange * Time.deltaTime;
 
             yield return null;
         }
@@ -131,6 +149,9 @@ public class NewPlayerNeeds : MonoBehaviour
             case 3:
                 funChange += change;
                 break;
+            case 4:
+                hygeneChange += change;
+                break;
             default:
                 break;
         }
@@ -150,6 +171,9 @@ public class NewPlayerNeeds : MonoBehaviour
                 break;
             case 3:
                 funChange -= change;
+                break;
+            case 4:
+                hygeneChange -= change;
                 break;
             default:
                 break;
@@ -176,5 +200,10 @@ public class NewPlayerNeeds : MonoBehaviour
     public float GetFun()
     {
         return currentFun;
+    }
+
+    public float GetHygene()
+    {
+        return currentHygene;
     }
 }

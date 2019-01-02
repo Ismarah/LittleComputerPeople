@@ -49,9 +49,13 @@ public class PetState : MonoBehaviour
 
     private void Update()
     {
+        if (askedForAction) return;
+
         if (currentHunger >= hungry)
         {
+            Debug.Log("Pet is hungry");
             WorldState.state.ChangeState(13, false);
+            WorldState.state.ChangeState(11, true);
             askedForAction = true;
             manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 13, true);
         }
@@ -75,6 +79,11 @@ public class PetState : MonoBehaviour
             askedForAction = true;
             //manager.GetComponent<GOAPplanner>
         }
+    }
+
+    public void ActionPlanned()
+    {
+        askedForAction = false;
     }
 
     private IEnumerator NeedChange()

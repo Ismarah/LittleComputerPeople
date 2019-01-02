@@ -9,6 +9,7 @@ public class GOAPplanner : MonoBehaviour
     private GameObject toilet;
     private GameObject bed;
     private GameObject computer;
+    private GameObject petFood;
 
     private bool goalSet;
 
@@ -19,6 +20,7 @@ public class GOAPplanner : MonoBehaviour
         toilet = GameObject.FindGameObjectWithTag("Toilet");
         bed = GameObject.FindGameObjectWithTag("Bed");
         computer = GameObject.FindGameObjectWithTag("Computer");
+        petFood = GameObject.FindGameObjectWithTag("PetFood");
     }
 
     public void SetGoal(GameObject agent, int index, bool state)

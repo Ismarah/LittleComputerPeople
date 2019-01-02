@@ -55,9 +55,9 @@ public class InteractableItem : MonoBehaviour
         }
     }
 
-    public void PlanAction(int i)
+    public void PlanAction(Action a)
     {
-        nextAction = myActions[i];
+        nextAction = a;
     }
 
     public float[] GetActionCosts()

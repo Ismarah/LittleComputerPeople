@@ -29,20 +29,21 @@ public class WorldState : MonoBehaviour {
         state = this;
         
         states = new bool[14];
+
         states[0] = false;
         states[1] = true;
-        states[2] = true;
+        states[2] = false;
         states[3] = true;
         states[4] = true;
         states[5] = true;
-        states[6] = true;
-        states[7] = true;
-        states[8] = true;
-        states[9] = true;
+        states[6] = false;
+        states[7] = false;
+        states[8] = false;
+        states[9] = false;
         states[10] = true;
-        states[11] = true;
-        states[12] = true;
-        states[13] = true;
+        states[11] = false;
+        states[12] = false;
+        states[13] = false;
 	}
 	
 	public void ChangeState(int i, bool newState)

@@ -4,19 +4,6 @@ using UnityEngine;
 
 public class PlayerActions : AgentActions
 {
-    [SerializeField]
-    private GameObject fridge;
-    [SerializeField]
-    private GameObject bed;
-    [SerializeField]
-    private GameObject toilet;
-    [SerializeField]
-    private GameObject computer;
-    [SerializeField]
-    private GameObject shower;
-    [SerializeField]
-    private GameObject door;
-
 
     void Start()
     {
@@ -24,7 +11,7 @@ public class PlayerActions : AgentActions
         myActions = new Action[7];
 
         player = this.gameObject;
-
+        
         CreateEatingActions();
         //CreateSleepActions();
     }

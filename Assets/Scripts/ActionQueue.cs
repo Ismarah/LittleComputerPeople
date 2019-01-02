@@ -4,82 +4,100 @@ using UnityEngine;
 
 public class ActionQueue : MonoBehaviour
 {
-    public GameObject[] actionQueue;
-    private int[] actionIndices;
-    private int[] stateIndices;
+    public Action[] playerActionQueue;
+    public Action[] petActionQueue;
     public GameObject[] icons;
     private GameObject player;
-    private bool processingAction;
+    private GameObject pet;
+    private bool processingActionforPlayer;
+    private bool processingActionforPet;
 
     void Start()
     {
-        actionQueue = new GameObject[10];
-        actionIndices = new int[10];
+        playerActionQueue = new Action[10];
         icons = new GameObject[10];
-        stateIndices = new int[10];
         player = GameObject.FindGameObjectWithTag("Player");
+        pet = GameObject.FindGameObjectWithTag("Pet");
     }
 
-    private void ActionsQueued()
+    private void PlayerActionQueue()
     {
-        if (!processingAction)
+        if (!processingActionforPlayer)
         {
-            actionQueue[0].GetComponent<InteractableItem>().PlanAction(actionIndices[0]);
-            player.GetComponent<AgentMovement>().NewTarget(actionQueue[0]);
-            processingAction = true;
+            playerActionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(playerActionQueue[0]);
+            player.GetComponent<AgentMovement>().NewTarget(playerActionQueue[0].GetObject());
+            processingActionforPlayer = true;
         }
     }
 
-    public void AddToQueue(GameObject newAction, int actionIndex, int stateIndex, int change)
+    private void PetActionQueue()
     {
-        for (int i = 0; i < actionQueue.Length; i++)
+        if (!processingActionforPet)
         {
-            if (actionQueue[i] == null)
+            petActionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(petActionQueue[0]);
+            pet.GetComponent<AgentMovement>().NewTarget(petActionQueue[0].GetObject());
+            processingActionforPet = true;
+        }
+    }
+
+    public void AddToQueue(Action newAction, GameObject agent)
+    {
+        if (agent == player)
+        {
+            for (int i = 0; i < playerActionQueue.Length; i++)
             {
-                GameObject newIcon = Instantiate(newAction.GetComponent<InteractableItem>().GetMyIcon(), transform.position, Quaternion.identity, transform);
-                actionQueue[i] = newAction;
-                actionIndices[i] = actionIndex;
-                stateIndices[stateIndex] = change;
-                icons[i] = newIcon;
-                //Debug.Log("Enqueue action at index: " + actionIndex);
-                if (i != 0)
+                if (playerActionQueue[i] == null)
                 {
-                    icons[i].transform.localPosition = icons[i - 1].transform.localPosition + new Vector3(1.4f, 0, 0);
+                    GameObject newIcon = Instantiate(newAction.GetObject().GetComponent<InteractableItem>().GetMyIcon(), transform.position, Quaternion.identity, transform);
+                    playerActionQueue[i] = newAction;
+                    icons[i] = newIcon;
+                    if (i != 0)
+                    {
+                        icons[i].transform.localPosition = icons[i - 1].transform.localPosition + new Vector3(1.4f, 0, 0);
+                    }
+                    else
+                    {
+                        PlayerActionQueue();
+                    }
+                    break;
                 }
-                else
-                {
-                    ActionsQueued();
-                }
-                break;
             }
+            player.GetComponent<PlayerState>().ActionPlanned();
         }
-        player.GetComponent<PlayerState>().ActionPlanned();
+        else
+        {
+            for (int i = 0; i < petActionQueue.Length; i++)
+            {
+                if (petActionQueue[i] == null)
+                {
+                    petActionQueue[i] = newAction;
+
+                    if (i != 0)
+                    {
+                        PetActionQueue();
+                    }
+                }
+            }
+            pet.GetComponent<PetState>().ActionPlanned();
+        }
     }
 
     public void RemoveFromQueue(GameObject toRemove)
     {
         bool foundAction = false;
-        for (int i = 0; i < actionQueue.Length; i++)
+        for (int i = 0; i < playerActionQueue.Length; i++)
         {
-            if (foundAction && actionQueue[i] != null)
+            if (foundAction && playerActionQueue[i] != null)
             {
-                actionQueue[i].GetComponent<InteractableItem>().GetMyIcon().transform.localPosition -= new Vector3(100, 0, 0);
-                actionQueue[i - 1] = actionQueue[i];
-                actionQueue[i] = null;
-
-                actionIndices[i - 1] = actionIndices[i];
-                actionIndices[i] = -1;
-
-                stateIndices[i - 1] = stateIndices[i];
-                stateIndices[i] = -1;
+                playerActionQueue[i].GetObject().GetComponent<InteractableItem>().GetMyIcon().transform.localPosition -= new Vector3(100, 0, 0);
+                playerActionQueue[i - 1] = playerActionQueue[i];
+                playerActionQueue[i] = null;
 
             }
-            if (actionQueue[i] == toRemove)
+            if (playerActionQueue[i].GetObject() == toRemove)
             {
-                Destroy(transform.Find(actionQueue[i].name).gameObject.GetComponent<InteractableItem>().GetMyIcon());
-                actionQueue[i] = null;
-                actionIndices[i] = -1;
-                stateIndices[i] = -1;
+                Destroy(transform.Find(playerActionQueue[i].GetObject().name).gameObject.GetComponent<InteractableItem>().GetMyIcon());
+                playerActionQueue[i] = null;
                 foundAction = true;
             }
         }
@@ -87,51 +105,39 @@ public class ActionQueue : MonoBehaviour
 
     public void FinishedAction()
     {
-        if (stateIndices[0] != -1)
-        {
-            if (stateIndices[0] == 0) WorldState.state.ChangeState(stateIndices[0], false);
-            else if (stateIndices[0] == 1) WorldState.state.ChangeState(stateIndices[0], true);
-        }
+
 
         Destroy(icons[0]);
-        actionQueue[0] = null;
-        actionIndices[0] = -1;
-        stateIndices[0] = -1;
+        playerActionQueue[0] = null;
         icons[0] = null;
 
-        for (int i = 1; i < actionQueue.Length; i++)
+        for (int i = 1; i < playerActionQueue.Length; i++)
         {
-            if (actionQueue[i] != null)
+            if (playerActionQueue[i] != null)
             {
                 icons[i].transform.localPosition -= new Vector3(1.4f, 0, 0);
-                actionQueue[i - 1] = actionQueue[i];
-                actionQueue[i] = null;
-
-                actionIndices[i - 1] = actionIndices[i];
-                actionIndices[i] = -1;
-
-                stateIndices[i - 1] = stateIndices[i];
-                stateIndices[i] = -1;
+                playerActionQueue[i - 1] = playerActionQueue[i];
+                playerActionQueue[i] = null;
 
                 icons[i - 1] = icons[i];
                 icons[i] = null;
             }
         }
 
-        processingAction = false;
+        processingActionforPlayer = false;
 
-        if (actionQueue[0] != null)
+        if (playerActionQueue[0] != null)
         {
-            ActionsQueued();
+            PlayerActionQueue();
         }
     }
 
-    public bool IsEnqueued(string action, int actionIndex)
+    public bool IsEnqueued(Action action)
     {
         bool foundAction = false;
-        for (int i = 0; i < actionQueue.Length; i++)
+        for (int i = 0; i < playerActionQueue.Length; i++)
         {
-            if (actionQueue[i] != null && actionQueue[i].tag == action && actionIndex != actionIndices[i])
+            if (playerActionQueue[i] != null && playerActionQueue[i] == action)
             {
                 foundAction = true;
             }

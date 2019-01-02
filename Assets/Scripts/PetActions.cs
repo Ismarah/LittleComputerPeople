@@ -7,7 +7,7 @@ public class PetActions : AgentActions
     void Start()
     {
         Init();
-        myActions = new Action[5];
+        myActions = new Action[1];
 
         CreateActions();
     }

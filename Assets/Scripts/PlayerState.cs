@@ -67,6 +67,8 @@ public class PlayerState : MonoBehaviour
         fun.fillAmount = 1 - currentFun;
         hygene.fillAmount = 1 - currentHygene;
 
+        if (askedForAction) return;
+
         if (currentHunger >= hungry)
         {
             WorldState.state.ChangeState(6, false);

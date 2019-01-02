@@ -12,9 +12,25 @@ public class AgentActions : MonoBehaviour
     protected Action newAction;
     protected GameObject player;
 
+    protected GameObject fridge;
+    protected GameObject bed;
+    protected GameObject toilet;
+    protected GameObject computer;
+    protected GameObject shower;
+    protected GameObject door;
+    protected GameObject petFood;
+    protected GameObject pet;
+
     public void Init()
     {
         player = GameObject.FindGameObjectWithTag("Player");
+        fridge = GameObject.FindGameObjectWithTag("Fridge");
+        toilet = GameObject.FindGameObjectWithTag("Toilet");
+        bed = GameObject.FindGameObjectWithTag("Bed");
+        computer = GameObject.FindGameObjectWithTag("Computer");
+        door = GameObject.FindGameObjectWithTag("Door");
+        petFood = GameObject.FindGameObjectWithTag("PetFood");
+        pet = GameObject.FindGameObjectWithTag("Pet");
     }
 
     public Action[] GetAllActions()

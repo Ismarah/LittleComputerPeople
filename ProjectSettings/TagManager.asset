@@ -12,6 +12,8 @@ TagManager:
   - ActionQueue
   - UI
   - Background
+  - Pet
+  - PetFood
   layers:
   - Default
   - TransparentFX

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Action {
 
-    private float[,] actionStats; //index 0 = hunger, index 1 = sleep, index 3 = toilet, index 4 = fun; second float: 0 = change, 1 = time, 2 = precondition
+    private float[,] actionStats; //index 0 = hunger, index 1 = sleep, index 3 = toilet, index 4 = fun; second float: 0 = change, 1 = time
     private float time; //how long does it take to change the need
     private Dictionary<int, bool> conditions;
     private Dictionary<int, bool> effects;

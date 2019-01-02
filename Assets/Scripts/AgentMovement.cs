@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NewPlayerMovement : MonoBehaviour
+public class AgentMovement : MonoBehaviour
 {
     private Vector2 targetPos;
     private GameObject target;
@@ -10,6 +10,7 @@ public class NewPlayerMovement : MonoBehaviour
     private int floor = 0;
     [SerializeField]
     private float movespeed;
+    [SerializeField]
     private Animator anim;
     [SerializeField]
     private Transform firstStairsLower;
@@ -23,13 +24,20 @@ public class NewPlayerMovement : MonoBehaviour
     void Start()
     {
         targetPos = new Vector2();
-        anim = GetComponent<Animator>();
     }
 
     public void NewTarget(GameObject newTarget)
     {
         target = newTarget;
-        int targetFloor = newTarget.GetComponent<InteractableItem>().GetFloor();
+        int targetFloor = -1;
+        if (target.GetComponent<InteractableItem>() != null)
+        {
+            targetFloor = newTarget.GetComponent<InteractableItem>().GetFloor();
+        }
+        else if (target.GetComponent<AgentMovement>() != null)
+        {
+            targetFloor = target.GetComponent<AgentMovement>().GetFloor();
+        }
         if (targetFloor == floor)
         {
             //player is already on correct floor
@@ -40,6 +48,11 @@ public class NewPlayerMovement : MonoBehaviour
         {
             StartCoroutine(UseStairs(targetFloor));
         }
+    }
+
+    public int GetFloor()
+    {
+        return floor;
     }
 
     private IEnumerator UseStairs(int targetFloor)
@@ -138,7 +151,14 @@ public class NewPlayerMovement : MonoBehaviour
 
         if (transform.position.x == target.transform.position.x)
         {
-            target.GetComponent<InteractableItem>().PlayerArrivedAtMyPosition();
+            if (target.GetComponent<InteractableItem>() != null)
+            {
+                target.GetComponent<InteractableItem>().PlayerArrivedAtMyPosition();
+            }
+            else
+            {
+
+            }
             anim.SetBool("isWalking", false);
         }
     }

@@ -21,12 +21,12 @@ public class GOAPplanner : MonoBehaviour
         computer = GameObject.FindGameObjectWithTag("Computer");
     }
 
-    public void SetGoal(int index, bool state)
+    public void SetGoal(GameObject agent, int index, bool state)
     {
         if (!goalSet)
         {
             goalSet = true;
-            Action[] allActions = player.GetComponent<PlayerActions>().GetAllActions();
+            Action[] allActions = agent.GetComponent<AgentActions>().GetAllActions();
 
             for (int i = 0; i < allActions.Length; i++)
             {

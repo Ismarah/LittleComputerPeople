@@ -13,6 +13,10 @@ using UnityEngine;
  * states[7] = pizzaIsAvailable
  * states[8] = pizzaOnTheWay
  * states[9] = doorBellRang
+ * states[10] = playerSleptThroughNight
+ * states[11] = petIsHungry
+ * states[12] = petAskedForFood
+ * states[13] = petHasEaten
  */
 
 public class WorldState : MonoBehaviour {
@@ -24,11 +28,21 @@ public class WorldState : MonoBehaviour {
     {
         state = this;
         
-        states = new bool[4];
+        states = new bool[14];
         states[0] = false;
         states[1] = true;
         states[2] = true;
         states[3] = true;
+        states[4] = true;
+        states[5] = true;
+        states[6] = true;
+        states[7] = true;
+        states[8] = true;
+        states[9] = true;
+        states[10] = true;
+        states[11] = true;
+        states[12] = true;
+        states[13] = true;
 	}
 	
 	public void ChangeState(int i, bool newState)

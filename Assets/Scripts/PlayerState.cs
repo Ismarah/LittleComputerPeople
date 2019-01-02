@@ -69,8 +69,9 @@ public class PlayerState : MonoBehaviour
 
         if (currentHunger >= hungry)
         {
+            WorldState.state.ChangeState(6, false);
             askedForAction = true;
-            manager.GetComponent<GOAPplanner>().SetGoal(6, true);
+            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 6, true);
         }
         if (currentSleep >= sleepy)
         {

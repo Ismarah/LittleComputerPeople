@@ -25,7 +25,7 @@ public class ActionQueue : MonoBehaviour
         if (!processingAction)
         {
             actionQueue[0].GetComponent<InteractableItem>().PlanAction(actionIndices[0]);
-            player.GetComponent<NewPlayerMovement>().NewTarget(actionQueue[0]);
+            player.GetComponent<AgentMovement>().NewTarget(actionQueue[0]);
             processingAction = true;
         }
     }

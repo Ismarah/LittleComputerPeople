@@ -71,6 +71,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4519068280970330}
   - component: {fileID: 95016741161051240}
+  - component: {fileID: 114569505513791374}
+  - component: {fileID: 114869572354066820}
+  - component: {fileID: 114996204786853834}
+  - component: {fileID: 114384063491470674}
   m_Layer: 0
   m_Name: Pet
   m_TagString: Untagged
@@ -324,13 +328,13 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1180308730230746}
-  m_LocalRotation: {x: -0, y: -0, z: 0.077843495, w: 0.99696565}
-  m_LocalPosition: {x: -0.47149992, y: 0.763, z: 0}
-  m_LocalScale: {x: 0.17818445, y: 0.19044174, z: 1.2698}
+  m_LocalRotation: {x: -0, y: -0, z: 0.74797654, w: 0.66372526}
+  m_LocalPosition: {x: -0.457, y: 0.766, z: 0}
+  m_LocalScale: {x: 0.1914704, y: 0.194378, z: 2.0597014}
   m_Children: []
   m_Father: {fileID: 4519068280970330}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 8.929001}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 96.831}
 --- !u!4 &4249777453715374
 Transform:
   m_ObjectHideFlags: 1
@@ -965,6 +969,71 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &114384063491470674
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1208444861651412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9031589878d0640459b5fcb476340a52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &114569505513791374
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1208444861651412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11663e1bf10b0f7459fd5ce7da42d7fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  floor: 1
+  movespeed: 4
+  firstStairsLower: {fileID: 0}
+  firstStairsUpper: {fileID: 0}
+  secondStairsLower: {fileID: 0}
+  secondStairsUpper: {fileID: 0}
+--- !u!114 &114869572354066820
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1208444861651412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59fe67dc3a3aa524094bbd8425938b14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentHunger: 0
+  currentSleep: 0
+  currentToilet: 0
+  currentFun: 0
+  currentAttention: 0
+  hungerChange: 0.009
+  sleepChange: 0.005
+  toiletChange: 0.007
+  funChange: 0.02
+  attentionChange: 0.01
+  hungry: 0.3
+  sleepy: 0.7
+  needsToilet: 0.4
+  needsFun: 0.5
+  needsAttention: 0.5
+--- !u!114 &114996204786853834
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1208444861651412}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38924f30557b0ce45a18d56dd7a95937, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!135 &135496036530973120
 SphereCollider:
   m_ObjectHideFlags: 1

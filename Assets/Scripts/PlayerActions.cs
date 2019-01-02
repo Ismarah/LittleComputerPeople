@@ -2,16 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerActions : MonoBehaviour
+public class PlayerActions : AgentActions
 {
-
-    private Action[] myActions;
-
-    float[,] actionEffects;
-    Dictionary<int, bool> conditions;
-    Dictionary<int, bool> effects;
-    Action newAction;
-
     [SerializeField]
     private GameObject fridge;
     [SerializeField]
@@ -22,24 +14,19 @@ public class PlayerActions : MonoBehaviour
     private GameObject computer;
     [SerializeField]
     private GameObject shower;
-    private GameObject player;
     [SerializeField]
     private GameObject door;
 
 
     void Start()
     {
+        Init();
         myActions = new Action[7];
 
         player = this.gameObject;
 
         CreateEatingActions();
         //CreateSleepActions();
-    }
-
-    public Action[] GetAllActions()
-    {
-        return myActions;
     }
 
     private void CreateEatingActions()

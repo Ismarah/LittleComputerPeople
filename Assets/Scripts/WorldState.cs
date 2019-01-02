@@ -8,6 +8,9 @@ using UnityEngine;
  * states[2] = FoodCooked
  * states[3] = toiletIsClean
  * states[4] = daytime
+ * states[5] = hasMoney
+ * states[6] = playerHasEaten
+ * states[7] = pizzaIsAvailable
  */
 
 public class WorldState : MonoBehaviour {

@@ -12,11 +12,29 @@ public class PlayerActions : MonoBehaviour
     Dictionary<int, bool> effects;
     Action newAction;
 
+    [SerializeField]
+    private GameObject fridge;
+    [SerializeField]
+    private GameObject bed;
+    [SerializeField]
+    private GameObject toilet;
+    [SerializeField]
+    private GameObject computer;
+    [SerializeField]
+    private GameObject shower;
+    private GameObject player;
+    [SerializeField]
+    private GameObject door;
+
+
     void Start()
     {
         myActions = new Action[10];
 
+        player = this.gameObject;
+
         CreateEatingActions();
+        CreateSleepActions();
     }
 
     private void CreateEatingActions()
@@ -32,7 +50,7 @@ public class PlayerActions : MonoBehaviour
         effects = new Dictionary<int, bool>();
         effects.Add(2, false);
 
-        newAction = new Action(actionEffects, conditions, effects);
+        newAction = new Action(actionEffects, conditions, effects, fridge);
         myActions[0] = newAction;
         //-----------------------------------------------------------------------
 
@@ -47,7 +65,7 @@ public class PlayerActions : MonoBehaviour
         effects = new Dictionary<int, bool>();
         effects.Add(0, false);
 
-        newAction = new Action(actionEffects, conditions, effects);
+        newAction = new Action(actionEffects, conditions, effects, fridge);
         myActions[1] = newAction;
         //-----------------------------------------------------------------------
 
@@ -59,8 +77,32 @@ public class PlayerActions : MonoBehaviour
         effects.Add(1, false);
         effects.Add(2, true);
 
-        newAction = new Action(actionEffects, conditions, effects);
+        newAction = new Action(actionEffects, conditions, effects, fridge);
         myActions[2] = newAction;
+        //-----------------------------------------------------------------------
+
+        //Order a pizza----------------------------------------------------------
+        actionEffects = new float[4, 2];
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(5, true);
+        effects = new Dictionary<int, bool>();
+        effects.Add(7, true);
+
+        newAction = new Action(actionEffects, conditions, effects, player);
+        myActions[3] = newAction;
+        //-----------------------------------------------------------------------
+
+        //Eat a pizza----------------------------------------------------------
+        actionEffects = new float[4, 2];
+        actionEffects[0, 0] = -0.2f;
+        actionEffects[0, 1] = 3;
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(7, true);
+        effects = new Dictionary<int, bool>();
+        effects.Add(6, true);
+
+        newAction = new Action(actionEffects, conditions, effects, fridge);
+        myActions[3] = newAction;
         //-----------------------------------------------------------------------
     }
 
@@ -74,7 +116,7 @@ public class PlayerActions : MonoBehaviour
         conditions.Add(4, true);
         effects = new Dictionary<int, bool>();
 
-        newAction = new Action(actionEffects, conditions, effects);
+        newAction = new Action(actionEffects, conditions, effects, fridge);
         myActions[2] = newAction;
         //-----------------------------------------------------------------------
 
@@ -87,7 +129,7 @@ public class PlayerActions : MonoBehaviour
 
         effects = new Dictionary<int, bool>();
 
-        newAction = new Action(actionEffects, conditions, effects);
+        newAction = new Action(actionEffects, conditions, effects, fridge);
         myActions[1] = newAction;
         //-----------------------------------------------------------------------
     }

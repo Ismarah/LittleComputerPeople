@@ -10,7 +10,7 @@ public class Action {
     Dictionary<int, bool> effects;
 
 
-    public Action(float[,] _actionStats, Dictionary<int, bool> _conditions, Dictionary<int, bool> _effects)
+    public Action(float[,] _actionStats, Dictionary<int, bool> _conditions, Dictionary<int, bool> _effects, GameObject obj)
     {
         actionStats = _actionStats;
         conditions = _conditions;

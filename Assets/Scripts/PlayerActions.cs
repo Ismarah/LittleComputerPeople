@@ -29,12 +29,17 @@ public class PlayerActions : MonoBehaviour
 
     void Start()
     {
-        myActions = new Action[10];
+        myActions = new Action[7];
 
         player = this.gameObject;
 
         CreateEatingActions();
-        CreateSleepActions();
+        //CreateSleepActions();
+    }
+
+    public Action[] GetAllActions()
+    {
+        return myActions;
     }
 
     private void CreateEatingActions()
@@ -49,6 +54,7 @@ public class PlayerActions : MonoBehaviour
 
         effects = new Dictionary<int, bool>();
         effects.Add(2, false);
+        effects.Add(6, true);
 
         newAction = new Action(actionEffects, conditions, effects, fridge);
         myActions[0] = newAction;
@@ -64,6 +70,7 @@ public class PlayerActions : MonoBehaviour
 
         effects = new Dictionary<int, bool>();
         effects.Add(0, false);
+        effects.Add(6, true);
 
         newAction = new Action(actionEffects, conditions, effects, fridge);
         myActions[1] = newAction;
@@ -86,13 +93,37 @@ public class PlayerActions : MonoBehaviour
         conditions = new Dictionary<int, bool>();
         conditions.Add(5, true);
         effects = new Dictionary<int, bool>();
-        effects.Add(7, true);
+        effects.Add(8, true);
 
         newAction = new Action(actionEffects, conditions, effects, player);
         myActions[3] = newAction;
         //-----------------------------------------------------------------------
 
-        //Eat a pizza----------------------------------------------------------
+        //Wait for pizza----------------------------------------------------------
+        actionEffects = new float[4, 2];
+        actionEffects[0, 1] = 3;
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(8, true);
+        effects = new Dictionary<int, bool>();
+        effects.Add(9, true);
+        effects.Add(8, false);
+
+        newAction = new Action(actionEffects, conditions, effects, player);
+        myActions[4] = newAction;
+        //-----------------------------------------------------------------------
+
+        //Fetch pizza from door--------------------------------------------------
+        actionEffects = new float[4, 2];
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(9, true);
+        effects = new Dictionary<int, bool>();
+        effects.Add(7, true);
+
+        newAction = new Action(actionEffects, conditions, effects, door);
+        myActions[5] = newAction;
+        //-----------------------------------------------------------------------
+
+        //Eat a pizza------------------------------------------------------------
         actionEffects = new float[4, 2];
         actionEffects[0, 0] = -0.2f;
         actionEffects[0, 1] = 3;
@@ -100,9 +131,10 @@ public class PlayerActions : MonoBehaviour
         conditions.Add(7, true);
         effects = new Dictionary<int, bool>();
         effects.Add(6, true);
+        effects.Add(7, false);
 
-        newAction = new Action(actionEffects, conditions, effects, fridge);
-        myActions[3] = newAction;
+        newAction = new Action(actionEffects, conditions, effects, player);
+        myActions[6] = newAction;
         //-----------------------------------------------------------------------
     }
 
@@ -113,11 +145,11 @@ public class PlayerActions : MonoBehaviour
         actionEffects[1, 0] = -0.2f;
         actionEffects[1, 1] = 10;
         conditions = new Dictionary<int, bool>();
-        conditions.Add(4, true);
+        conditions.Add(4, false);
         effects = new Dictionary<int, bool>();
 
         newAction = new Action(actionEffects, conditions, effects, fridge);
-        myActions[2] = newAction;
+        myActions[7] = newAction;
         //-----------------------------------------------------------------------
 
         //Take a nap-------------------------------------------------------------
@@ -130,7 +162,7 @@ public class PlayerActions : MonoBehaviour
         effects = new Dictionary<int, bool>();
 
         newAction = new Action(actionEffects, conditions, effects, fridge);
-        myActions[1] = newAction;
+        myActions[8] = newAction;
         //-----------------------------------------------------------------------
     }
 

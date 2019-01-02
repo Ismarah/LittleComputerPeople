@@ -6,8 +6,9 @@ public class Action {
 
     private float[,] actionStats; //index 0 = hunger, index 1 = sleep, index 3 = toilet, index 4 = fun; second float: 0 = change, 1 = time, 2 = precondition
     private float time; //how long does it take to change the need
-    Dictionary<int, bool> conditions;
-    Dictionary<int, bool> effects;
+    private Dictionary<int, bool> conditions;
+    private Dictionary<int, bool> effects;
+    private GameObject myObject;
 
 
     public Action(float[,] _actionStats, Dictionary<int, bool> _conditions, Dictionary<int, bool> _effects, GameObject obj)
@@ -15,6 +16,7 @@ public class Action {
         actionStats = _actionStats;
         conditions = _conditions;
         effects = _effects;
+        myObject = obj;
 
         for (int i = 0; i < 4; i++)
         {
@@ -44,6 +46,11 @@ public class Action {
     public Dictionary<int, bool> GetEffects()
     {
         return effects;
+    }
+
+    public GameObject GetObject()
+    {
+        return myObject;
     }
 
 }

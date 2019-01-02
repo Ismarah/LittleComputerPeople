@@ -11,6 +11,8 @@ using UnityEngine;
  * states[5] = hasMoney
  * states[6] = playerHasEaten
  * states[7] = pizzaIsAvailable
+ * states[8] = pizzaOnTheWay
+ * states[9] = doorBellRang
  */
 
 public class WorldState : MonoBehaviour {

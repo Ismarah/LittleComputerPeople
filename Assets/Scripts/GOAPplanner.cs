@@ -21,11 +21,25 @@ public class GOAPplanner : MonoBehaviour
         computer = GameObject.FindGameObjectWithTag("Computer");
     }
 
-    public void SetGoal(int i)
+    public void SetGoal(int index, bool state)
     {
         if (!goalSet)
         {
             goalSet = true;
+            Action[] allActions = player.GetComponent<PlayerActions>().GetAllActions();
+
+            for (int i = 0; i < allActions.Length; i++)
+            {
+                Dictionary<int, bool> temp = allActions[i].GetEffects();
+
+                if (temp.ContainsKey(index))
+                {
+                    if (temp[index] == state)
+                    {
+                        Debug.Log("Found a possible action to satisfy hunger: allActions[" + i + "]");
+                    }
+                }
+            }
         }
     }
 

@@ -21,6 +21,9 @@ public class AgentMovement : MonoBehaviour
     [SerializeField]
     private Transform secondStairsUpper;
 
+    private Vector3 prevPos;
+    bool turned;
+
     void Start()
     {
         targetPos = new Vector2();
@@ -146,6 +149,18 @@ public class AgentMovement : MonoBehaviour
         while (transform.position != pos)
         {
             transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime);
+            if(prevPos.x < transform.position.x && !turned)
+            {
+                turned = true;
+                transform.RotateAround(transform.position, Vector3.up, 180);
+            }
+            else if(prevPos.x > transform.position.x && turned)
+            {
+                turned = false;
+                transform.RotateAround(transform.position, Vector3.up, 180);
+            }
+
+            prevPos = transform.position;
             yield return null;
         }
 

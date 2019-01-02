@@ -61,10 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\MagicMirror\Demo\DemoScript.cs" />
-    <Compile Include="Assets\MagicMirror\Prefab\MirrorCameraScript.cs" />
-    <Compile Include="Assets\MagicMirror\Prefab\MirrorReflectionScript.cs" />
-    <Compile Include="Assets\MagicMirror\Prefab\MirrorScript.cs" />
     <Compile Include="Assets\Scripts\ActionQueue.cs" />
     <Compile Include="Assets\Scripts\Actions\Action.cs" />
     <Compile Include="Assets\Scripts\AgentActions.cs" />
@@ -87,10 +83,6 @@
     <Compile Include="Assets\Scripts\PlayerActions.cs" />
     <Compile Include="Assets\Scripts\PlayerState.cs" />
     <Compile Include="Assets\Scripts\WorldState.cs" />
-    <None Include="Assets\MagicMirror\Prefab\MirrorShaderOld.shader" />
-    <None Include="Assets\MagicMirror\Prefab\MirrorShaderBumpMap.shader" />
-    <None Include="Assets\MagicMirror\Prefab\Readme.txt" />
-    <None Include="Assets\MagicMirror\Prefab\MirrorShader.shader" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Isi/Documents/Unity/LittleComputerPeople/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

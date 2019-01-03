@@ -53,7 +53,6 @@ public class PetState : MonoBehaviour
 
         if (currentHunger >= hungry)
         {
-            Debug.Log("Pet is hungry");
             WorldState.state.ChangeState(13, false);
             WorldState.state.ChangeState(11, true);
             askedForAction = true;

@@ -14,6 +14,7 @@ TagManager:
   - Background
   - Pet
   - PetFood
+  - Door
   layers:
   - Default
   - TransparentFX

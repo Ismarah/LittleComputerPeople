@@ -10,6 +10,7 @@ public class GOAPplanner : MonoBehaviour
     private GameObject bed;
     private GameObject computer;
     private GameObject petFood;
+    List<ActionChain> allPossibleChains;
 
     private bool goalSet;
 
@@ -28,21 +29,90 @@ public class GOAPplanner : MonoBehaviour
         if (!goalSet)
         {
             goalSet = true;
-            Action[] allActions = agent.GetComponent<AgentActions>().GetAllActions();
+            allPossibleChains = new List<ActionChain>();
+            ActionChain newChain = new ActionChain();
 
-            for (int i = 0; i < allActions.Length; i++)
+            FindActionChain(agent, index, state, newChain);
+        }
+    }
+
+    private void FindActionChain(GameObject agent, int index, bool state, ActionChain chain)
+    {
+        List<Action> possibleActions = FindActionsToFulfillCondition(agent, index, state);
+
+        for (int i = 0; i < possibleActions.Count; i++)
+        {
+            chain.Add(possibleActions[i]);
+            if (ConditionsMet(possibleActions[i])) //no further action is required to complete this action
             {
-                Dictionary<int, bool> temp = allActions[i].GetEffects();
+                Debug.Log("Conditions are met for: allActions[" + i + "]");
+                allPossibleChains.Add(chain);
+            }
+            else //one ore more conditions are not met yet
+            {
+                Dictionary<int, bool> requiredConditions = GetRequiredConditions(possibleActions[i]);
 
-                if (temp.ContainsKey(index))
+                foreach (KeyValuePair<int, bool> conditions in requiredConditions)
                 {
-                    if (temp[index] == state)
-                    {
-                        Debug.Log("Found a possible action to satisfy hunger: allActions[" + i + "]");
-                    }
+                    FindActionChain(agent, conditions.Key, conditions.Value, chain);
                 }
             }
         }
+        //float[,] stats = allActions[i].GetStats();
+
+
+    }
+
+    private List<Action> FindActionsToFulfillCondition(GameObject agent, int index, bool state)
+    {
+        List<Action> possibleActions = new List<Action>();
+
+        Action[] allActions = agent.GetComponent<AgentActions>().GetAllActions();
+
+        for (int i = 0; i < allActions.Length; i++)
+        {
+            Dictionary<int, bool> temp = allActions[i].GetEffects();
+
+            if (temp.ContainsKey(index))
+            {
+                if (temp[index] == state)
+                {
+                    possibleActions.Add(allActions[i]);
+                    Debug.Log("Found a possible action to change world state " + index + " to " + state + "  : allActions[" + i + "]");
+                }
+            }
+        }
+
+        return possibleActions;
+    }
+
+    private bool ConditionsMet(Action action)
+    {
+        Dictionary<int, bool> conditions = action.GetPreconditions();
+
+        foreach (KeyValuePair<int, bool> condition in conditions)
+        {
+            if (WorldState.state.GetState(condition.Key) == condition.Value)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private Dictionary<int, bool> GetRequiredConditions(Action action)
+    {
+        Dictionary<int, bool> conditions = action.GetPreconditions();
+        Dictionary<int, bool> temp = new Dictionary<int, bool>();
+
+        foreach (KeyValuePair<int, bool> condition in conditions)
+        {
+            if (WorldState.state.GetState(condition.Key) != condition.Value)
+            {
+                temp.Add(condition.Key, condition.Value);
+            }
+        }
+        return temp;
     }
 
     //public void HaveFun()

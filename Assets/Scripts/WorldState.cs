@@ -31,7 +31,7 @@ public class WorldState : MonoBehaviour {
         states = new bool[14];
 
         states[0] = false;
-        states[1] = true;
+        states[1] = false;
         states[2] = false;
         states[3] = true;
         states[4] = true;

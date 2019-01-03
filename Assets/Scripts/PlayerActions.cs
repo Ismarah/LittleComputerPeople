@@ -8,10 +8,10 @@ public class PlayerActions : AgentActions
     void Start()
     {
         Init();
-        myActions = new Action[7];
+        myActions = new Action[8];
 
         player = this.gameObject;
-        
+
         CreateEatingActions();
         //CreateSleepActions();
     }
@@ -20,7 +20,7 @@ public class PlayerActions : AgentActions
     {
         //Eat a meal-------------------------------------------------------------
         actionEffects = new float[4, 2];
-        actionEffects[0, 0] = -0.3f;
+        actionEffects[0, 0] = -0.003f;
         actionEffects[0, 1] = 4;
 
         conditions = new Dictionary<int, bool>();
@@ -36,7 +36,7 @@ public class PlayerActions : AgentActions
 
         //Eat a snack------------------------------------------------------------
         actionEffects = new float[4, 2];
-        actionEffects[0, 0] = -0.2f;
+        actionEffects[0, 0] = -0.0016f;
         actionEffects[0, 1] = 2;
 
         conditions = new Dictionary<int, bool>();
@@ -52,6 +52,8 @@ public class PlayerActions : AgentActions
 
         //Cook a meal------------------------------------------------------------
         actionEffects = new float[4, 2];
+        actionEffects[0, 0] = 0;
+        actionEffects[0, 1] = 2;
         conditions = new Dictionary<int, bool>();
         conditions.Add(1, true);
         effects = new Dictionary<int, bool>();
@@ -62,15 +64,27 @@ public class PlayerActions : AgentActions
         myActions[2] = newAction;
         //-----------------------------------------------------------------------
 
+        //Refill ingredients-----------------------------------------------------
+        actionEffects = new float[4, 2];
+        actionEffects[0, 1] = 1;
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(6, true);
+        effects = new Dictionary<int, bool>();
+        effects.Add(1, true);
+        newAction = new Action(actionEffects, conditions, effects, fridge);
+        myActions[3] = newAction;
+        //-----------------------------------------------------------------------
+
         //Order a pizza----------------------------------------------------------
         actionEffects = new float[4, 2];
+        actionEffects[0, 1] = 1;
         conditions = new Dictionary<int, bool>();
         conditions.Add(5, true);
         effects = new Dictionary<int, bool>();
         effects.Add(8, true);
 
         newAction = new Action(actionEffects, conditions, effects, player);
-        myActions[3] = newAction;
+        myActions[4] = newAction;
         //-----------------------------------------------------------------------
 
         //Wait for pizza----------------------------------------------------------
@@ -83,18 +97,19 @@ public class PlayerActions : AgentActions
         effects.Add(8, false);
 
         newAction = new Action(actionEffects, conditions, effects, player);
-        myActions[4] = newAction;
+        myActions[5] = newAction;
         //-----------------------------------------------------------------------
 
         //Fetch pizza from door--------------------------------------------------
         actionEffects = new float[4, 2];
+        actionEffects[0, 1] = 1;
         conditions = new Dictionary<int, bool>();
         conditions.Add(9, true);
         effects = new Dictionary<int, bool>();
         effects.Add(7, true);
 
         newAction = new Action(actionEffects, conditions, effects, door);
-        myActions[5] = newAction;
+        myActions[6] = newAction;
         //-----------------------------------------------------------------------
 
         //Eat a pizza------------------------------------------------------------
@@ -108,7 +123,7 @@ public class PlayerActions : AgentActions
         effects.Add(7, false);
 
         newAction = new Action(actionEffects, conditions, effects, player);
-        myActions[6] = newAction;
+        myActions[7] = newAction;
         //-----------------------------------------------------------------------
     }
 
@@ -123,7 +138,7 @@ public class PlayerActions : AgentActions
         effects = new Dictionary<int, bool>();
 
         newAction = new Action(actionEffects, conditions, effects, fridge);
-        myActions[7] = newAction;
+        myActions[8] = newAction;
         //-----------------------------------------------------------------------
 
         //Take a nap-------------------------------------------------------------
@@ -136,7 +151,7 @@ public class PlayerActions : AgentActions
         effects = new Dictionary<int, bool>();
 
         newAction = new Action(actionEffects, conditions, effects, fridge);
-        myActions[8] = newAction;
+        myActions[9] = newAction;
         //-----------------------------------------------------------------------
     }
 

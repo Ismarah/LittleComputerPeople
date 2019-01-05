@@ -11,7 +11,7 @@ public class GOAPplanner : MonoBehaviour
     private GameObject computer;
     private GameObject petFood;
     List<ActionChain> allPossibleChains;
-
+    private int possibilities;
     private bool goalSet;
 
     void Start()
@@ -32,6 +32,15 @@ public class GOAPplanner : MonoBehaviour
             allPossibleChains = new List<ActionChain>();
             ActionChain newChain = new ActionChain();
 
+            switch (index)
+            {
+                case 6:
+                    possibilities = 3;
+                    break;
+                default:
+                    break;
+            }
+
             FindActionChain(agent, index, state, newChain);
         }
     }
@@ -40,12 +49,12 @@ public class GOAPplanner : MonoBehaviour
     {
         List<Action> possibleActions = FindActionsToFulfillCondition(agent, index, state);
 
+
         for (int i = 0; i < possibleActions.Count; i++)
         {
             chain.Add(possibleActions[i]);
             if (ConditionsMet(possibleActions[i])) //no further action is required to complete this action
             {
-                Debug.Log("Conditions are met for: allActions[" + i + "]");
                 allPossibleChains.Add(chain);
             }
             else //one ore more conditions are not met yet
@@ -57,6 +66,11 @@ public class GOAPplanner : MonoBehaviour
                     FindActionChain(agent, conditions.Key, conditions.Value, chain);
                 }
             }
+        }
+
+        if(allPossibleChains.Count == possibilities)
+        {
+            Debug.Log("Found all possible paths.");
         }
         //float[,] stats = allActions[i].GetStats();
 

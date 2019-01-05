@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class PlayerActions : AgentActions
 {
-
     void Start()
     {
         Init();
@@ -68,7 +67,7 @@ public class PlayerActions : AgentActions
         actionEffects = new float[4, 2];
         actionEffects[0, 1] = 1;
         conditions = new Dictionary<int, bool>();
-        conditions.Add(6, true);
+        conditions.Add(5, true);
         effects = new Dictionary<int, bool>();
         effects.Add(1, true);
         newAction = new Action(actionEffects, conditions, effects, fridge);

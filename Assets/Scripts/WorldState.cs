@@ -19,19 +19,19 @@ using UnityEngine;
  * states[13] = petHasEaten
  */
 
-public class WorldState : MonoBehaviour {
-
+public class WorldState : MonoBehaviour
+{ 
     public static WorldState state = null;
     private bool[] states;
 
-	void Start ()
+    void Start()
     {
         state = this;
-        
+
         states = new bool[14];
 
-        states[0] = false;
-        states[1] = false;
+        states[0] = true;
+        states[1] = true;
         states[2] = false;
         states[3] = true;
         states[4] = true;
@@ -44,9 +44,9 @@ public class WorldState : MonoBehaviour {
         states[11] = false;
         states[12] = false;
         states[13] = false;
-	}
-	
-	public void ChangeState(int i, bool newState)
+    }
+
+    public void ChangeState(int i, bool newState)
     {
         states[i] = newState;
     }
@@ -58,7 +58,7 @@ public class WorldState : MonoBehaviour {
 
     public void SwitchState(int index)
     {
-        if(states[index] == true)
+        if (states[index] == true)
         {
             states[index] = false;
         }
@@ -73,3 +73,34 @@ public class WorldState : MonoBehaviour {
         return states[i];
     }
 }
+
+//public enum SnackInFridge { yes, no }
+//public enum IngredientsInFridge { yes, no }
+//public enum FoodCooked { yes, no }
+//public enum ToiletIsClean { yes, no }
+//public enum Daytime { yes, no }
+//public enum HasMoney { yes, no }
+//public enum PlayerHasEaten { yes, no }
+//public enum PizzaIsAvailable { yes, no }
+//public enum PizzaOnTheWay { yes, no }
+//public enum DoorBellRang { yes, no }
+//public enum PlayerSleptThroughNight { yes, no }
+//public enum PetIsHungry { yes, no }
+//public enum PetAskedForFood { yes, no }
+//public enum PetHasEaten { yes, no }
+
+//public SnackInFridge snackInFridge = SnackInFridge.yes;
+//public IngredientsInFridge ingredientsInFridge = IngredientsInFridge.yes;
+//public FoodCooked foodCooked = FoodCooked.yes;
+//public ToiletIsClean toiletIsClean = ToiletIsClean.yes;
+//public Daytime daytime = Daytime.yes;
+//public HasMoney hasMoney = HasMoney.yes;
+//public PlayerHasEaten playerHasEaten = PlayerHasEaten.yes;
+//public PizzaIsAvailable pizzaIsAvailable = PizzaIsAvailable.yes;
+//public PizzaOnTheWay pizzaOnTheWay = PizzaOnTheWay.yes;
+//public DoorBellRang doorBellRang = DoorBellRang.yes;
+//public PlayerSleptThroughNight playerSleptThroughNight = PlayerSleptThroughNight.yes;
+//public PetIsHungry petIsHungry = PetIsHungry.yes;
+//public PetAskedForFood petAskedForFood = PetAskedForFood.yes;
+//public PetHasEaten petHasEaten = PetHasEaten.yes;
+

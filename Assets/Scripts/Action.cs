@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Action {
+public class Action
+{
 
     private float[,] actionStats; //index 0 = hunger, index 1 = sleep, index 3 = toilet, index 4 = fun; second float: 0 = change, 1 = time
-    private float time; //how long does it take to change the need
     private Dictionary<int, bool> conditions;
     private Dictionary<int, bool> effects;
     private GameObject myObject;
@@ -17,15 +17,6 @@ public class Action {
         conditions = _conditions;
         effects = _effects;
         myObject = obj;
-
-        for (int i = 0; i < 4; i++)
-        {
-            if(actionStats[i, 0] != 0)
-            {
-                time = actionStats[i, 1];
-                break;
-            }
-        }
     }
 
     public float[,] GetStats()
@@ -33,9 +24,21 @@ public class Action {
         return actionStats;
     }
 
+    public float GetTime(int i)
+    {
+        return actionStats[i, 1];
+    }
+
     public float GetCost()
     {
-        return time;
+        float cost = 0;
+
+        for (int i = 0; i < 5; i++)
+        {
+            cost += actionStats[i, 0] * actionStats[i, 1] * 60;
+        }
+
+        return cost;
     }
 
     public Dictionary<int, bool> GetPreconditions()

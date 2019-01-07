@@ -105,8 +105,6 @@ public class ActionQueue : MonoBehaviour
 
     public void FinishedAction()
     {
-
-
         Destroy(icons[0]);
         playerActionQueue[0] = null;
         icons[0] = null;

@@ -13,6 +13,9 @@ public class GOAPplanner : MonoBehaviour
     List<ActionChain> allPossibleChains;
     private int possibilities;
     private bool goalSet;
+    private bool pathsFound;
+    private bool completedChain;
+    ActionChain chain;
 
     void Start()
     {
@@ -30,7 +33,7 @@ public class GOAPplanner : MonoBehaviour
         {
             goalSet = true;
             allPossibleChains = new List<ActionChain>();
-            ActionChain newChain = new ActionChain();
+            chain = new ActionChain();
 
             switch (index)
             {
@@ -41,40 +44,64 @@ public class GOAPplanner : MonoBehaviour
                     break;
             }
 
-            FindActionChain(agent, index, state, newChain);
+            FindActionChain(agent, index, state);
         }
     }
 
-    private void FindActionChain(GameObject agent, int index, bool state, ActionChain chain)
+    private void FindActionChain(GameObject agent, int index, bool state)
     {
         List<Action> possibleActions = FindActionsToFulfillCondition(agent, index, state);
 
-
         for (int i = 0; i < possibleActions.Count; i++)
         {
+
+            if (completedChain)
+            {
+                chain = new ActionChain();
+                completedChain = false;
+            }
+
             chain.Add(possibleActions[i]);
+
             if (ConditionsMet(possibleActions[i])) //no further action is required to complete this action
             {
                 allPossibleChains.Add(chain);
+                Debug.Log("Possible chains: " + allPossibleChains.Count);
+                completedChain = true;
+
+                if (allPossibleChains.Count == possibilities)
+                {
+                    FindBestActionChain();
+                }
             }
-            else //one ore more conditions are not met yet
+            else //one or more conditions are not met yet
             {
                 Dictionary<int, bool> requiredConditions = GetRequiredConditions(possibleActions[i]);
 
                 foreach (KeyValuePair<int, bool> conditions in requiredConditions)
                 {
-                    FindActionChain(agent, conditions.Key, conditions.Value, chain);
+                    FindActionChain(agent, conditions.Key, conditions.Value);
                 }
             }
         }
+        
+    }
 
-        if(allPossibleChains.Count == possibilities)
+
+    private void FindBestActionChain()
+    {
+        for (int i = 0; i < allPossibleChains.Count; i++)
         {
-            Debug.Log("Found all possible paths.");
+            List<Action> temp = allPossibleChains[i].GetActions();
+            Debug.Log("Current chain length: " + temp.Count);
+            float chainCost = 0;
+            for (int j = 0; j < temp.Count; j++)
+            {
+                chainCost += temp[j].GetCost();
+                Debug.Log(" + " + temp[j].GetCost());
+            }
+            Debug.Log("Cost: " + chainCost);
         }
-        //float[,] stats = allActions[i].GetStats();
-
-
     }
 
     private List<Action> FindActionsToFulfillCondition(GameObject agent, int index, bool state)

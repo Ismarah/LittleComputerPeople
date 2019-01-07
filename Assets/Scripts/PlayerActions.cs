@@ -18,12 +18,12 @@ public class PlayerActions : AgentActions
     private void CreateEatingActions()
     {
         //Eat a meal-------------------------------------------------------------
-        actionEffects = new float[4, 2];
+        actionEffects = new float[5, 2];
         actionEffects[0, 0] = -0.003f;
         actionEffects[0, 1] = 4;
 
         conditions = new Dictionary<int, bool>();
-        conditions.Add(1, true);
+        conditions.Add(2, true);
 
         effects = new Dictionary<int, bool>();
         effects.Add(2, false);
@@ -34,7 +34,7 @@ public class PlayerActions : AgentActions
         //-----------------------------------------------------------------------
 
         //Eat a snack------------------------------------------------------------
-        actionEffects = new float[4, 2];
+        actionEffects = new float[5, 2];
         actionEffects[0, 0] = -0.0016f;
         actionEffects[0, 1] = 2;
 
@@ -50,7 +50,7 @@ public class PlayerActions : AgentActions
         //-----------------------------------------------------------------------
 
         //Cook a meal------------------------------------------------------------
-        actionEffects = new float[4, 2];
+        actionEffects = new float[5, 2];
         actionEffects[0, 0] = 0;
         actionEffects[0, 1] = 2;
         conditions = new Dictionary<int, bool>();
@@ -64,7 +64,7 @@ public class PlayerActions : AgentActions
         //-----------------------------------------------------------------------
 
         //Refill ingredients-----------------------------------------------------
-        actionEffects = new float[4, 2];
+        actionEffects = new float[5, 2];
         actionEffects[0, 1] = 1;
         conditions = new Dictionary<int, bool>();
         conditions.Add(5, true);
@@ -75,7 +75,7 @@ public class PlayerActions : AgentActions
         //-----------------------------------------------------------------------
 
         //Order a pizza----------------------------------------------------------
-        actionEffects = new float[4, 2];
+        actionEffects = new float[5, 2];
         actionEffects[0, 1] = 1;
         conditions = new Dictionary<int, bool>();
         conditions.Add(5, true);
@@ -87,7 +87,7 @@ public class PlayerActions : AgentActions
         //-----------------------------------------------------------------------
 
         //Wait for pizza----------------------------------------------------------
-        actionEffects = new float[4, 2];
+        actionEffects = new float[5, 2];
         actionEffects[0, 1] = 3;
         conditions = new Dictionary<int, bool>();
         conditions.Add(8, true);
@@ -100,7 +100,7 @@ public class PlayerActions : AgentActions
         //-----------------------------------------------------------------------
 
         //Fetch pizza from door--------------------------------------------------
-        actionEffects = new float[4, 2];
+        actionEffects = new float[5, 2];
         actionEffects[0, 1] = 1;
         conditions = new Dictionary<int, bool>();
         conditions.Add(9, true);
@@ -112,8 +112,8 @@ public class PlayerActions : AgentActions
         //-----------------------------------------------------------------------
 
         //Eat a pizza------------------------------------------------------------
-        actionEffects = new float[4, 2];
-        actionEffects[0, 0] = -0.2f;
+        actionEffects = new float[5, 2];
+        actionEffects[0, 0] = -0.002f;
         actionEffects[0, 1] = 3;
         conditions = new Dictionary<int, bool>();
         conditions.Add(7, true);
@@ -129,7 +129,7 @@ public class PlayerActions : AgentActions
     private void CreateSleepActions()
     {
         //Sleep through night----------------------------------------------------
-        actionEffects = new float[4, 2];
+        actionEffects = new float[5, 2];
         actionEffects[1, 0] = -0.2f;
         actionEffects[1, 1] = 10;
         conditions = new Dictionary<int, bool>();
@@ -141,7 +141,7 @@ public class PlayerActions : AgentActions
         //-----------------------------------------------------------------------
 
         //Take a nap-------------------------------------------------------------
-        actionEffects = new float[4, 2];
+        actionEffects = new float[5, 2];
         actionEffects[1, 0] = -0.2f;
         actionEffects[1, 1] = 2;
 

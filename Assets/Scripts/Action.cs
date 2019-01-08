@@ -29,6 +29,18 @@ public class Action
         return actionStats[i, 1];
     }
 
+    public float GetTime()
+    {
+        float time = 0;
+
+        for (int i = 0; i < 5; i++)
+        {
+            time += actionStats[i, 1];
+        }
+
+        return time;
+    }
+
     public float GetCost()
     {
         float cost = 0;

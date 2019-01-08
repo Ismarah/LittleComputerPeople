@@ -113,7 +113,7 @@ public class PlayerActions : AgentActions
 
         //Eat a pizza------------------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[0, 0] = -0.002f;
+        actionEffects[0, 0] = -0.005f;
         actionEffects[0, 1] = 3;
         conditions = new Dictionary<int, bool>();
         conditions.Add(7, true);

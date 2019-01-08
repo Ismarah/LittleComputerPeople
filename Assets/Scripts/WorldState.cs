@@ -17,6 +17,9 @@ using UnityEngine;
  * states[11] = petIsHungry
  * states[12] = petAskedForFood
  * states[13] = petHasEaten
+ * states[14] = playerWasOnToilet;
+ * states[15] = playerHasFun;
+ * states[16] = playerIsClean;
  */
 
 public class WorldState : MonoBehaviour

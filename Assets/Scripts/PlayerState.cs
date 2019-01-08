@@ -52,6 +52,7 @@ public class PlayerState : MonoBehaviour
 
     private GameObject manager;
     private bool askedForAction;
+    private int needCount = 5;
 
     void Start()
     {
@@ -185,28 +186,60 @@ public class PlayerState : MonoBehaviour
         manager.GetComponent<ActionQueue>().FinishedAction();
     }
 
-    public float GetHunger()
+    public float GetNeedState(int index)
     {
-        return currentHunger;
+        switch (index)
+        {
+            case 0:
+                return currentHunger;
+            case 1:
+                return currentSleep;
+            case 2:
+                return currentToilet;
+            case 3:
+                return currentFun;
+            case 4:
+                return currentHygene;
+            default:
+                return -1;
+        }
     }
 
-    public float GetSleep()
+    public float GetNeedChange(int index)
     {
-        return currentSleep;
+        switch (index)
+        {
+            case 0:
+                return hungerChange;
+            case 1:
+                return sleepChange;
+            case 2:
+                return toiletChange;
+            case 3:
+                return funChange;
+            case 4:
+                return hygeneChange;
+            default:
+                return -1;
+        }
     }
 
-    public float GetToilet()
+    public float GetCriticalValue(int index)
     {
-        return currentToilet;
-    }
-
-    public float GetFun()
-    {
-        return currentFun;
-    }
-
-    public float GetHygene()
-    {
-        return currentHygene;
+        switch (index)
+        {
+            case 0:
+                return hungry;
+            case 1:
+                return sleepy;
+            case 2:
+                return needsToilet;
+            case 3:
+                return needsFun;
+            case 4:
+                return needsHygene;
+            default:
+                return -1;
+        }
     }
 }

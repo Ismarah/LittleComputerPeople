@@ -16,11 +16,6 @@ public class ActionChain
         myList.Add(newAction);
     }
 
-    public void Clear()
-    {
-        myList = new List<Action>();
-    }
-
     public void Add(Action newAction)
     {
         myList.Add(newAction);

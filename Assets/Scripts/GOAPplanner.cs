@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,12 +10,13 @@ public class GOAPplanner : MonoBehaviour
     private GameObject bed;
     private GameObject computer;
     private GameObject petFood;
-    List<ActionChain> allPossibleChains;
+    private List<ActionChain> allPossibleChains;
     private int possibilities;
     private bool goalSet;
     private bool pathsFound;
     private bool completedChain;
-    ActionChain chain;
+    private ActionChain chain;
+    private int currentGoal;
 
     void Start()
     {
@@ -32,6 +33,7 @@ public class GOAPplanner : MonoBehaviour
         if (!goalSet)
         {
             goalSet = true;
+            currentGoal = NeedIndexToFulfillGoal(index);
             allPossibleChains = new List<ActionChain>();
             chain = new ActionChain();
 
@@ -84,24 +86,55 @@ public class GOAPplanner : MonoBehaviour
                 }
             }
         }
-        
+
     }
 
 
     private void FindBestActionChain()
     {
+        float[,] chainCost = new float[allPossibleChains.Count, 2];
+        float[] allValues = new float[allPossibleChains.Count];
         for (int i = 0; i < allPossibleChains.Count; i++)
         {
             List<Action> temp = allPossibleChains[i].GetActions();
-            Debug.Log("Current chain length: " + temp.Count);
-            float chainCost = 0;
             for (int j = 0; j < temp.Count; j++)
             {
-                chainCost += temp[j].GetCost();
-                Debug.Log(" + " + temp[j].GetCost());
+                chainCost[i, 0] += temp[j].GetCost();
+                chainCost[i, 1] += temp[j].GetTime();
+                allValues[i] += Mathf.Abs(temp[j].GetCost());
             }
-            Debug.Log("Cost: " + chainCost);
         }
+
+        Array.Sort(allValues);
+        Array.Reverse(allValues);
+
+        float bestValue = -1;
+
+        for (int i = 0; i < allValues.Length; i++)
+        {
+            if (!CheckForProblematicNeed(allValues[i]))
+            {
+                bestValue = allValues[i];
+                break;
+            }
+        }
+        Debug.Log("Best option: " + bestValue);
+    }
+
+    private bool CheckForProblematicNeed(float time)
+    {
+        bool foundAProblem = false;
+        for (int index = 0; index < 5; index++)
+        {
+            float stateAfterAction = player.GetComponent<PlayerState>().GetNeedState(index) + player.GetComponent<PlayerState>().GetNeedChange(index) * time * 1 / Time.deltaTime;
+
+            if (stateAfterAction >= 0.9f)
+            {
+                Debug.Log("Need " + index + " would be too low after action");
+                foundAProblem = true;
+            }
+        }
+        return foundAProblem;
     }
 
     private List<Action> FindActionsToFulfillCondition(GameObject agent, int index, bool state)
@@ -119,7 +152,7 @@ public class GOAPplanner : MonoBehaviour
                 if (temp[index] == state)
                 {
                     possibleActions.Add(allActions[i]);
-                    Debug.Log("Found a possible action to change world state " + index + " to " + state + "  : allActions[" + i + "]");
+                    //Debug.Log("Found a possible action to change world state " + index + " to " + state + "  : allActions[" + i + "]");
                 }
             }
         }
@@ -156,93 +189,22 @@ public class GOAPplanner : MonoBehaviour
         return temp;
     }
 
-    //public void HaveFun()
-    //{
-    //    if (!GetComponent<ActionQueue>().IsEnqueued("Computer"))
-    //    {
-    //        float[] costs = computer.GetComponent<InteractableItem>().GetActionCosts();
-    //        int lowestCostIndex = 0;
-    //        float lowestCost = float.MaxValue;
-    //        for (int i = 0; i < costs.Length; i++)
-    //        {
-    //            if (costs[i] != 0 && costs[i] < lowestCost)
-    //            {
-    //                lowestCostIndex = i;
-    //                lowestCost = costs[i];
-    //            }
-    //        }
-
-    //        GetComponent<ActionQueue>().AddToQueue(computer, lowestCostIndex, -1);
-    //    }
-    //}
-
-    //public void EatSomething()
-    //{
-    //    if (!GetComponent<ActionQueue>().IsEnqueued("Fridge"))
-    //    {
-    //        if (WorldState.state.GetState(0))
-    //        {
-    //            //food is available in the fridge
-    //            float[] costs = fridge.GetComponent<InteractableItem>().GetActionCosts();
-    //            int lowestCostIndex = 0;
-    //            float lowestCost = float.MaxValue;
-    //            for (int i = 0; i < costs.Length; i++)
-    //            {
-    //                if (costs[i] != 0 && costs[i] < lowestCost)
-    //                {
-    //                    lowestCostIndex = i;
-    //                    lowestCost = costs[i];
-    //                }
-    //            }
-
-    //            GetComponent<ActionQueue>().AddToQueue(fridge, lowestCostIndex, 0, 0);
-    //        }
-    //        else
-    //        {
-    //            GetComponent<ActionQueue>().AddToQueue(fridge, 2, 0, 1);
-
-
-    //        }
-    //    }
-    //}
-
-    //public void UseToilet()
-    //{
-    //    if (WorldState.state.GetState(1)) //toilet is clean
-    //    {
-    //        if (!GetComponent<ActionQueue>().IsEnqueued("Toilet", 0)) //Using toilet action is not yet queued
-    //        {
-    //            GetComponent<ActionQueue>().AddToQueue(toilet, 0);
-    //        }
-
-    //    }
-    //    else //the toilet has to be cleaned before using it again
-    //    {
-    //        if (!GetComponent<ActionQueue>().IsEnqueued("Toilet", 1)) //Cleaning toilet action is not yet queued
-    //        {
-    //            GetComponent<ActionQueue>().AddToQueue(toilet, 1);
-    //            GetComponent<ActionQueue>().AddToQueue(toilet, 0);
-    //        }
-    //    }
-    //}
-
-    //public void GoToBed()
-    //{
-    //    if (!GetComponent<ActionQueue>().IsEnqueued("Bed"))
-    //    {
-    //        float[] costs = bed.GetComponent<InteractableItem>().GetActionCosts();
-    //        int lowestCostIndex = 0;
-    //        float lowestCost = float.MaxValue;
-    //        for (int i = 0; i < costs.Length; i++)
-    //        {
-    //            if (costs[i] != 0 && costs[i] < lowestCost)
-    //            {
-    //                lowestCostIndex = i;
-    //                lowestCost = costs[i];
-    //            }
-    //        }
-
-    //        GetComponent<ActionQueue>().AddToQueue(bed, lowestCostIndex);
-    //    }
-    //}
+    private int NeedIndexToFulfillGoal(int goal)
+    {
+        switch (goal)
+        {
+            case 6:
+                return 0;
+            case 10:
+                return 1;
+            case 14:
+                return 2;
+            case 15:
+                return 3;
+            case 16:
+                return 4;
+            default:
+                return -1;
+        }
+    }
 }

@@ -7,12 +7,12 @@ public class PlayerActions : AgentActions
     void Start()
     {
         Init();
-        myActions = new Action[8];
+        myActions = new Action[11];
 
         player = this.gameObject;
 
         CreateEatingActions();
-        //CreateSleepActions();
+        CreateSleepActions();
     }
 
     private void CreateEatingActions()
@@ -130,27 +130,63 @@ public class PlayerActions : AgentActions
     {
         //Sleep through night----------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[1, 0] = -0.2f;
+        actionEffects[1, 0] = -0.00165f;
         actionEffects[1, 1] = 10;
         conditions = new Dictionary<int, bool>();
-        conditions.Add(4, false);
-        effects = new Dictionary<int, bool>();
+        conditions.Add(18, false);
 
-        newAction = new Action(actionEffects, conditions, effects, fridge);
+        effects = new Dictionary<int, bool>();
+        effects.Add(10, true);
+        effects.Add(17, false);
+
+        newAction = new Action(actionEffects, conditions, effects, bed);
         myActions[8] = newAction;
         //-----------------------------------------------------------------------
 
         //Take a nap-------------------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[1, 0] = -0.2f;
+        actionEffects[1, 0] = -0.003f;
         actionEffects[1, 1] = 2;
 
         conditions = new Dictionary<int, bool>();
+        conditions.Add(17, true);
 
+        effects = new Dictionary<int, bool>();
+        effects.Add(17, false);
+
+        newAction = new Action(actionEffects, conditions, effects, bed);
+        myActions[9] = newAction;
+        //-----------------------------------------------------------------------
+
+        //Put pyjamas on---------------------------------------------------------
+        actionEffects = new float[5, 2];
+        actionEffects[1, 0] = 0;
+        actionEffects[1, 1] = 0.5f;
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(4, false);
+        conditions.Add(18, true);
+
+        effects = new Dictionary<int, bool>();
+        effects.Add(18, false);
+
+        newAction = new Action(actionEffects, conditions, effects, drawer);
+        myActions[10] = newAction;
+        //-----------------------------------------------------------------------
+    }
+
+    private void CreateFunActions()
+    {
+        //Play video games-------------------------------------------------------
+        actionEffects = new float[5, 2];
+        actionEffects[1, 0] = -0.0015f;
+        actionEffects[1, 1] = 5;
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(4, false);
+        conditions.Add(17, true);
         effects = new Dictionary<int, bool>();
 
         newAction = new Action(actionEffects, conditions, effects, fridge);
-        myActions[9] = newAction;
+        myActions[8] = newAction;
         //-----------------------------------------------------------------------
     }
 

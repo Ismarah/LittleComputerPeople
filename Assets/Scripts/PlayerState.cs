@@ -79,7 +79,8 @@ public class PlayerState : MonoBehaviour
         if (currentSleep >= sleepy)
         {
             askedForAction = true;
-            //manager.GetComponent<GOAPplanner>().GoToBed();
+            WorldState.state.ChangeState(17, true);
+            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 17, false);
         }
         if (currentToilet >= needsToilet)
         {
@@ -134,6 +135,7 @@ public class PlayerState : MonoBehaviour
 
     public void ManipulateNeedChange(int index, float change, float time)
     {
+        Debug.Log("Manipulate need change   " + time);
         StartCoroutine(NeedChangeForATime(index, change, time));
     }
 

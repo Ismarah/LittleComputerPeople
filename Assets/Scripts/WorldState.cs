@@ -20,24 +20,26 @@ using UnityEngine;
  * states[14] = playerWasOnToilet;
  * states[15] = playerHasFun;
  * states[16] = playerIsClean;
+ * states[17] = playerIsTired;
+ * states[18] = playerIsWearingStreetClothes;
  */
 
 public class WorldState : MonoBehaviour
 { 
     public static WorldState state = null;
-    private bool[] states;
+    public bool[] states;
 
     void Start()
     {
         state = this;
 
-        states = new bool[14];
+        states = new bool[19];
 
         states[0] = true;
         states[1] = true;
         states[2] = false;
         states[3] = true;
-        states[4] = true;
+        states[4] = false;
         states[5] = true;
         states[6] = false;
         states[7] = false;
@@ -47,6 +49,11 @@ public class WorldState : MonoBehaviour
         states[11] = false;
         states[12] = false;
         states[13] = false;
+        states[14] = false;
+        states[15] = false;
+        states[16] = true;
+        states[17] = false;
+        states[18] = true;
     }
 
     public void ChangeState(int i, bool newState)

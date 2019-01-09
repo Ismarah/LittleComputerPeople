@@ -33,7 +33,6 @@ public class GOAPplanner : MonoBehaviour
     {
         if (!goalSet)
         {
-            Debug.Log("New goal!  " + index);
             goalSet = true;
             currentGoal = NeedIndexToFulfillGoal(index);
             currentAgent = agent;
@@ -44,6 +43,9 @@ public class GOAPplanner : MonoBehaviour
             {
                 case 6:
                     possibilities = 3;
+                    break;
+                case 17:
+                    possibilities = 2;
                     break;
                 default:
                     break;
@@ -69,10 +71,18 @@ public class GOAPplanner : MonoBehaviour
             if (ConditionsMet(possibleActions[i])) //no further action is required to complete this action
             {
                 allPossibleChains.Add(chain);
+                Debug.Log("Add new chain:");
+                List<Action> temp = chain.GetActions();
+                for (int j = 0; j < temp.Count; j++)
+                {
+                    float[,] bla = temp[j].GetStats();
+                    Debug.Log("Value: " + bla[1, 0] + " Time: " + bla[1, 1]);
+                }
                 completedChain = true;
 
                 if (allPossibleChains.Count == possibilities)
                 {
+                    Debug.Log("Found all possible action chains. Count: " + allPossibleChains.Count);
                     FindBestActionChain();
                 }
             }
@@ -90,16 +100,12 @@ public class GOAPplanner : MonoBehaviour
 
     private void FindBestActionChain()
     {
-        float[,] chainCost = new float[allPossibleChains.Count, 2];
         float[] allValues = new float[allPossibleChains.Count];
         for (int i = 0; i < allPossibleChains.Count; i++)
         {
-            chainCost[i, 0] += allPossibleChains[i].GetChainCost();
-
             List<Action> temp = allPossibleChains[i].GetActions();
             for (int j = 0; j < temp.Count; j++)
             {
-                chainCost[i, 1] += temp[j].GetTime();
                 allValues[i] += Mathf.Abs(temp[j].GetCost());
             }
         }
@@ -124,6 +130,7 @@ public class GOAPplanner : MonoBehaviour
         }
         if (bestValue != -1 && bestIndex != -1)
         {
+            Debug.Log("Decided that action at index " + bestIndex + " is the best option. Value change: " + bestValue + "  Time needed: " + allPossibleChains[bestIndex].GetChainCost());
             AddChosenChainToQueue(bestIndex);
         }
         else
@@ -177,7 +184,7 @@ public class GOAPplanner : MonoBehaviour
                 if (temp[index] == state)
                 {
                     possibleActions.Add(allActions[i]);
-                    //Debug.Log("Found a possible action to change world state " + index + " to " + state + "  : allActions[" + i + "]");
+                    Debug.Log("Found a possible action to change world state " + index + " to " + state + "  : allActions[" + i + "]");
                 }
             }
         }
@@ -188,15 +195,23 @@ public class GOAPplanner : MonoBehaviour
     private bool ConditionsMet(Action action)
     {
         Dictionary<int, bool> conditions = action.GetPreconditions();
+        int conditionCount = conditions.Keys.Count;
+        int count = 0;
 
         foreach (KeyValuePair<int, bool> condition in conditions)
         {
+            //Debug.Log("Worldstate " + condition.Key + " has to be " + condition.Value + ". It is currently " + WorldState.state.GetState(condition.Key));
             if (WorldState.state.GetState(condition.Key) == condition.Value)
             {
-                return true;
+                count++;
             }
         }
-        return false;
+        if (count == conditionCount)
+        {
+            //Debug.Log(count + " == " + conditionCount + "  all conditions seem to be met.");
+            return true;
+        }
+        else return false;
     }
 
     private Dictionary<int, bool> GetRequiredConditions(Action action)

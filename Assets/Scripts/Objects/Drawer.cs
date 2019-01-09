@@ -7,11 +7,7 @@ public class Drawer : InteractableItem
 	void Start ()
 	{
 		Init ();
-		myFloor = 1;
+		myFloor = 2;
 	}
 
-    public override void PlayerArrivedAtMyPosition()
-    {
-        //player.GetComponent<Player>().ChangeClothes();
-    }
 }

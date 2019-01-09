@@ -20,6 +20,7 @@ public class AgentActions : MonoBehaviour
     protected GameObject door;
     protected GameObject petFood;
     protected GameObject pet;
+    protected GameObject drawer;
 
     public void Init()
     {
@@ -31,6 +32,7 @@ public class AgentActions : MonoBehaviour
         door = GameObject.FindGameObjectWithTag("Door");
         petFood = GameObject.FindGameObjectWithTag("PetFood");
         pet = GameObject.FindGameObjectWithTag("Pet");
+        drawer = GameObject.FindGameObjectWithTag("Drawer");
     }
 
     public Action[] GetAllActions()

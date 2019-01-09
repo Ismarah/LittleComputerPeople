@@ -26,31 +26,13 @@ public class ActionChain
         return myList;
     }
 
-    public float GetChainDuration()
+    public float GetChainCost()
     {
-        float duration = 0;
-
-        for (int i = 0; i < myList.Count; i++)
+        float chainCost = 0;
+        for (int j = 0; j < myList.Count; j++)
         {
-            duration += myList[i].GetCost();
+            chainCost += myList[j].GetCost();
         }
-
-        return duration;
-    }
-
-    public float GetNeedChange()
-    {
-        float change = 0;
-
-        for (int i = 0; i < myList.Count; i++)
-        {
-            float[,] effects = myList[i].GetStats();
-            for (int j = 0; j < 4; j++)
-            {
-                change += effects[j, 0];
-            }
-        }
-
-        return change;
+        return chainCost;
     }
 }

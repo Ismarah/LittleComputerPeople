@@ -182,7 +182,6 @@ public class PlayerState : MonoBehaviour
             default:
                 break;
         }
-
         manager.GetComponent<ActionQueue>().FinishedAction();
     }
 

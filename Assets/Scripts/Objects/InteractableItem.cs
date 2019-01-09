@@ -42,16 +42,14 @@ public class InteractableItem : MonoBehaviour
 
     public virtual void PlayerArrivedAtMyPosition()
     {
+        Debug.Log("Player arrived at my pos  " + this.name);
         float[,] temp = nextAction.GetStats();
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
-            if (temp[i, 0] != 0)
-            {
-                index = i;
-                change = temp[i, 0];
-                time = temp[i, 1];
-                player.GetComponent<PlayerState>().ManipulateNeedChange(index, change, time);
-            }
+            index = i;
+            change = temp[i, 0];
+            time = temp[i, 1];
+            player.GetComponent<PlayerState>().ManipulateNeedChange(index, change, time);
         }
     }
 

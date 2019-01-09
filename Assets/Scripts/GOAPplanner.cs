@@ -17,6 +17,7 @@ public class GOAPplanner : MonoBehaviour
     private bool completedChain;
     private ActionChain chain;
     private int currentGoal;
+    private GameObject currentAgent;
 
     void Start()
     {
@@ -32,8 +33,10 @@ public class GOAPplanner : MonoBehaviour
     {
         if (!goalSet)
         {
+            Debug.Log("New goal!  " + index);
             goalSet = true;
             currentGoal = NeedIndexToFulfillGoal(index);
+            currentAgent = agent;
             allPossibleChains = new List<ActionChain>();
             chain = new ActionChain();
 
@@ -46,29 +49,26 @@ public class GOAPplanner : MonoBehaviour
                     break;
             }
 
-            FindActionChain(agent, index, state);
+            FindActionChain(index, state);
         }
     }
 
-    private void FindActionChain(GameObject agent, int index, bool state)
+    private void FindActionChain(int index, bool state)
     {
-        List<Action> possibleActions = FindActionsToFulfillCondition(agent, index, state);
+        List<Action> possibleActions = FindActionsToFulfillCondition(currentAgent, index, state);
 
         for (int i = 0; i < possibleActions.Count; i++)
         {
-
             if (completedChain)
             {
                 chain = new ActionChain();
                 completedChain = false;
             }
-
             chain.Add(possibleActions[i]);
 
             if (ConditionsMet(possibleActions[i])) //no further action is required to complete this action
             {
                 allPossibleChains.Add(chain);
-                Debug.Log("Possible chains: " + allPossibleChains.Count);
                 completedChain = true;
 
                 if (allPossibleChains.Count == possibilities)
@@ -82,13 +82,11 @@ public class GOAPplanner : MonoBehaviour
 
                 foreach (KeyValuePair<int, bool> conditions in requiredConditions)
                 {
-                    FindActionChain(agent, conditions.Key, conditions.Value);
+                    FindActionChain(conditions.Key, conditions.Value);
                 }
             }
         }
-
     }
-
 
     private void FindBestActionChain()
     {
@@ -96,10 +94,11 @@ public class GOAPplanner : MonoBehaviour
         float[] allValues = new float[allPossibleChains.Count];
         for (int i = 0; i < allPossibleChains.Count; i++)
         {
+            chainCost[i, 0] += allPossibleChains[i].GetChainCost();
+
             List<Action> temp = allPossibleChains[i].GetActions();
             for (int j = 0; j < temp.Count; j++)
             {
-                chainCost[i, 0] += temp[j].GetCost();
                 chainCost[i, 1] += temp[j].GetTime();
                 allValues[i] += Mathf.Abs(temp[j].GetCost());
             }
@@ -109,16 +108,42 @@ public class GOAPplanner : MonoBehaviour
         Array.Reverse(allValues);
 
         float bestValue = -1;
+        int bestIndex = -1;
 
         for (int i = 0; i < allValues.Length; i++)
         {
             if (!CheckForProblematicNeed(allValues[i]))
             {
                 bestValue = allValues[i];
+                for (int j = 0; j < allPossibleChains.Count; j++)
+                {
+                    if (Mathf.Abs(allPossibleChains[j].GetChainCost()) == bestValue) bestIndex = j;
+                }
                 break;
             }
         }
-        Debug.Log("Best option: " + bestValue);
+        if (bestValue != -1 && bestIndex != -1)
+        {
+            AddChosenChainToQueue(bestIndex);
+        }
+        else
+        {
+            //no action can be done because other needs are more important
+        }
+    }
+
+    private void AddChosenChainToQueue(int index)
+    {
+        List<Action> newQueue = allPossibleChains[index].GetActions();
+        newQueue.Reverse();
+        for (int i = 0; i < newQueue.Count; i++)
+        {
+            if (!GetComponent<ActionQueue>().IsEnqueued(newQueue[i]))
+            {
+                GetComponent<ActionQueue>().AddToQueue(newQueue[i], currentAgent);
+            }
+        }
+        goalSet = false;
     }
 
     private bool CheckForProblematicNeed(float time)

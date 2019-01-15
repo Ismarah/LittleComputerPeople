@@ -168,7 +168,6 @@ public class AgentMovement : MonoBehaviour
         {
             if (target.GetComponent<InteractableItem>() != null)
             {
-                Debug.Log("arrived");
                 target.GetComponent<InteractableItem>().PlayerArrivedAtMyPosition();
             }
             else

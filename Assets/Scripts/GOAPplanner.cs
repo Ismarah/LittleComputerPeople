@@ -71,13 +71,6 @@ public class GOAPplanner : MonoBehaviour
             if (ConditionsMet(possibleActions[i])) //no further action is required to complete this action
             {
                 allPossibleChains.Add(chain);
-                Debug.Log("Add new chain:");
-                List<Action> temp = chain.GetActions();
-                for (int j = 0; j < temp.Count; j++)
-                {
-                    float[,] bla = temp[j].GetStats();
-                    Debug.Log("Value: " + bla[1, 0] + " Time: " + bla[1, 1]);
-                }
                 completedChain = true;
 
                 if (allPossibleChains.Count == possibilities)
@@ -106,7 +99,7 @@ public class GOAPplanner : MonoBehaviour
             List<Action> temp = allPossibleChains[i].GetActions();
             for (int j = 0; j < temp.Count; j++)
             {
-                allValues[i] += Mathf.Abs(temp[j].GetCost());
+                allValues[i] += Mathf.Abs(temp[j].GetStateChange());
             }
         }
 
@@ -123,14 +116,15 @@ public class GOAPplanner : MonoBehaviour
                 bestValue = allValues[i];
                 for (int j = 0; j < allPossibleChains.Count; j++)
                 {
-                    if (Mathf.Abs(allPossibleChains[j].GetChainCost()) == bestValue) bestIndex = j;
+                    if (Mathf.Abs(allPossibleChains[j].GetChainStateChange()) == bestValue) bestIndex = j;
                 }
                 break;
             }
+
         }
         if (bestValue != -1 && bestIndex != -1)
         {
-            Debug.Log("Decided that action at index " + bestIndex + " is the best option. Value change: " + bestValue + "  Time needed: " + allPossibleChains[bestIndex].GetChainCost());
+            Debug.Log("Decided that action at index " + bestIndex + " is the best option. Value change: " + bestValue + "  Time needed: " + allPossibleChains[bestIndex].GetChainDuration());
             AddChosenChainToQueue(bestIndex);
         }
         else
@@ -158,12 +152,15 @@ public class GOAPplanner : MonoBehaviour
         bool foundAProblem = false;
         for (int index = 0; index < 5; index++)
         {
-            float stateAfterAction = player.GetComponent<PlayerState>().GetNeedState(index) + player.GetComponent<PlayerState>().GetNeedChange(index) * time * 1 / Time.deltaTime;
-
-            if (stateAfterAction >= 0.9f)
+            if (index != currentGoal)
             {
-                Debug.Log("Need " + index + " would be too low after action");
-                foundAProblem = true;
+                float stateAfterAction = player.GetComponent<PlayerState>().GetNeedState(index) + player.GetComponent<PlayerState>().GetNeedChange(index) * time * Time.deltaTime;
+
+                if (stateAfterAction >= 0.9f)
+                {
+                    Debug.Log("Need " + index + " would be too low after action " + stateAfterAction);
+                    foundAProblem = true;
+                }
             }
         }
         return foundAProblem;
@@ -235,7 +232,7 @@ public class GOAPplanner : MonoBehaviour
         {
             case 6:
                 return 0;
-            case 10:
+            case 17:
                 return 1;
             case 14:
                 return 2;

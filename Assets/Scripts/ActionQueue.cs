@@ -40,10 +40,9 @@ public class ActionQueue : MonoBehaviour
     {
         if (!processingActionforPlayer)
         {
-            Debug.Log("jhgkuygl");
             if (playerActionQueue[0].GetObject().GetComponent<InteractableItem>() != null)
             {
-                Debug.Log("Queue action with an interactable item");
+                Debug.Log("Queue action with an interactable item: " + playerActionQueue[0].GetObject().name);
                 playerActionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(playerActionQueue[0]);
             }
             else if (playerActionQueue[0].GetObject().GetComponent<PlayerState>() != null)
@@ -78,7 +77,6 @@ public class ActionQueue : MonoBehaviour
 
     public void AddToQueue(Action newAction, GameObject agent)
     {
-        Debug.Log("add to queue");
         if (agent == player)
         {
             for (int i = 0; i < playerActionQueue.Length; i++)
@@ -143,12 +141,15 @@ public class ActionQueue : MonoBehaviour
     {
         //Destroy(icons[0]);
 
-        Dictionary<int, bool> temp = playerActionQueue[0].GetEffects();
-
-        foreach (KeyValuePair<int, bool> pair in temp)
+        if (playerActionQueue[0] != null)
         {
-            WorldState.state.ChangeState(pair.Key, pair.Value);
+            Dictionary<int, bool> temp = playerActionQueue[0].GetEffects();
+            foreach (KeyValuePair<int, bool> pair in temp)
+            {
+                WorldState.state.ChangeState(pair.Key, pair.Value);
+            }
         }
+
 
         playerActionQueue[0] = null;
         //icons[0] = null;

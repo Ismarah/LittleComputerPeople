@@ -92,7 +92,7 @@ public class PlayerState : MonoBehaviour
             askedForAction = true;
             //manager.GetComponent<GOAPplanner>().HaveFun();
         }
-        if(currentHygene >= needsHygene)
+        if (currentHygene >= needsHygene)
         {
             askedForAction = true;
             //manager.GetComponent<GOAPplanner>
@@ -135,8 +135,11 @@ public class PlayerState : MonoBehaviour
 
     public void ManipulateNeedChange(int index, float change, float time)
     {
-        Debug.Log("Manipulate need change   " + time);
-        StartCoroutine(NeedChangeForATime(index, change, time));
+        if (time != 0)
+        {
+            StartCoroutine(NeedChangeForATime(index, change, time));
+            Debug.Log("Manipulate need " + index + " for " + time + " seconds by " + change);
+        }
     }
 
     private IEnumerator NeedChangeForATime(int index, float change, float time)

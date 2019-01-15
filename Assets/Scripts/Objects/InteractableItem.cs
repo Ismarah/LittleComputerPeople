@@ -42,7 +42,6 @@ public class InteractableItem : MonoBehaviour
 
     public virtual void PlayerArrivedAtMyPosition()
     {
-        Debug.Log("Player arrived at my pos  " + this.name);
         float[,] temp = nextAction.GetStats();
         for (int i = 0; i < 5; i++)
         {
@@ -63,7 +62,7 @@ public class InteractableItem : MonoBehaviour
         float[] costs = new float[actionCount];
         for (int i = 0; i < actionCount; i++)
         {
-            costs[i] = myActions[i].GetCost();
+            costs[i] = myActions[i].GetStateChange();
         }
         return costs;
     }

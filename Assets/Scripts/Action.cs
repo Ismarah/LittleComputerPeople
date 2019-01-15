@@ -41,13 +41,13 @@ public class Action
         return time;
     }
 
-    public float GetCost()
+    public float GetStateChange()
     {
         float cost = 0;
 
         for (int i = 0; i < 5; i++)
         {
-            cost += actionStats[i, 0] * actionStats[i, 1] * 60;
+            cost += actionStats[i, 0] * actionStats[i, 1] * Time.deltaTime;
         }
 
         return cost;

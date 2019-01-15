@@ -19,7 +19,7 @@ public class PlayerActions : AgentActions
     {
         //Eat a meal-------------------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[0, 0] = -0.003f;
+        actionEffects[0, 0] = -0.2f;
         actionEffects[0, 1] = 4;
 
         conditions = new Dictionary<int, bool>();
@@ -35,7 +35,7 @@ public class PlayerActions : AgentActions
 
         //Eat a snack------------------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[0, 0] = -0.0016f;
+        actionEffects[0, 0] = -0.2f;
         actionEffects[0, 1] = 2;
 
         conditions = new Dictionary<int, bool>();
@@ -51,7 +51,6 @@ public class PlayerActions : AgentActions
 
         //Cook a meal------------------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[0, 0] = 0;
         actionEffects[0, 1] = 2;
         conditions = new Dictionary<int, bool>();
         conditions.Add(1, true);
@@ -113,7 +112,7 @@ public class PlayerActions : AgentActions
 
         //Eat a pizza------------------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[0, 0] = -0.005f;
+        actionEffects[0, 0] = -0.2f;
         actionEffects[0, 1] = 3;
         conditions = new Dictionary<int, bool>();
         conditions.Add(7, true);
@@ -130,8 +129,8 @@ public class PlayerActions : AgentActions
     {
         //Sleep through night----------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[1, 0] = -0.00165f;
-        actionEffects[1, 1] = 10;
+        actionEffects[1, 0] = -0.1f;
+        actionEffects[1, 1] = 8;
         conditions = new Dictionary<int, bool>();
         conditions.Add(18, false);
 
@@ -145,7 +144,7 @@ public class PlayerActions : AgentActions
 
         //Take a nap-------------------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[1, 0] = -0.003f;
+        actionEffects[1, 0] = -0.2f;
         actionEffects[1, 1] = 2;
 
         conditions = new Dictionary<int, bool>();

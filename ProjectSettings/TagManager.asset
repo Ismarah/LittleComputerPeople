@@ -17,6 +17,8 @@ TagManager:
   - Door
   - Drawer
   - Couch
+  - BathSink
+  - Toilet2
   layers:
   - Default
   - TransparentFX

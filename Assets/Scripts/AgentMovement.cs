@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AgentMovement : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class AgentMovement : MonoBehaviour
     private Transform secondStairsLower;
     [SerializeField]
     private Transform secondStairsUpper;
+    private Text actionText;
 
     private Vector3 prevPos;
     bool turned;
@@ -27,6 +29,7 @@ public class AgentMovement : MonoBehaviour
     void Start()
     {
         targetPos = new Vector2();
+        actionText = transform.GetComponentInChildren<Canvas>().transform.GetChild(0).GetComponent<Text>();
     }
 
     public void NewTarget(GameObject newTarget)
@@ -149,15 +152,17 @@ public class AgentMovement : MonoBehaviour
         while (transform.position != pos)
         {
             transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime);
-            if(prevPos.x < transform.position.x && !turned)
+            if (prevPos.x < transform.position.x && !turned)
             {
                 turned = true;
                 transform.RotateAround(transform.position, Vector3.up, 180);
+                actionText.gameObject.transform.RotateAround(transform.position, Vector3.up, 180);
             }
-            else if(prevPos.x > transform.position.x && turned)
+            else if (prevPos.x > transform.position.x && turned)
             {
                 turned = false;
                 transform.RotateAround(transform.position, Vector3.up, 180);
+                actionText.gameObject.transform.RotateAround(transform.position, Vector3.up, 180);
             }
 
             prevPos = transform.position;

@@ -162,6 +162,7 @@ GameObject:
   - component: {fileID: 114018638092215470}
   - component: {fileID: 114019631651321806}
   - component: {fileID: 114490985361956658}
+  - component: {fileID: 114600942591277082}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -893,16 +894,16 @@ MonoBehaviour:
   toilet: {fileID: 0}
   fun: {fileID: 0}
   hygene: {fileID: 0}
-  currentHunger: 0.46
+  currentHunger: 0.3
   currentSleep: 0
   currentToilet: 0
-  currentFun: 0
+  currentFun: 0.3
   currentHygene: 0
-  hungerChange: 0.009
-  sleepChange: 0.005
-  toiletChange: 0.007
-  funChange: 0.02
-  hygeneChange: 0.006
+  hungerChange: 0.006
+  sleepChange: 0.003
+  toiletChange: 0.005
+  funChange: 0.009
+  hygeneChange: 0.004
   hungry: 0.3
   sleepy: 0.7
   needsToilet: 0.4
@@ -919,12 +920,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 497d372ee9f5bb9468d8711cb40e04bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fridge: {fileID: 0}
-  bed: {fileID: 0}
-  toilet: {fileID: 0}
-  computer: {fileID: 0}
-  shower: {fileID: 0}
-  door: {fileID: 0}
 --- !u!114 &114490985361956658
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -938,7 +933,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   floor: 0
   movespeed: 3
+  anim: {fileID: 95700269515725206}
   firstStairsLower: {fileID: 0}
   firstStairsUpper: {fileID: 0}
   secondStairsLower: {fileID: 0}
   secondStairsUpper: {fileID: 0}
+--- !u!114 &114600942591277082
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1631207194295212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aafee097b4b4bad418db252f09a8af36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: Truman
+  favoriteAction: 11

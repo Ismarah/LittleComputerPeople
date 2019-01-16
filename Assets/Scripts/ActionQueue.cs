@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ActionQueue : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class ActionQueue : MonoBehaviour
     private bool processingActionforPlayer;
     private bool processingActionforPet;
     public int actionQueueCount;
+    public Text actionText;
 
     void Start()
     {
@@ -49,6 +51,7 @@ public class ActionQueue : MonoBehaviour
             {
                 Debug.Log("Queue action with an interactable item: " + playerActionQueue[0].GetObject().name);
                 playerActionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(playerActionQueue[0]);
+                actionText.text = playerActionQueue[0].GetName();
             }
             else if (playerActionQueue[0].GetObject().GetComponent<PlayerState>() != null)
             {

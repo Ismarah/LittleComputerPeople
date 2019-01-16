@@ -7,13 +7,14 @@ public class PlayerActions : AgentActions
     void Start()
     {
         Init();
-        myActions = new Action[13];
+        myActions = new Action[14];
 
         player = this.gameObject;
 
         CreateEatingActions();
         CreateSleepActions();
         CreateFunActions();
+        CreateToiletActions();
     }
 
     private void CreateEatingActions()
@@ -30,7 +31,7 @@ public class PlayerActions : AgentActions
         effects.Add(2, false);
         effects.Add(6, true);
 
-        newAction = new Action(actionEffects, conditions, effects, fridge);
+        newAction = new Action("Eat a meal", actionEffects, conditions, effects, fridge);
         myActions[0] = newAction;
         //-----------------------------------------------------------------------
 
@@ -46,7 +47,7 @@ public class PlayerActions : AgentActions
         effects.Add(0, false);
         effects.Add(6, true);
 
-        newAction = new Action(actionEffects, conditions, effects, fridge);
+        newAction = new Action("Eat a snack", actionEffects, conditions, effects, fridge);
         myActions[1] = newAction;
         //-----------------------------------------------------------------------
 
@@ -59,7 +60,7 @@ public class PlayerActions : AgentActions
         effects.Add(1, false);
         effects.Add(2, true);
 
-        newAction = new Action(actionEffects, conditions, effects, fridge);
+        newAction = new Action("Cook a meal", actionEffects, conditions, effects, fridge);
         myActions[2] = newAction;
         //-----------------------------------------------------------------------
 
@@ -70,7 +71,7 @@ public class PlayerActions : AgentActions
         conditions.Add(5, true);
         effects = new Dictionary<int, bool>();
         effects.Add(1, true);
-        newAction = new Action(actionEffects, conditions, effects, fridge);
+        newAction = new Action("Refill ingredients", actionEffects, conditions, effects, fridge);
         myActions[3] = newAction;
         //-----------------------------------------------------------------------
 
@@ -82,7 +83,7 @@ public class PlayerActions : AgentActions
         effects = new Dictionary<int, bool>();
         effects.Add(8, true);
 
-        newAction = new Action(actionEffects, conditions, effects, player);
+        newAction = new Action("Order a pizza", actionEffects, conditions, effects, player);
         myActions[4] = newAction;
         //-----------------------------------------------------------------------
 
@@ -95,7 +96,7 @@ public class PlayerActions : AgentActions
         effects.Add(9, true);
         effects.Add(8, false);
 
-        newAction = new Action(actionEffects, conditions, effects, player);
+        newAction = new Action("Wait for pizza", actionEffects, conditions, effects, player);
         myActions[5] = newAction;
         //-----------------------------------------------------------------------
 
@@ -107,7 +108,7 @@ public class PlayerActions : AgentActions
         effects = new Dictionary<int, bool>();
         effects.Add(7, true);
 
-        newAction = new Action(actionEffects, conditions, effects, door);
+        newAction = new Action("Fetch pizza", actionEffects, conditions, effects, door);
         myActions[6] = newAction;
         //-----------------------------------------------------------------------
 
@@ -121,7 +122,7 @@ public class PlayerActions : AgentActions
         effects.Add(6, true);
         effects.Add(7, false);
 
-        newAction = new Action(actionEffects, conditions, effects, player);
+        newAction = new Action("Eat a pizza",actionEffects, conditions, effects, player);
         myActions[7] = newAction;
         //-----------------------------------------------------------------------
     }
@@ -139,7 +140,7 @@ public class PlayerActions : AgentActions
         effects.Add(10, true);
         effects.Add(17, false);
 
-        newAction = new Action(actionEffects, conditions, effects, bed);
+        newAction = new Action("Sleep", actionEffects, conditions, effects, bed);
         myActions[8] = newAction;
         //-----------------------------------------------------------------------
 
@@ -154,7 +155,7 @@ public class PlayerActions : AgentActions
         effects = new Dictionary<int, bool>();
         effects.Add(17, false);
 
-        newAction = new Action(actionEffects, conditions, effects, bed);
+        newAction = new Action("Take a nap", actionEffects, conditions, effects, bed);
         myActions[9] = newAction;
         //-----------------------------------------------------------------------
 
@@ -169,14 +170,9 @@ public class PlayerActions : AgentActions
         effects = new Dictionary<int, bool>();
         effects.Add(18, false);
 
-        newAction = new Action(actionEffects, conditions, effects, drawer);
+        newAction = new Action("Put on pyjamas", actionEffects, conditions, effects, drawer);
         myActions[10] = newAction;
         //-----------------------------------------------------------------------
-    }
-
-    private void CreateToiletActions()
-    {
-
     }
 
     private void CreateFunActions()
@@ -190,7 +186,7 @@ public class PlayerActions : AgentActions
         effects = new Dictionary<int, bool>();
         effects.Add(19, false);
 
-        newAction = new Action(actionEffects, conditions, effects, computer);
+        newAction = new Action("Play video games", actionEffects, conditions, effects, computer);
         myActions[11] = newAction;
         //-----------------------------------------------------------------------
 
@@ -203,10 +199,25 @@ public class PlayerActions : AgentActions
         effects = new Dictionary<int, bool>();
         effects.Add(19, false);
 
-        newAction = new Action(actionEffects, conditions, effects, couch);
+        newAction = new Action("Watch TV", actionEffects, conditions, effects, couch);
         myActions[12] = newAction;
         //-----------------------------------------------------------------------
     }
 
+    private void CreateToiletActions()
+    {
+        //Use Toilet-------------------------------------------------------
+        actionEffects = new float[5, 2];
+        actionEffects[2, 0] = -0.2f;
+        actionEffects[2, 1] = 2;
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(19, true);
+        effects = new Dictionary<int, bool>();
+        effects.Add(19, false);
+
+        newAction = new Action("Use toilet", actionEffects, conditions, effects, toilet);
+        myActions[13] = newAction;
+        //-----------------------------------------------------------------------
+    }
 
 }

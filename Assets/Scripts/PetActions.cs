@@ -23,7 +23,7 @@ public class PetActions : AgentActions
         effects = new Dictionary<int, bool>();
         effects.Add(12, true);
 
-        newAction = new Action(actionEffects, conditions, effects, player);
+        newAction = new Action("Food please", actionEffects, conditions, effects, player);
         myActions[0] = newAction;
         //-----------------------------------------------------------------------
     }

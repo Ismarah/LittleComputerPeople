@@ -144,50 +144,64 @@ public class PlayerState : MonoBehaviour
 
     private IEnumerator NeedChangeForATime(int index, float change, float time)
     {
-        switch (index)
+        if (change != 0)
         {
-            case 0:
-                hungerChange += change;
-                break;
-            case 1:
-                sleepChange += change;
-                break;
-            case 2:
-                toiletChange += change;
-                break;
-            case 3:
-                funChange += change;
-                break;
-            case 4:
-                hygeneChange += change;
-                break;
-            default:
-                break;
+            switch (index)
+            {
+                case 0:
+                    hungerChange += change;
+                    break;
+                case 1:
+                    sleepChange += change;
+                    break;
+                case 2:
+                    toiletChange += change;
+                    break;
+                case 3:
+                    funChange += change;
+                    break;
+                case 4:
+                    hygeneChange += change;
+                    break;
+                default:
+                    break;
+            }
         }
-
+        Debug.Log("Wait now for " + time + " seconds");
         yield return new WaitForSecondsRealtime(time);
 
-        switch (index)
+        if (change != 0)
         {
-            case 0:
-                hungerChange -= change;
-                break;
-            case 1:
-                sleepChange -= change;
-                break;
-            case 2:
-                toiletChange -= change;
-                break;
-            case 3:
-                funChange -= change;
-                break;
-            case 4:
-                hygeneChange -= change;
-                break;
-            default:
-                break;
+            switch (index)
+            {
+                case 0:
+                    hungerChange -= change;
+                    break;
+                case 1:
+                    sleepChange -= change;
+                    break;
+                case 2:
+                    toiletChange -= change;
+                    break;
+                case 3:
+                    funChange -= change;
+                    break;
+                case 4:
+                    hygeneChange -= change;
+                    break;
+                default:
+                    break;
+            }
         }
-        manager.GetComponent<ActionQueue>().FinishedAction();
+        if (change != 0)
+        {
+            manager.GetComponent<ActionQueue>().FinishedAction(true);
+        }
+        else
+        {
+            manager.GetComponent<ActionQueue>().FinishedAction(false);
+        }
+        Debug.Log("Finished waiting now " + time);
     }
 
     public float GetNeedState(int index)

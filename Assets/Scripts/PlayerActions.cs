@@ -7,12 +7,13 @@ public class PlayerActions : AgentActions
     void Start()
     {
         Init();
-        myActions = new Action[11];
+        myActions = new Action[13];
 
         player = this.gameObject;
 
         CreateEatingActions();
         CreateSleepActions();
+        CreateFunActions();
     }
 
     private void CreateEatingActions()
@@ -173,19 +174,37 @@ public class PlayerActions : AgentActions
         //-----------------------------------------------------------------------
     }
 
+    private void CreateToiletActions()
+    {
+
+    }
+
     private void CreateFunActions()
     {
         //Play video games-------------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[1, 0] = -0.0015f;
-        actionEffects[1, 1] = 5;
+        actionEffects[3, 0] = -0.1f;
+        actionEffects[3, 1] = 3;
         conditions = new Dictionary<int, bool>();
-        conditions.Add(4, false);
-        conditions.Add(17, true);
+        conditions.Add(19, true);
         effects = new Dictionary<int, bool>();
+        effects.Add(19, false);
 
-        newAction = new Action(actionEffects, conditions, effects, fridge);
-        myActions[8] = newAction;
+        newAction = new Action(actionEffects, conditions, effects, computer);
+        myActions[11] = newAction;
+        //-----------------------------------------------------------------------
+
+        //Watch TV---------------------------------------------------------------
+        actionEffects = new float[5, 2];
+        actionEffects[3, 0] = -0.1f;
+        actionEffects[3, 1] = 4;
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(19, true);
+        effects = new Dictionary<int, bool>();
+        effects.Add(19, false);
+
+        newAction = new Action(actionEffects, conditions, effects, couch);
+        myActions[12] = newAction;
         //-----------------------------------------------------------------------
     }
 

@@ -16,6 +16,7 @@ TagManager:
   - PetFood
   - Door
   - Drawer
+  - Couch
   layers:
   - Default
   - TransparentFX

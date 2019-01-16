@@ -1974,7 +1974,7 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4025371408086512, guid: 47c8af4fb327aca4e89a8d42ffd49127, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -496.94394
+      value: -496.49
       objectReference: {fileID: 0}
     - target: {fileID: 4025371408086512, guid: 47c8af4fb327aca4e89a8d42ffd49127, type: 2}
       propertyPath: m_LocalPosition.y
@@ -2003,6 +2003,14 @@ Prefab:
     - target: {fileID: 4025371408086512, guid: 47c8af4fb327aca4e89a8d42ffd49127, type: 2}
       propertyPath: m_RootOrder
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4825105279019716, guid: 47c8af4fb327aca4e89a8d42ffd49127, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 1863142301039568, guid: 47c8af4fb327aca4e89a8d42ffd49127, type: 2}
+      propertyPath: m_TagString
+      value: Couch
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47c8af4fb327aca4e89a8d42ffd49127, type: 2}
@@ -4264,6 +4272,24 @@ MeshFilter:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1482994118}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1484607496 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1631207194295212, guid: 657756d42125d8640b7b84374ead4b33,
+    type: 2}
+  m_PrefabInternal: {fileID: 2137854827}
+--- !u!114 &1484607497
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1484607496}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aafee097b4b4bad418db252f09a8af36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  name: Truman
+  favoriteAction: 11
 --- !u!1001 &1506604528
 Prefab:
   m_ObjectHideFlags: 0
@@ -4390,7 +4416,6 @@ GameObject:
   - component: {fileID: 1535907385}
   - component: {fileID: 1535907388}
   - component: {fileID: 1535907387}
-  - component: {fileID: 1535907386}
   m_Layer: 0
   m_Name: PetFoodBowl
   m_TagString: PetFood
@@ -4412,18 +4437,6 @@ Transform:
   m_Father: {fileID: 905771234}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1535907386
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1535907384}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1535907387
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -4644,6 +4657,10 @@ Prefab:
     - target: {fileID: 114869572354066820, guid: 928e10370a656c14a96209e8929f7e1a,
         type: 2}
       propertyPath: currentHunger
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208444861651412, guid: 928e10370a656c14a96209e8929f7e1a, type: 2}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -6258,6 +6275,11 @@ Prefab:
         type: 2}
       propertyPath: hygeneChange
       value: 0.004
+      objectReference: {fileID: 0}
+    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
+        type: 2}
+      propertyPath: currentFun
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 657756d42125d8640b7b84374ead4b33, type: 2}

@@ -23,17 +23,22 @@ public class ActionQueue : MonoBehaviour
 
     private void Update()
     {
-        int count = 0;
-
-        for (int i = 0; i < playerActionQueue.Length; i++)
+        if (playerActionQueue[0] == null)
         {
-            if (playerActionQueue[i] != null)
-            {
-                count++;
-            }
+            WorldState.state.ChangeState(19, true);
+            StartCoroutine(GettingBored());
         }
-        actionQueueCount = count;
+    }
 
+    private IEnumerator GettingBored()
+    {
+        yield return new WaitForSeconds(2);
+
+        if(playerActionQueue[0] == null)
+        {
+            int action = player.GetComponent<PlayerCharacter>().GetFavoriteAction();
+            AddToQueue(player.GetComponent<PlayerActions>().GetAction(action), player);
+        }
     }
 
     private void PlayerActionQueue()
@@ -137,7 +142,7 @@ public class ActionQueue : MonoBehaviour
         }
     }
 
-    public void FinishedAction()
+    public void FinishedAction(bool finished)
     {
         //Destroy(icons[0]);
 
@@ -166,7 +171,11 @@ public class ActionQueue : MonoBehaviour
                 //icons[i] = null;
             }
         }
-        player.GetComponent<PlayerState>().ActionPlanned();
+        if (finished)
+        {
+            player.GetComponent<PlayerState>().ActionPlanned();
+            Debug.Log("Tell player that action has been planned");
+        }
         processingActionforPlayer = false;
 
         if (playerActionQueue[0] != null)

@@ -14,7 +14,8 @@ public class InteractableItem : MonoBehaviour
     protected int index;
     protected float change;
     protected float time;
-    protected Action nextAction;
+    [SerializeField]
+    protected Action[] nextActions;
     protected Action[] myActions;
     protected int actionCount;
     protected int useCount;
@@ -23,6 +24,7 @@ public class InteractableItem : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         myActions = new Action[actionCount];
+        nextActions = new Action[10];
     }
 
     public int GetFloor()
@@ -42,7 +44,19 @@ public class InteractableItem : MonoBehaviour
 
     public virtual void PlayerArrivedAtMyPosition()
     {
-        float[,] temp = nextAction.GetStats();
+        float[,] temp = nextActions[0].GetStats();
+
+        nextActions[0] = null;
+
+        for (int i = 0; i < nextActions.Length; i++)
+        {
+            if (nextActions[i] != null)
+            {
+                nextActions[i - 1] = nextActions[i];
+                nextActions[i] = null;
+            }
+        }
+
         for (int i = 0; i < 5; i++)
         {
             index = i;
@@ -54,7 +68,14 @@ public class InteractableItem : MonoBehaviour
 
     public void PlanAction(Action a)
     {
-        nextAction = a;
+        for (int i = 0; i < nextActions.Length; i++)
+        {
+            if (nextActions[i] == null)
+            {
+                nextActions[i] = a;
+                break;
+            }
+        }
     }
 
     public float[] GetActionCosts()

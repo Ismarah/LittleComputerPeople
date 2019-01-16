@@ -22,6 +22,7 @@ using UnityEngine;
  * states[16] = playerIsClean;
  * states[17] = playerIsTired;
  * states[18] = playerIsWearingStreetClothes;
+ * states[19] = playerHasNothingToDo;
  */
 
 public class WorldState : MonoBehaviour
@@ -33,7 +34,7 @@ public class WorldState : MonoBehaviour
     {
         state = this;
 
-        states = new bool[19];
+        states = new bool[20];
 
         states[0] = true;
         states[1] = true;
@@ -53,6 +54,7 @@ public class WorldState : MonoBehaviour
         states[15] = false;
         states[16] = true;
         states[17] = false;
+        states[18] = true;
         states[18] = true;
     }
 

@@ -7,7 +7,7 @@ public class PlayerActions : AgentActions
     void Start()
     {
         Init();
-        myActions = new Action[14];
+        myActions = new Action[17];
 
         player = this.gameObject;
 
@@ -15,6 +15,7 @@ public class PlayerActions : AgentActions
         CreateSleepActions();
         CreateFunActions();
         CreateToiletActions();
+        CreateHygeneActions();
     }
 
     private void CreateEatingActions()
@@ -210,13 +211,62 @@ public class PlayerActions : AgentActions
         actionEffects = new float[5, 2];
         actionEffects[2, 0] = -0.2f;
         actionEffects[2, 1] = 2;
+        actionEffects[4, 0] = 0.15f;
+        actionEffects[4, 1] = 2;
         conditions = new Dictionary<int, bool>();
-        conditions.Add(19, true);
+        conditions.Add(20, true);
+        conditions.Add(3, true);
         effects = new Dictionary<int, bool>();
-        effects.Add(19, false);
+        effects.Add(20, false);
+        effects.Add(14, true);
 
         newAction = new Action("Use toilet", actionEffects, conditions, effects, toilet);
         myActions[13] = newAction;
+        //-----------------------------------------------------------------------
+
+        //Clean Toilet---------------------------------------------------------------
+        actionEffects = new float[5, 2];
+        actionEffects[3, 0] = 0.1f;
+        actionEffects[3, 1] = 3;
+        actionEffects[4, 0] = 0.2f;
+        actionEffects[4, 1] = 3;
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(3, false);
+        effects = new Dictionary<int, bool>();
+        effects.Add(3, true);
+
+        newAction = new Action("Clean toilet", actionEffects, conditions, effects, toilet);
+        myActions[14] = newAction;
+        //-----------------------------------------------------------------------
+    }
+
+    private void CreateHygeneActions()
+    {
+        //Shower-----------------------------------------------------------------
+        actionEffects = new float[5, 2];
+        actionEffects[4, 0] = -0.2f;
+        actionEffects[4, 1] = 4;
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(16, false);
+        effects = new Dictionary<int, bool>();
+        effects.Add(16, true);
+
+        newAction = new Action("Take a shower", actionEffects, conditions, effects, shower);
+        myActions[15] = newAction;
+        //-----------------------------------------------------------------------
+
+        //Wash hands---------------------------------------------------------------
+        actionEffects = new float[5, 2];
+        actionEffects[4, 0] = -0.15f;
+        actionEffects[4, 1] = 2;
+        conditions = new Dictionary<int, bool>();
+        conditions.Add(14, true);
+        effects = new Dictionary<int, bool>();
+        effects.Add(16, true);
+        effects.Add(14, false);
+
+        newAction = new Action("Wash hands", actionEffects, conditions, effects, sink);
+        myActions[16] = newAction;
         //-----------------------------------------------------------------------
     }
 

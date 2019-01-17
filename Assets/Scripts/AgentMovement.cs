@@ -29,7 +29,7 @@ public class AgentMovement : MonoBehaviour
     void Start()
     {
         targetPos = new Vector2();
-        actionText = transform.GetComponentInChildren<Canvas>().transform.GetChild(0).GetComponent<Text>();
+        actionText = transform.GetComponentInChildren<Canvas>().transform.GetChild(0).GetChild(0).GetComponent<Text>();
     }
 
     public void NewTarget(GameObject newTarget)
@@ -156,13 +156,13 @@ public class AgentMovement : MonoBehaviour
             {
                 turned = true;
                 transform.RotateAround(transform.position, Vector3.up, 180);
-                actionText.gameObject.transform.RotateAround(transform.position, Vector3.up, 180);
+                actionText.transform.parent.RotateAround(transform.position, Vector3.up, 180);
             }
             else if (prevPos.x > transform.position.x && turned)
             {
                 turned = false;
                 transform.RotateAround(transform.position, Vector3.up, 180);
-                actionText.gameObject.transform.RotateAround(transform.position, Vector3.up, 180);
+                actionText.transform.parent.RotateAround(transform.position, Vector3.up, 180);
             }
 
             prevPos = transform.position;

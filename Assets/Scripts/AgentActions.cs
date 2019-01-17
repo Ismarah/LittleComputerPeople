@@ -35,8 +35,9 @@ public class AgentActions : MonoBehaviour
         petFood = GameObject.FindGameObjectWithTag("PetFood");
         pet = GameObject.FindGameObjectWithTag("Pet");
         drawer = GameObject.FindGameObjectWithTag("Drawer");
-        drawer = GameObject.FindGameObjectWithTag("Couch");
-        drawer = GameObject.FindGameObjectWithTag("BathSink");
+        couch = GameObject.FindGameObjectWithTag("Couch");
+        sink = GameObject.FindGameObjectWithTag("BathSink");
+        shower = GameObject.FindGameObjectWithTag("Shower");
     }
 
     public Action[] GetAllActions()

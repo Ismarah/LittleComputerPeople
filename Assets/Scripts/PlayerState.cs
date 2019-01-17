@@ -52,7 +52,6 @@ public class PlayerState : MonoBehaviour
 
     private GameObject manager;
     private bool askedForAction;
-    private int needCount = 5;
 
     void Start()
     {
@@ -85,17 +84,21 @@ public class PlayerState : MonoBehaviour
         if (currentToilet >= needsToilet)
         {
             askedForAction = true;
-            //manager.GetComponent<GOAPplanner>().UseToilet();
+            WorldState.state.ChangeState(20, true);
+            WorldState.state.ChangeState(14, false);
+            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 14, true);
         }
         if (currentFun >= needsFun)
         {
             askedForAction = true;
-            //manager.GetComponent<GOAPplanner>().HaveFun();
+            WorldState.state.ChangeState(19, true);
+            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 19, false);
         }
         if (currentHygene >= needsHygene)
         {
             askedForAction = true;
-            //manager.GetComponent<GOAPplanner>
+            WorldState.state.ChangeState(16, false);
+            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 16, true);
         }
     }
 
@@ -138,7 +141,6 @@ public class PlayerState : MonoBehaviour
         if (time != 0)
         {
             StartCoroutine(NeedChangeForATime(index, change, time));
-            Debug.Log("Manipulate need " + index + " for " + time + " seconds by " + change);
         }
     }
 
@@ -167,7 +169,6 @@ public class PlayerState : MonoBehaviour
                     break;
             }
         }
-        Debug.Log("Wait now for " + time + " seconds");
         yield return new WaitForSecondsRealtime(time);
 
         if (change != 0)
@@ -201,7 +202,6 @@ public class PlayerState : MonoBehaviour
         {
             manager.GetComponent<ActionQueue>().FinishedAction(false);
         }
-        Debug.Log("Finished waiting now " + time);
     }
 
     public float GetNeedState(int index)

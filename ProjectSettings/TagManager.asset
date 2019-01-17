@@ -18,7 +18,7 @@ TagManager:
   - Drawer
   - Couch
   - BathSink
-  - Toilet2
+  - Shower
   layers:
   - Default
   - TransparentFX

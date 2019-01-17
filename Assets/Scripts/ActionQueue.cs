@@ -36,7 +36,7 @@ public class ActionQueue : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
 
-        if(playerActionQueue[0] == null)
+        if (playerActionQueue[0] == null)
         {
             int action = player.GetComponent<PlayerCharacter>().GetFavoriteAction();
             AddToQueue(player.GetComponent<PlayerActions>().GetAction(action), player);
@@ -51,7 +51,6 @@ public class ActionQueue : MonoBehaviour
             {
                 Debug.Log("Queue action with an interactable item: " + playerActionQueue[0].GetObject().name);
                 playerActionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(playerActionQueue[0]);
-                actionText.text = playerActionQueue[0].GetName();
             }
             else if (playerActionQueue[0].GetObject().GetComponent<PlayerState>() != null)
             {
@@ -68,6 +67,7 @@ public class ActionQueue : MonoBehaviour
                     }
                 }
             }
+            actionText.text = playerActionQueue[0].GetName();
             player.GetComponent<AgentMovement>().NewTarget(playerActionQueue[0].GetObject());
             processingActionforPlayer = true;
         }
@@ -177,7 +177,6 @@ public class ActionQueue : MonoBehaviour
         if (finished)
         {
             player.GetComponent<PlayerState>().ActionPlanned();
-            Debug.Log("Tell player that action has been planned");
         }
         processingActionforPlayer = false;
 

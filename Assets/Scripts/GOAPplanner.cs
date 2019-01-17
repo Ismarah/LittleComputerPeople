@@ -5,15 +5,10 @@ using UnityEngine;
 public class GOAPplanner : MonoBehaviour
 {
     private GameObject player;
-    private GameObject fridge;
-    private GameObject toilet;
-    private GameObject bed;
-    private GameObject computer;
     private GameObject petFood;
     private List<ActionChain> allPossibleChains;
     private int possibilities;
     private bool goalSet;
-    private bool pathsFound;
     private bool completedChain;
     private ActionChain chain;
     private int currentGoal;
@@ -22,10 +17,6 @@ public class GOAPplanner : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        fridge = GameObject.FindGameObjectWithTag("Fridge");
-        toilet = GameObject.FindGameObjectWithTag("Toilet");
-        bed = GameObject.FindGameObjectWithTag("Bed");
-        computer = GameObject.FindGameObjectWithTag("Computer");
         petFood = GameObject.FindGameObjectWithTag("PetFood");
     }
 
@@ -45,6 +36,15 @@ public class GOAPplanner : MonoBehaviour
                     possibilities = 3;
                     break;
                 case 17:
+                    possibilities = 2;
+                    break;
+                case 14:
+                    possibilities = 1;
+                    break;
+                case 19:
+                    possibilities = 2;
+                    break;
+                case 16:
                     possibilities = 2;
                     break;
                 default:
@@ -156,7 +156,7 @@ public class GOAPplanner : MonoBehaviour
             {
                 float stateAfterAction = player.GetComponent<PlayerState>().GetNeedState(index) + player.GetComponent<PlayerState>().GetNeedChange(index) * time * Time.deltaTime;
 
-                if (stateAfterAction >= 0.9f)
+                if (stateAfterAction >= 0.85f)
                 {
                     Debug.Log("Need " + index + " would be too low after action " + stateAfterAction);
                     foundAProblem = true;

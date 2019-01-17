@@ -4,18 +4,8 @@ using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    public string name;
+    public string myName;
     public int favoriteAction;
-
-    void Start()
-    {
-
-    }
-
-    void Update()
-    {
-
-    }
 
     public int GetFavoriteAction()
     {
@@ -24,6 +14,6 @@ public class PlayerCharacter : MonoBehaviour
 
     public string GetName()
     {
-        return name;
+        return myName;
     }
 }

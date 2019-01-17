@@ -23,18 +23,22 @@ using UnityEngine;
  * states[17] = playerIsTired;
  * states[18] = playerIsWearingStreetClothes;
  * states[19] = playerHasNothingToDo;
+ * states[20] = playerNeedsToilet;
  */
 
 public class WorldState : MonoBehaviour
-{ 
+{
     public static WorldState state = null;
     public bool[] states;
+    private GameObject player;
+    private bool doOnce;
 
     void Start()
     {
         state = this;
+        player = GameObject.FindGameObjectWithTag("Player");
 
-        states = new bool[20];
+        states = new bool[21];
 
         states[0] = true;
         states[1] = true;
@@ -55,7 +59,8 @@ public class WorldState : MonoBehaviour
         states[16] = true;
         states[17] = false;
         states[18] = true;
-        states[18] = true;
+        states[19] = true;
+        states[20] = false;
     }
 
     public void ChangeState(int i, bool newState)
@@ -84,7 +89,23 @@ public class WorldState : MonoBehaviour
     {
         return states[i];
     }
+
+    private void Update()
+    {
+        if (states[14] == true && !doOnce)
+        {
+            doOnce = true;
+            Debug.Log("player was on toilet");
+            GetComponent<GOAPplanner>().SetGoal(player, 14, false);
+        }
+        if(states[14] == false)
+        {
+            doOnce = false;
+        }
+    }
 }
+
+
 
 //public enum SnackInFridge { yes, no }
 //public enum IngredientsInFridge { yes, no }

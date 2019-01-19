@@ -90,19 +90,6 @@ public class WorldState : MonoBehaviour
         return states[i];
     }
 
-    private void Update()
-    {
-        if (states[14] == true && !doOnce)
-        {
-            doOnce = true;
-            Debug.Log("player was on toilet");
-            GetComponent<GOAPplanner>().SetGoal(player, 14, false);
-        }
-        if(states[14] == false)
-        {
-            doOnce = false;
-        }
-    }
 }
 
 

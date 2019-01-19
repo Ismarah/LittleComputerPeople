@@ -136,65 +136,93 @@ public class PlayerState : MonoBehaviour
         }
     }
 
-    public void ManipulateNeedChange(int index, float change, float time)
+    public void ManipulateNeedChange(Action action)
     {
-        if (time != 0)
+        if (action.GetTime() != 0)
         {
-            StartCoroutine(NeedChangeForATime(index, change, time));
+            StartCoroutine(NeedChangeForATime(action));
         }
     }
 
-    private IEnumerator NeedChangeForATime(int index, float change, float time)
+    private IEnumerator NeedChangeForATime(Action action)
     {
-        if (change != 0)
+        float[,] temp = action.GetStats();
+        float time = -1;
+        bool needWasChanged = false;
+
+        for (int i = 0; i < 5; i++)
         {
-            switch (index)
+            float change = temp[i, 0];
+
+            if (change != 0)
             {
-                case 0:
-                    hungerChange += change;
-                    break;
-                case 1:
-                    sleepChange += change;
-                    break;
-                case 2:
-                    toiletChange += change;
-                    break;
-                case 3:
-                    funChange += change;
-                    break;
-                case 4:
-                    hygeneChange += change;
-                    break;
-                default:
-                    break;
+                needWasChanged = true;
+                time = temp[i, 1];
+                switch (i)
+                {
+                    case 0:
+                        hungerChange += change;
+                        break;
+                    case 1:
+                        sleepChange += change;
+                        break;
+                    case 2:
+                        toiletChange += change;
+                        break;
+                    case 3:
+                        funChange += change;
+                        break;
+                    case 4:
+                        hygeneChange += change;
+                        break;
+                    default:
+                        break;
+                }
+                if (change < 0)
+                    Debug.Log("Decreasing need at index " + i + " for " + temp[i, 1] + " seconds. Time: " + Time.time);
+                else
+                    Debug.Log("Increasing need at index " + i + " for " + temp[i, 1] + " seconds. Time: " + Time.time);
             }
+
         }
+
         yield return new WaitForSecondsRealtime(time);
 
-        if (change != 0)
+        for (int i = 0; i < 5; i++)
         {
-            switch (index)
+            float change = temp[i, 0];
+
+            if (change != 0)
             {
-                case 0:
-                    hungerChange -= change;
-                    break;
-                case 1:
-                    sleepChange -= change;
-                    break;
-                case 2:
-                    toiletChange -= change;
-                    break;
-                case 3:
-                    funChange -= change;
-                    break;
-                case 4:
-                    hygeneChange -= change;
-                    break;
-                default:
-                    break;
+                if (change < 0)
+                    Debug.Log("Finished decreasing need at index " + i + " for " + time + " seconds. Time: " + Time.time);
+                else
+                    Debug.Log("Finished increasing need at index " + i + " for " + time + " seconds. Time: " + Time.time);
+
+                switch (i)
+                {
+                    case 0:
+                        hungerChange -= change;
+                        break;
+                    case 1:
+                        sleepChange -= change;
+                        break;
+                    case 2:
+                        toiletChange -= change;
+                        break;
+                    case 3:
+                        funChange -= change;
+                        break;
+                    case 4:
+                        hygeneChange -= change;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
-        if (change != 0)
+
+        if (needWasChanged)
         {
             manager.GetComponent<ActionQueue>().FinishedAction(true);
         }

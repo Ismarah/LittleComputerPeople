@@ -47,4 +47,19 @@ public class ActionChain
 
         return chainDuration;
     }
+
+    public bool ContainsAction(Action action)
+    {
+        bool contains = false;
+
+        for (int i = 0; i < myList.Count; i++)
+        {
+            if(myList[i] == action)
+            {
+                contains = true;
+            }
+        }
+
+        return contains;
+    }
 }

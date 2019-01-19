@@ -66,6 +66,10 @@ public class GOAPplanner : MonoBehaviour
                 chain = new ActionChain();
                 completedChain = false;
             }
+            if (possibleActions[i] == player.GetComponent<PlayerActions>().GetAction(13))
+            {
+                chain.Add(player.GetComponent<PlayerActions>().GetAction(16));
+            }
             chain.Add(possibleActions[i]);
 
             if (ConditionsMet(possibleActions[i])) //no further action is required to complete this action

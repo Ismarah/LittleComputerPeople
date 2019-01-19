@@ -44,26 +44,7 @@ public class InteractableItem : MonoBehaviour
 
     public virtual void PlayerArrivedAtMyPosition()
     {
-        float[,] temp = nextActions[0].GetStats();
-
-        nextActions[0] = null;
-
-        for (int i = 0; i < nextActions.Length; i++)
-        {
-            if (nextActions[i] != null)
-            {
-                nextActions[i - 1] = nextActions[i];
-                nextActions[i] = null;
-            }
-        }
-
-        for (int i = 0; i < 5; i++)
-        {
-            index = i;
-            change = temp[i, 0];
-            time = temp[i, 1];
-            player.GetComponent<PlayerState>().ManipulateNeedChange(index, change, time);
-        }
+        player.GetComponent<PlayerState>().ManipulateNeedChange(nextActions[0]);
     }
 
     public void PlanAction(Action a)

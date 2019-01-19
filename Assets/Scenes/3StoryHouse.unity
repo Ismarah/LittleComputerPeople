@@ -3677,7 +3677,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c438322bd82ee6a4eaedb168761e86c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionQueueCount: 0
   actionText: {fileID: 673640206}
 --- !u!114 &1286969269
 MonoBehaviour:
@@ -6505,27 +6504,37 @@ Prefab:
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: hungerChange
-      value: 0.009
-      objectReference: {fileID: 0}
-    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
-        type: 2}
-      propertyPath: sleepChange
-      value: 0.006
-      objectReference: {fileID: 0}
-    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
-        type: 2}
-      propertyPath: toiletChange
-      value: 0.008
-      objectReference: {fileID: 0}
-    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
-        type: 2}
-      propertyPath: funChange
       value: 0.012
       objectReference: {fileID: 0}
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
+      propertyPath: sleepChange
+      value: 0.009
+      objectReference: {fileID: 0}
+    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
+        type: 2}
+      propertyPath: toiletChange
+      value: 0.011
+      objectReference: {fileID: 0}
+    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
+        type: 2}
+      propertyPath: funChange
+      value: 0.015
+      objectReference: {fileID: 0}
+    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
+        type: 2}
       propertyPath: hygeneChange
-      value: 0.007
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
+        type: 2}
+      propertyPath: currentSleep
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
+        type: 2}
+      propertyPath: currentHygene
+      value: 0.24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 657756d42125d8640b7b84374ead4b33, type: 2}

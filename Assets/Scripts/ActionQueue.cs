@@ -7,26 +7,38 @@ public class ActionQueue : MonoBehaviour
 {
     public Action[] playerActionQueue;
     public Action[] petActionQueue;
-    //public GameObject[] icons;
     private GameObject player;
     private GameObject pet;
     private bool processingActionforPlayer;
     private bool processingActionforPet;
-    public int actionQueueCount;
     public Text actionText;
+    bool bored;
+    public string[] actionNames;
 
     void Start()
     {
         playerActionQueue = new Action[10];
-        //icons = new GameObject[10];
         player = GameObject.FindGameObjectWithTag("Player");
         pet = GameObject.FindGameObjectWithTag("Pet");
+        actionNames = new string[10];
     }
 
     private void Update()
     {
-        if (playerActionQueue[0] == null)
+        for (int i = 0; i < playerActionQueue.Length; i++)
         {
+            if (playerActionQueue[i] != null)
+                actionNames[i] = playerActionQueue[i].GetName();
+            else actionNames[i] = "null";
+        }
+        //string name = "";
+        //if (playerActionQueue[0] != null) name = playerActionQueue[0].GetName();
+        //else name = "null";
+        //Debug.Log(name);
+        if (playerActionQueue[0] == null && !bored)
+        {
+            Debug.Log("boooored");
+            bored = true;
             WorldState.state.ChangeState(19, true);
             StartCoroutine(GettingBored());
         }
@@ -38,8 +50,12 @@ public class ActionQueue : MonoBehaviour
 
         if (playerActionQueue[0] == null)
         {
+            Debug.Log("still bored");
             int action = player.GetComponent<PlayerCharacter>().GetFavoriteAction();
-            AddToQueue(player.GetComponent<PlayerActions>().GetAction(action), player);
+            Action favoriteAction = player.GetComponent<PlayerActions>().GetAction(action);
+            if (!IsEnqueued(favoriteAction))
+                AddToQueue(favoriteAction, player);
+            bored = false;
         }
     }
 
@@ -54,18 +70,9 @@ public class ActionQueue : MonoBehaviour
             }
             else if (playerActionQueue[0].GetObject().GetComponent<PlayerState>() != null)
             {
-                Debug.Log("Queue action at players position");
-                float[,] temp = playerActionQueue[0].GetStats();
-                for (int i = 0; i < 5; i++)
-                {
-                    if (temp[i, 0] != 0)
-                    {
-                        int index = i;
-                        float change = temp[i, 0];
-                        float time = temp[i, 1];
-                        player.GetComponent<PlayerState>().ManipulateNeedChange(index, change, time);
-                    }
-                }
+                Debug.Log("Queue action " + playerActionQueue[0] + " at players position");
+                player.GetComponent<PlayerState>().ManipulateNeedChange(playerActionQueue[0]);
+
             }
             actionText.text = playerActionQueue[0].GetName();
             player.GetComponent<AgentMovement>().NewTarget(playerActionQueue[0].GetObject());
@@ -91,14 +98,8 @@ public class ActionQueue : MonoBehaviour
             {
                 if (playerActionQueue[i] == null)
                 {
-                    //GameObject newIcon = Instantiate(newAction.GetObject().GetComponent<InteractableItem>().GetMyIcon(), transform.position, Quaternion.identity, transform);
                     playerActionQueue[i] = newAction;
-                    //icons[i] = newIcon;
-                    if (i != 0)
-                    {
-                        //icons[i].transform.localPosition = icons[i - 1].transform.localPosition + new Vector3(1.4f, 0, 0);
-                    }
-                    else
+                    if (i == 0)
                     {
                         PlayerActionQueue();
                     }
@@ -124,54 +125,68 @@ public class ActionQueue : MonoBehaviour
         }
     }
 
-    public void RemoveFromQueue(GameObject toRemove)
+    public void InsertActionAtStartOfQueue(Action newAction, GameObject agent)
     {
-        bool foundAction = false;
+        if (agent == player)
+        {
+            for (int i = playerActionQueue.Length - 1; i >= 0; i--)
+            {
+                string name = "";
+                if (playerActionQueue[i] != null)
+                {
+                    name = playerActionQueue[i].GetName();
+                }
+                else
+                {
+                    name = "null";
+                }
+                Debug.Log("Action at index " + i + " is called " + name);
+                if (i == 0)
+                {
+                    playerActionQueue[i] = newAction;
+                    PlayerActionQueue();
+                }
+                else
+                {
+                    playerActionQueue[i] = playerActionQueue[i - 1];
+                    playerActionQueue[i] = null;
+                }
+            }
+        }
+
         for (int i = 0; i < playerActionQueue.Length; i++)
         {
-            if (foundAction && playerActionQueue[i] != null)
+            string name = "";
+            if (playerActionQueue[i] != null)
             {
-                playerActionQueue[i].GetObject().GetComponent<InteractableItem>().GetMyIcon().transform.localPosition -= new Vector3(100, 0, 0);
-                playerActionQueue[i - 1] = playerActionQueue[i];
-                playerActionQueue[i] = null;
-
+                name = playerActionQueue[i].GetName();
             }
-            if (playerActionQueue[i].GetObject() == toRemove)
+            else
             {
-                Destroy(transform.Find(playerActionQueue[i].GetObject().name).gameObject.GetComponent<InteractableItem>().GetMyIcon());
-                playerActionQueue[i] = null;
-                foundAction = true;
+                name = "null";
             }
+            Debug.Log("Action at index " + i + " is called " + name);
         }
     }
 
     public void FinishedAction(bool finished)
     {
-        //Destroy(icons[0]);
+        Debug.Log("Finished action " + playerActionQueue[0].GetName());
 
-        if (playerActionQueue[0] != null)
+        Dictionary<int, bool> temp = playerActionQueue[0].GetEffects();
+        foreach (KeyValuePair<int, bool> pair in temp)
         {
-            Dictionary<int, bool> temp = playerActionQueue[0].GetEffects();
-            foreach (KeyValuePair<int, bool> pair in temp)
-            {
-                WorldState.state.ChangeState(pair.Key, pair.Value);
-            }
+            WorldState.state.ChangeState(pair.Key, pair.Value);
         }
 
-
         playerActionQueue[0] = null;
-        //icons[0] = null;
 
         for (int i = 1; i < playerActionQueue.Length; i++)
         {
             if (playerActionQueue[i] != null)
             {
-                //icons[i].transform.localPosition -= new Vector3(1.4f, 0, 0);
                 playerActionQueue[i - 1] = playerActionQueue[i];
                 playerActionQueue[i] = null;
-
-                //icons[i - 1] = icons[i];
-                //icons[i] = null;
             }
         }
         if (finished)

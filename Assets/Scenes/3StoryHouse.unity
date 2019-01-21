@@ -3208,7 +3208,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4336087822801118, guid: a0e7a5fe5280a0540bd83f7d28ba4130, type: 2}
       propertyPath: m_RootOrder
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1900936751181766, guid: a0e7a5fe5280a0540bd83f7d28ba4130, type: 2}
       propertyPath: m_TagString
@@ -3678,6 +3678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actionText: {fileID: 673640206}
+  actionNames: []
 --- !u!114 &1286969269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6489,7 +6490,7 @@ Prefab:
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: currentHunger
-      value: 0
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
@@ -6499,7 +6500,7 @@ Prefab:
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: currentToilet
-      value: 0.4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
@@ -6534,7 +6535,7 @@ Prefab:
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: currentHygene
-      value: 0.24
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 657756d42125d8640b7b84374ead4b33, type: 2}

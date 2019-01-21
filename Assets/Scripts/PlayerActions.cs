@@ -54,7 +54,7 @@ public class PlayerActions : AgentActions
 
         //Cook a meal------------------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[0, 1] = 2;
+        actionEffects[0, 1] = 4;
         conditions = new Dictionary<int, bool>();
         conditions.Add(1, true);
         effects = new Dictionary<int, bool>();

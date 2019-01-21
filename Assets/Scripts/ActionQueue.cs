@@ -39,8 +39,8 @@ public class ActionQueue : MonoBehaviour
         {
             Debug.Log("boooored");
             bored = true;
-            WorldState.state.ChangeState(19, true);
-            StartCoroutine(GettingBored());
+            //WorldState.state.ChangeState(19, true);
+            //StartCoroutine(GettingBored());
         }
     }
 
@@ -65,7 +65,7 @@ public class ActionQueue : MonoBehaviour
         {
             if (playerActionQueue[0].GetObject().GetComponent<InteractableItem>() != null)
             {
-                Debug.Log("Queue action with an interactable item: " + playerActionQueue[0].GetObject().name);
+                Debug.Log("Queue action " + playerActionQueue[0].GetName() + " with an interactable item: " + playerActionQueue[0].GetObject().name);
                 playerActionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(playerActionQueue[0]);
             }
             else if (playerActionQueue[0].GetObject().GetComponent<PlayerState>() != null)
@@ -195,8 +195,10 @@ public class ActionQueue : MonoBehaviour
         }
         processingActionforPlayer = false;
 
+
         if (playerActionQueue[0] != null)
         {
+            Debug.Log("Next action : " + playerActionQueue[0].GetName());
             PlayerActionQueue();
         }
     }

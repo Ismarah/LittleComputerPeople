@@ -75,6 +75,7 @@ public class GOAPplanner : MonoBehaviour
             if (ConditionsMet(possibleActions[i])) //no further action is required to complete this action
             {
                 allPossibleChains.Add(chain);
+                //chain.AddWalkTime(CalculateTimeToMove(possibleActions[i].GetObject()));
                 completedChain = true;
 
                 if (allPossibleChains.Count == possibilities)
@@ -86,7 +87,6 @@ public class GOAPplanner : MonoBehaviour
             else //one or more conditions are not met yet
             {
                 Dictionary<int, bool> requiredConditions = GetRequiredConditions(possibleActions[i]);
-
                 foreach (KeyValuePair<int, bool> conditions in requiredConditions)
                 {
                     FindActionChain(conditions.Key, conditions.Value);
@@ -247,5 +247,99 @@ public class GOAPplanner : MonoBehaviour
             default:
                 return -1;
         }
+    }
+
+    private float CalculateTimeToMove(GameObject target)
+    {
+        Debug.Log(target);
+        int targetFloor = -1;
+        if (target.GetComponent<InteractableItem>() != null)
+            targetFloor = target.GetComponent<InteractableItem>().GetFloor();
+        else return 0;
+        float distance = 0;
+        float time = 0;
+        int playersFloor = player.GetComponent<AgentMovement>().GetFloor();
+
+        Transform firstStairsLower = player.GetComponent<AgentMovement>().GetStairs()[0];
+        Transform firstStairsUpper = player.GetComponent<AgentMovement>().GetStairs()[1];
+        Transform secondStairsLower = player.GetComponent<AgentMovement>().GetStairs()[2];
+        Transform secondStairsUpper = player.GetComponent<AgentMovement>().GetStairs()[3];
+
+        if (target.GetComponent<InteractableItem>() != null)
+        {
+            targetFloor = target.GetComponent<InteractableItem>().GetFloor();
+        }
+        else if (target.GetComponent<AgentMovement>() != null)
+        {
+            targetFloor = target.GetComponent<AgentMovement>().GetFloor();
+        }
+        if (targetFloor == player.GetComponent<AgentMovement>().GetFloor())
+        {
+            distance = Vector2.Distance(player.transform.position, target.transform.position);
+        }
+        else
+        {
+            if (targetFloor > playersFloor)
+            {
+                if (targetFloor == playersFloor + 1)
+                {
+                    //target is one floor above player
+                    if (playersFloor == 0)
+                    {
+                        distance = Vector2.Distance(player.transform.position, firstStairsLower.position);
+                        distance += Vector2.Distance(firstStairsLower.position, firstStairsUpper.position);
+                        distance += Vector2.Distance(firstStairsUpper.position, target.transform.position);
+                    }
+                    else if (playersFloor == 1)
+                    {
+                        distance = Vector2.Distance(player.transform.position, secondStairsLower.position);
+                        distance += Vector2.Distance(secondStairsLower.position, secondStairsUpper.position);
+                        distance += Vector2.Distance(secondStairsUpper.position, target.transform.position);
+                    }
+
+                }
+                else if (targetFloor == playersFloor + 2)
+                {
+                    //target is two floors above player
+                    distance = Vector2.Distance(player.transform.position, firstStairsLower.position);
+                    distance += Vector2.Distance(firstStairsLower.position, firstStairsUpper.position);
+                    distance += Vector2.Distance(firstStairsUpper.position, secondStairsLower.position);
+                    distance += Vector2.Distance(secondStairsLower.position, secondStairsUpper.position);
+                    distance += Vector2.Distance(secondStairsUpper.position, target.transform.position);
+                }
+            }
+            else
+            {
+                if (targetFloor == playersFloor - 1)
+                {
+                    //target is one floor below player
+                    if (playersFloor == 1)
+                    {
+                        distance = Vector2.Distance(player.transform.position, firstStairsUpper.position);
+                        distance += Vector2.Distance(firstStairsUpper.position, firstStairsLower.position);
+                        distance += Vector2.Distance(firstStairsLower.position, target.transform.position);
+                    }
+                    else if (playersFloor == 2)
+                    {
+                        distance = Vector2.Distance(player.transform.position, secondStairsUpper.position);
+                        distance += Vector2.Distance(secondStairsUpper.position, secondStairsLower.position);
+                        distance += Vector2.Distance(secondStairsLower.position, target.transform.position);
+                    }
+
+                }
+                else if (targetFloor == playersFloor - 2)
+                {
+                    //target is two floors below player
+                    distance = Vector2.Distance(player.transform.position, secondStairsUpper.position);
+                    distance += Vector2.Distance(secondStairsUpper.position, secondStairsLower.position);
+                    distance += Vector2.Distance(secondStairsLower.position, firstStairsUpper.position);
+                    distance += Vector2.Distance(firstStairsUpper.position, firstStairsLower.position);
+                    distance += Vector2.Distance(firstStairsLower.position, target.transform.position);
+                }
+            }
+        }
+        time = distance / player.GetComponent<AgentMovement>().GetMoveSpeed();
+        Debug.Log("Time: " + time + " Target: " + target);
+        return time;
     }
 }

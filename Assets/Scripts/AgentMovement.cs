@@ -23,9 +23,6 @@ public class AgentMovement : MonoBehaviour
     private Transform secondStairsUpper;
     private Text actionText;
 
-    private Vector3 prevPos;
-    bool turned;
-
     void Start()
     {
         targetPos = new Vector2();
@@ -38,7 +35,7 @@ public class AgentMovement : MonoBehaviour
         int targetFloor = -1;
         if (target.GetComponent<InteractableItem>() != null)
         {
-            targetFloor = newTarget.GetComponent<InteractableItem>().GetFloor();
+            targetFloor = target.GetComponent<InteractableItem>().GetFloor();
         }
         else if (target.GetComponent<AgentMovement>() != null)
         {
@@ -147,6 +144,8 @@ public class AgentMovement : MonoBehaviour
 
     private IEnumerator MoveToPos(Vector2 _targetPos)
     {
+        Vector3 prevPos = new Vector3();
+        bool turned = false;
         anim.SetBool("isWalking", true);
         Vector3 pos = new Vector3(_targetPos.x, _targetPos.y, transform.position.z);
         while (transform.position != pos)
@@ -175,11 +174,23 @@ public class AgentMovement : MonoBehaviour
             {
                 target.GetComponent<InteractableItem>().PlayerArrivedAtMyPosition();
             }
-            else
-            {
-
-            }
             anim.SetBool("isWalking", false);
         }
+    }
+
+    public float GetMoveSpeed()
+    {
+        return movespeed;
+    }
+
+    public Transform[] GetStairs()
+    {
+        Transform[] temp = new Transform[4];
+        temp[0] = firstStairsLower;
+        temp[1] = firstStairsUpper;
+        temp[2] = secondStairsLower;
+        temp[3] = secondStairsUpper;
+
+        return temp;
     }
 }

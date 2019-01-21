@@ -4,6 +4,7 @@ using System.Collections.Generic;
 public class ActionChain
 {
     List<Action> myList;
+    float wayTime;
 
     public ActionChain()
     {
@@ -44,7 +45,7 @@ public class ActionChain
         {
             chainDuration += myList[i].GetTime();
         }
-
+        chainDuration += wayTime;
         return chainDuration;
     }
 
@@ -61,5 +62,10 @@ public class ActionChain
         }
 
         return contains;
+    }
+
+    public void AddWalkTime(float time)
+    {
+        wayTime += time;
     }
 }

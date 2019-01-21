@@ -140,6 +140,7 @@ public class PlayerState : MonoBehaviour
     {
         if (action.GetTime() != 0)
         {
+            Debug.Log("Starting coroutine now. Action: " + action.GetName());
             StartCoroutine(NeedChangeForATime(action));
         }
     }
@@ -149,15 +150,19 @@ public class PlayerState : MonoBehaviour
         float[,] temp = action.GetStats();
         float time = -1;
         bool needWasChanged = false;
+        float change = 0;
 
         for (int i = 0; i < 5; i++)
         {
-            float change = temp[i, 0];
-
+            change = temp[i, 0];
+            if (temp[i, 1] != 0)
+            {
+                time = temp[i, 1];
+                Debug.Log("Change: " + change + " action: " + action.GetName() + " Time: " + time);
+            }
             if (change != 0)
             {
                 needWasChanged = true;
-                time = temp[i, 1];
                 switch (i)
                 {
                     case 0:
@@ -178,31 +183,26 @@ public class PlayerState : MonoBehaviour
                     default:
                         break;
                 }
-                if (change < 0)
-                    Debug.Log("Decreasing need at index " + i + " for " + temp[i, 1] + " seconds. Time: " + Time.time);
-                else
-                    Debug.Log("Increasing need at index " + i + " for " + temp[i, 1] + " seconds. Time: " + Time.time);
-            }
 
+            }
         }
+        Debug.Log("Change need for " + action.GetName() + " for  -- " + time + "  --  seconds. Systemtime: " + Time.time);
 
         yield return new WaitForSecondsRealtime(time);
 
+        Debug.Log("Finished changing need for action " + action.GetName() + " for " + time + " seconds. Systemtime: " + Time.time);
+
         for (int i = 0; i < 5; i++)
         {
-            float change = temp[i, 0];
+            change = temp[i, 0];
 
             if (change != 0)
             {
-                if (change < 0)
-                    Debug.Log("Finished decreasing need at index " + i + " for " + time + " seconds. Time: " + Time.time);
-                else
-                    Debug.Log("Finished increasing need at index " + i + " for " + time + " seconds. Time: " + Time.time);
-
                 switch (i)
                 {
+                    //make one thing
                     case 0:
-                        hungerChange -= change;
+                        hungerChange -= temp[0,0];
                         break;
                     case 1:
                         sleepChange -= change;
@@ -221,15 +221,8 @@ public class PlayerState : MonoBehaviour
                 }
             }
         }
-
-        if (needWasChanged)
-        {
-            manager.GetComponent<ActionQueue>().FinishedAction(true);
-        }
-        else
-        {
-            manager.GetComponent<ActionQueue>().FinishedAction(false);
-        }
+        if (needWasChanged) manager.GetComponent<ActionQueue>().FinishedAction(true);
+        else manager.GetComponent<ActionQueue>().FinishedAction(false);
     }
 
     public float GetNeedState(int index)

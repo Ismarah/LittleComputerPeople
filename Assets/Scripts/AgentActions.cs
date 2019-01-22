@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AgentActions : MonoBehaviour
 {
-
     protected Action[] myActions;
     protected float[,] actionEffects;
     protected Dictionary<WorldState.myStates, bool> conditions;
@@ -54,7 +53,7 @@ public class AgentActions : MonoBehaviour
     {
         for (int i = 0; i < myActions.Length; i++)
         {
-            if(myActions[i].GetName() == name)
+            if (myActions[i].GetName() == name)
             {
                 return myActions[i];
             }

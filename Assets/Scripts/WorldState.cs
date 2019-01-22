@@ -6,7 +6,6 @@ public class WorldState : MonoBehaviour
 {
     public static WorldState state = null;
     private GameObject player;
-    private bool doOnce;
     private Dictionary<myStates, bool> stateList;
 
     public enum myStates

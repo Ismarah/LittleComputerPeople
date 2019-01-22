@@ -126,7 +126,7 @@ public class PlayerActions : AgentActions
 
         //Eat a pizza------------------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[0, 0] = -0.3f;
+        actionEffects[0, 0] = -0.1f;
         actionEffects[0, 1] = 3;
 
         conditions = new Dictionary<WorldState.myStates, bool>();

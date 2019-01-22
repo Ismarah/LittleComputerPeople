@@ -10,4 +10,16 @@ public class Drawer : InteractableItem
 		myFloor = 2;
 	}
 
+    public override void PlayerArrivedAtMyPosition()
+    {
+        base.PlayerArrivedAtMyPosition();
+
+        Invoke("ChangeClothes", 0.5f);
+    }
+
+    private void ChangeClothes()
+    {
+        player.GetComponent<PlayerVisuals>().ChangeClothes();
+    }
+
 }

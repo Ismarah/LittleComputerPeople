@@ -56,7 +56,8 @@ public class GOAPplanner : MonoBehaviour
             if (ConditionsMet(possibleActions[i])) //no further action is required to complete this action
             {
                 allPossibleChains.Add(chain);
-                //chain.AddWalkTime(CalculateTimeToMove(possibleActions[i].GetObject()));
+                chain.AddWalkTime(CalculateTimeToMove(possibleActions[i].GetObject()));
+                Debug.Log("Walk time: " + CalculateTimeToMove(possibleActions[i].GetObject()) + " to object: " + possibleActions[i].GetObject());
                 completedChain = true;
 
                 if (allPossibleChains.Count == possibilities)
@@ -154,7 +155,6 @@ public class GOAPplanner : MonoBehaviour
     private List<Action> FindActionsToFulfillCondition(GameObject agent, WorldState.myStates newState, bool state)
     {
         List<Action> possibleActions = new List<Action>();
-
         Action[] allActions = agent.GetComponent<AgentActions>().GetAllActions();
 
         for (int i = 0; i < allActions.Length; i++)
@@ -182,26 +182,18 @@ public class GOAPplanner : MonoBehaviour
 
         foreach (KeyValuePair<WorldState.myStates, bool> condition in conditions)
         {
-            //Debug.Log("Worldstate " + condition.Key + " has to be " + condition.Value + ". It is currently " + WorldState.state.GetState(condition.Key));
-            if (WorldState.state.GetState(condition.Key) == condition.Value)
-            {
-                count++;
-            }
+            if (WorldState.state.GetState(condition.Key) == condition.Value) count++;
         }
-        if (count == conditionCount)
-        {
-            //Debug.Log(count + " == " + conditionCount + "  all conditions seem to be met.");
-            return true;
-        }
+        if (count == conditionCount) return true;
         else return false;
     }
 
     private Dictionary<WorldState.myStates, bool> GetRequiredConditions(Action action)
     {
         Dictionary<WorldState.myStates, bool> conditions = action.GetPreconditions();
-        Dictionary< WorldState.myStates, bool> temp = new Dictionary<WorldState.myStates, bool>();
+        Dictionary<WorldState.myStates, bool> temp = new Dictionary<WorldState.myStates, bool>();
 
-        foreach (KeyValuePair< WorldState.myStates, bool> condition in conditions)
+        foreach (KeyValuePair<WorldState.myStates, bool> condition in conditions)
         {
             if (WorldState.state.GetState(condition.Key) != condition.Value)
             {

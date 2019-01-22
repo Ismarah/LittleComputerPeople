@@ -148,11 +148,7 @@ public class PlayerState : MonoBehaviour
                 hygeneChange += temp[4, 0];
             }
         }
-        Debug.Log("Change need for " + action.GetName() + " for  -- " + time + "  --  seconds. Systemtime: " + Time.time);
-
         yield return new WaitForSecondsRealtime(time);
-
-        Debug.Log("Finished changing need for action " + action.GetName() + " for " + time + " seconds. Systemtime: " + Time.time);
 
         for (int i = 0; i < 5; i++)
         {

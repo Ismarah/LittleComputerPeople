@@ -87,6 +87,7 @@
     <Compile Include="Assets\Scripts\PlayerActions.cs" />
     <Compile Include="Assets\Scripts\PlayerCharacter.cs" />
     <Compile Include="Assets\Scripts\PlayerState.cs" />
+    <Compile Include="Assets\Scripts\PlayerVisuals.cs" />
     <Compile Include="Assets\Scripts\WorldState.cs" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/Isi/Documents/Unity/LittleComputerPeople/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>

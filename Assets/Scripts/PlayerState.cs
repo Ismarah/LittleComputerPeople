@@ -7,48 +7,16 @@ public class PlayerState : MonoBehaviour
 {
 
     [SerializeField]
-    private Image hunger;
-    [SerializeField]
-    private Image sleep;
-    [SerializeField]
-    private Image toilet;
-    [SerializeField]
-    private Image fun;
-    [SerializeField]
-    private Image hygene;
+    private Image hunger, sleep, toilet, fun, hygene;
 
     [SerializeField]
-    private float currentHunger;
-    [SerializeField]
-    private float currentSleep;
-    [SerializeField]
-    private float currentToilet;
-    [SerializeField]
-    private float currentFun;
-    [SerializeField]
-    private float currentHygene;
+    private float currentHunger, currentSleep, currentToilet, currentFun, currentHygene;
 
     [SerializeField]
-    private float hungerChange;
-    [SerializeField]
-    private float sleepChange;
-    [SerializeField]
-    private float toiletChange;
-    [SerializeField]
-    private float funChange;
-    [SerializeField]
-    private float hygeneChange;
+    private float hungerChange, sleepChange, toiletChange, funChange, hygeneChange;
 
     [SerializeField]
-    private float hungry;
-    [SerializeField]
-    private float sleepy;
-    [SerializeField]
-    private float needsToilet;
-    [SerializeField]
-    private float needsFun;
-    [SerializeField]
-    private float needsHygene;
+    private float hungry, sleepy, needsToilet, needsFun, needsHygene;
 
     private GameObject manager;
     private bool askedForAction;
@@ -61,44 +29,53 @@ public class PlayerState : MonoBehaviour
 
     void Update()
     {
+        AdjustNeedBars();
+        CheckNeedStates();        
+    }
+
+    private void AdjustNeedBars()
+    {
         hunger.fillAmount = 1 - currentHunger;
         sleep.fillAmount = 1 - currentSleep;
         toilet.fillAmount = 1 - currentToilet;
         fun.fillAmount = 1 - currentFun;
         hygene.fillAmount = 1 - currentHygene;
+    }
 
+    private void CheckNeedStates()
+    {
         if (askedForAction) return;
 
         if (currentHunger >= hungry)
         {
-            WorldState.state.ChangeState(6, false);
+            WorldState.state.ChangeState(WorldState.myStates.playerHasEaten, false);
             askedForAction = true;
-            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 6, true);
+            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, WorldState.myStates.playerHasEaten, true);
         }
         if (currentSleep >= sleepy)
         {
             askedForAction = true;
-            WorldState.state.ChangeState(17, true);
-            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 17, false);
+            WorldState.state.ChangeState(WorldState.myStates.playerIsTired, true);
+            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, WorldState.myStates.playerIsTired, false);
         }
         if (currentToilet >= needsToilet)
         {
             askedForAction = true;
-            WorldState.state.ChangeState(20, true);
-            WorldState.state.ChangeState(14, false);
-            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 14, true);
+            WorldState.state.ChangeState(WorldState.myStates.playerNeedsToilet, true);
+            WorldState.state.ChangeState(WorldState.myStates.playerWasOnToilet, false);
+            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, WorldState.myStates.playerWasOnToilet, true);
         }
         if (currentFun >= needsFun)
         {
             askedForAction = true;
-            WorldState.state.ChangeState(19, true);
-            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 19, false);
+            WorldState.state.ChangeState(WorldState.myStates.playerHasNothingToDo, true);
+            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, WorldState.myStates.playerHasNothingToDo, false);
         }
         if (currentHygene >= needsHygene)
         {
             askedForAction = true;
-            WorldState.state.ChangeState(16, false);
-            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 16, true);
+            WorldState.state.ChangeState(WorldState.myStates.playerIsClean, false);
+            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, WorldState.myStates.playerIsClean, true);
         }
     }
 
@@ -163,27 +140,12 @@ public class PlayerState : MonoBehaviour
             if (change != 0)
             {
                 needWasChanged = true;
-                switch (i)
-                {
-                    case 0:
-                        hungerChange += change;
-                        break;
-                    case 1:
-                        sleepChange += change;
-                        break;
-                    case 2:
-                        toiletChange += change;
-                        break;
-                    case 3:
-                        funChange += change;
-                        break;
-                    case 4:
-                        hygeneChange += change;
-                        break;
-                    default:
-                        break;
-                }
 
+                hungerChange += temp[0, 0];
+                sleepChange += temp[1, 0];
+                toiletChange += temp[2, 0];
+                funChange += temp[3, 0];
+                hygeneChange += temp[4, 0];
             }
         }
         Debug.Log("Change need for " + action.GetName() + " for  -- " + time + "  --  seconds. Systemtime: " + Time.time);
@@ -198,27 +160,11 @@ public class PlayerState : MonoBehaviour
 
             if (change != 0)
             {
-                switch (i)
-                {
-                    //make one thing
-                    case 0:
-                        hungerChange -= temp[0,0];
-                        break;
-                    case 1:
-                        sleepChange -= change;
-                        break;
-                    case 2:
-                        toiletChange -= change;
-                        break;
-                    case 3:
-                        funChange -= change;
-                        break;
-                    case 4:
-                        hygeneChange -= change;
-                        break;
-                    default:
-                        break;
-                }
+                hungerChange -= temp[0, 0];
+                sleepChange -= temp[1, 0];
+                toiletChange -= temp[2, 0];
+                funChange -= temp[3, 0];
+                hygeneChange -= temp[4, 0];
             }
         }
         if (needWasChanged) manager.GetComponent<ActionQueue>().FinishedAction(true);

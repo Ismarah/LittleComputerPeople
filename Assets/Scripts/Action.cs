@@ -5,18 +5,23 @@ using UnityEngine;
 public class Action
 {
     private float[,] actionStats; //index 0 = hunger, index 1 = sleep, index 3 = toilet, index 4 = fun; second float: 0 = change, 1 = time
-    private Dictionary<int, bool> conditions;
-    private Dictionary<int, bool> effects;
+    private Dictionary<WorldState.myStates, bool> conditions;
+    private Dictionary<WorldState.myStates, bool> effects;
     private GameObject myObject;
     private string name;
 
-    public Action(string _name, float[,] _actionStats, Dictionary<int, bool> _conditions, Dictionary<int, bool> _effects, GameObject obj)
+    public Action(string _name, float[,] _actionStats, Dictionary<WorldState.myStates, bool> _conditions, Dictionary<WorldState.myStates, bool> _effects, GameObject obj)
     {
         actionStats = _actionStats;
         conditions = _conditions;
         effects = _effects;
         myObject = obj;
         name = _name;
+    }
+
+    public Action()
+    {
+
     }
 
     public float[,] GetStats()
@@ -58,12 +63,12 @@ public class Action
         return cost;
     }
 
-    public Dictionary<int, bool> GetPreconditions()
+    public Dictionary<WorldState.myStates, bool> GetPreconditions()
     {
         return conditions;
     }
 
-    public Dictionary<int, bool> GetEffects()
+    public Dictionary<WorldState.myStates, bool> GetEffects()
     {
         return effects;
     }

@@ -39,8 +39,8 @@ public class ActionQueue : MonoBehaviour
         {
             Debug.Log("boooored");
             bored = true;
-            //WorldState.state.ChangeState(19, true);
-            //StartCoroutine(GettingBored());
+            WorldState.state.ChangeState(WorldState.myStates.playerHasNothingToDo, true);
+            StartCoroutine(GettingBored());
         }
     }
 
@@ -173,8 +173,8 @@ public class ActionQueue : MonoBehaviour
     {
         Debug.Log("Finished action " + playerActionQueue[0].GetName());
 
-        Dictionary<int, bool> temp = playerActionQueue[0].GetEffects();
-        foreach (KeyValuePair<int, bool> pair in temp)
+        Dictionary<WorldState.myStates, bool> temp = playerActionQueue[0].GetEffects();
+        foreach (KeyValuePair<WorldState.myStates, bool> pair in temp)
         {
             WorldState.state.ChangeState(pair.Key, pair.Value);
         }

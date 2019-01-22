@@ -17,11 +17,11 @@ public class PetActions : AgentActions
         //Ask player for food
         actionEffects = new float[4, 2];
 
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(11, true);
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.petIsHungry, true);
 
-        effects = new Dictionary<int, bool>();
-        effects.Add(12, true);
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.petAskedForFood, true);
 
         newAction = new Action("Food please", actionEffects, conditions, effects, player);
         myActions[0] = newAction;

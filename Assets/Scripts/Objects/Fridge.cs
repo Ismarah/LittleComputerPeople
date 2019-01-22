@@ -4,20 +4,15 @@ using UnityEngine;
 
 public class Fridge : InteractableItem
 {
-    Action meal;
-    Action snack;
-    Action refill;
-
     void Start()
     {
-        actionCount = 3;
         myFloor = 0;
-
         Init();
     }
 
-    public override void UseMe()
+    public override void PlayerArrivedAtMyPosition()
     {
+        base.PlayerArrivedAtMyPosition();
         useCount++;
 
         if (useCount >= 1)

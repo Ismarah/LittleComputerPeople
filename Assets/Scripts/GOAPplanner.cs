@@ -20,44 +20,25 @@ public class GOAPplanner : MonoBehaviour
         petFood = GameObject.FindGameObjectWithTag("PetFood");
     }
 
-    public void SetGoal(GameObject agent, int index, bool state)
+    public void SetGoal(GameObject agent, WorldState.myStates newState, bool state)
     {
         if (!goalSet)
         {
             goalSet = true;
-            currentGoal = NeedIndexToFulfillGoal(index);
+            currentGoal = NeedIndexToFulfillGoal(newState);
             currentAgent = agent;
             allPossibleChains = new List<ActionChain>();
             chain = new ActionChain();
 
-            switch (index)
-            {
-                case 6:
-                    possibilities = 3;
-                    break;
-                case 17:
-                    possibilities = 2;
-                    break;
-                case 14:
-                    possibilities = 1;
-                    break;
-                case 19:
-                    possibilities = 2;
-                    break;
-                case 16:
-                    possibilities = 2;
-                    break;
-                default:
-                    break;
-            }
+            FindPossibilities(newState);
 
-            FindActionChain(index, state);
+            FindActionChain(newState, state);
         }
     }
 
-    private void FindActionChain(int index, bool state)
+    private void FindActionChain(WorldState.myStates newState, bool state)
     {
-        List<Action> possibleActions = FindActionsToFulfillCondition(currentAgent, index, state);
+        List<Action> possibleActions = FindActionsToFulfillCondition(currentAgent, newState, state);
 
         for (int i = 0; i < possibleActions.Count; i++)
         {
@@ -86,8 +67,8 @@ public class GOAPplanner : MonoBehaviour
             }
             else //one or more conditions are not met yet
             {
-                Dictionary<int, bool> requiredConditions = GetRequiredConditions(possibleActions[i]);
-                foreach (KeyValuePair<int, bool> conditions in requiredConditions)
+                Dictionary<WorldState.myStates, bool> requiredConditions = GetRequiredConditions(possibleActions[i]);
+                foreach (KeyValuePair<WorldState.myStates, bool> conditions in requiredConditions)
                 {
                     FindActionChain(conditions.Key, conditions.Value);
                 }
@@ -170,7 +151,7 @@ public class GOAPplanner : MonoBehaviour
         return foundAProblem;
     }
 
-    private List<Action> FindActionsToFulfillCondition(GameObject agent, int index, bool state)
+    private List<Action> FindActionsToFulfillCondition(GameObject agent, WorldState.myStates newState, bool state)
     {
         List<Action> possibleActions = new List<Action>();
 
@@ -178,14 +159,14 @@ public class GOAPplanner : MonoBehaviour
 
         for (int i = 0; i < allActions.Length; i++)
         {
-            Dictionary<int, bool> temp = allActions[i].GetEffects();
+            Dictionary<WorldState.myStates, bool> temp = allActions[i].GetEffects();
 
-            if (temp.ContainsKey(index))
+            if (temp.ContainsKey(newState))
             {
-                if (temp[index] == state)
+                if (temp[newState] == state)
                 {
                     possibleActions.Add(allActions[i]);
-                    Debug.Log("Found a possible action to change world state " + index + " to " + state + "  : allActions[" + i + "]");
+                    Debug.Log("Found a possible action to change world state " + newState + " to " + state + "  : " + allActions[i].GetName());
                 }
             }
         }
@@ -195,11 +176,11 @@ public class GOAPplanner : MonoBehaviour
 
     private bool ConditionsMet(Action action)
     {
-        Dictionary<int, bool> conditions = action.GetPreconditions();
+        Dictionary<WorldState.myStates, bool> conditions = action.GetPreconditions();
         int conditionCount = conditions.Keys.Count;
         int count = 0;
 
-        foreach (KeyValuePair<int, bool> condition in conditions)
+        foreach (KeyValuePair<WorldState.myStates, bool> condition in conditions)
         {
             //Debug.Log("Worldstate " + condition.Key + " has to be " + condition.Value + ". It is currently " + WorldState.state.GetState(condition.Key));
             if (WorldState.state.GetState(condition.Key) == condition.Value)
@@ -215,12 +196,12 @@ public class GOAPplanner : MonoBehaviour
         else return false;
     }
 
-    private Dictionary<int, bool> GetRequiredConditions(Action action)
+    private Dictionary<WorldState.myStates, bool> GetRequiredConditions(Action action)
     {
-        Dictionary<int, bool> conditions = action.GetPreconditions();
-        Dictionary<int, bool> temp = new Dictionary<int, bool>();
+        Dictionary<WorldState.myStates, bool> conditions = action.GetPreconditions();
+        Dictionary< WorldState.myStates, bool> temp = new Dictionary<WorldState.myStates, bool>();
 
-        foreach (KeyValuePair<int, bool> condition in conditions)
+        foreach (KeyValuePair< WorldState.myStates, bool> condition in conditions)
         {
             if (WorldState.state.GetState(condition.Key) != condition.Value)
             {
@@ -230,19 +211,43 @@ public class GOAPplanner : MonoBehaviour
         return temp;
     }
 
-    private int NeedIndexToFulfillGoal(int goal)
+    private void FindPossibilities(WorldState.myStates newState)
+    {
+        switch (newState)
+        {
+            case WorldState.myStates.playerHasEaten:
+                possibilities = 3;
+                break;
+            case WorldState.myStates.playerIsTired:
+                possibilities = 2;
+                break;
+            case WorldState.myStates.playerWasOnToilet:
+                possibilities = 1;
+                break;
+            case WorldState.myStates.playerHasNothingToDo:
+                possibilities = 2;
+                break;
+            case WorldState.myStates.playerIsClean:
+                possibilities = 2;
+                break;
+            default:
+                break;
+        }
+    }
+
+    private int NeedIndexToFulfillGoal(WorldState.myStates goal)
     {
         switch (goal)
         {
-            case 6:
+            case WorldState.myStates.playerHasEaten:
                 return 0;
-            case 17:
+            case WorldState.myStates.playerIsTired:
                 return 1;
-            case 14:
+            case WorldState.myStates.playerWasOnToilet:
                 return 2;
-            case 15:
+            case WorldState.myStates.playerHasFun:
                 return 3;
-            case 16:
+            case WorldState.myStates.playerIsClean:
                 return 4;
             default:
                 return -1;

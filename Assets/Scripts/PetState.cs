@@ -53,30 +53,26 @@ public class PetState : MonoBehaviour
 
         if (currentHunger >= hungry)
         {
-            WorldState.state.ChangeState(13, false);
-            WorldState.state.ChangeState(11, true);
+            WorldState.state.ChangeState(WorldState.myStates.petHasEaten, false);
+            WorldState.state.ChangeState(WorldState.myStates.petIsHungry, true);
             askedForAction = true;
-            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, 13, true);
+            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, WorldState.myStates.petHasEaten, true);
         }
         if (currentSleep >= sleepy)
         {
-            askedForAction = true;
-            //manager.GetComponent<GOAPplanner>().GoToBed();
+            //askedForAction = true;
         }
         if (currentToilet >= needsToilet)
         {
-            askedForAction = true;
-            //manager.GetComponent<GOAPplanner>().UseToilet();
+            //askedForAction = true;
         }
         if (currentFun >= needsFun)
         {
-            askedForAction = true;
-            //manager.GetComponent<GOAPplanner>().HaveFun();
+            //askedForAction = true;
         }
         if (currentAttention >= needsAttention)
         {
-            askedForAction = true;
-            //manager.GetComponent<GOAPplanner>
+            //askedForAction = true;
         }
     }
 

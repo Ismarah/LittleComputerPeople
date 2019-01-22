@@ -7,8 +7,8 @@ public class AgentActions : MonoBehaviour
 
     protected Action[] myActions;
     protected float[,] actionEffects;
-    protected Dictionary<int, bool> conditions;
-    protected Dictionary<int, bool> effects;
+    protected Dictionary<WorldState.myStates, bool> conditions;
+    protected Dictionary<WorldState.myStates, bool> effects;
     protected Action newAction;
     protected GameObject player;
 
@@ -48,6 +48,18 @@ public class AgentActions : MonoBehaviour
     public Action GetAction(int i)
     {
         return myActions[i];
+    }
+
+    public Action GetAction(string name)
+    {
+        for (int i = 0; i < myActions.Length; i++)
+        {
+            if(myActions[i].GetName() == name)
+            {
+                return myActions[i];
+            }
+        }
+        return new Action();
     }
 
 }

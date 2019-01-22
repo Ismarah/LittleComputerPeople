@@ -4,25 +4,21 @@ using UnityEngine;
 
 public class Toilet : InteractableItem
 {
-    Action useToilet;
-    Action cleanToilet;
-
     void Start()
     {
-        actionCount = 2;
         myFloor = 0;
-
         Init();
     }
 
-    public override void UseMe()
+    public override void PlayerArrivedAtMyPosition()
     {
+        base.PlayerArrivedAtMyPosition();
         useCount++;
 
         if (useCount >= 3)
         {
             useCount = 0;
-            WorldState.state.ChangeState(3, false);
+            WorldState.state.ChangeState(WorldState.myStates.toiletIsClean, false);
         }
     }
 }

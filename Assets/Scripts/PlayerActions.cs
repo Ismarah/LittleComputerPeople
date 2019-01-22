@@ -25,12 +25,12 @@ public class PlayerActions : AgentActions
         actionEffects[0, 0] = -0.2f;
         actionEffects[0, 1] = 4;
 
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(2, true);
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.FoodCooked, true);
 
-        effects = new Dictionary<int, bool>();
-        effects.Add(2, false);
-        effects.Add(6, true);
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.FoodCooked, false);
+        effects.Add(WorldState.myStates.playerHasEaten, true);
 
         newAction = new Action("Eat a meal", actionEffects, conditions, effects, fridge);
         myActions[0] = newAction;
@@ -41,12 +41,12 @@ public class PlayerActions : AgentActions
         actionEffects[0, 0] = -0.2f;
         actionEffects[0, 1] = 2;
 
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(0, true);
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.snackInFridge, true);
 
-        effects = new Dictionary<int, bool>();
-        effects.Add(0, false);
-        effects.Add(6, true);
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.snackInFridge, false);
+        effects.Add(WorldState.myStates.playerHasEaten, true);
 
         newAction = new Action("Eat a snack", actionEffects, conditions, effects, fridge);
         myActions[1] = newAction;
@@ -55,11 +55,13 @@ public class PlayerActions : AgentActions
         //Cook a meal------------------------------------------------------------
         actionEffects = new float[5, 2];
         actionEffects[0, 1] = 4;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(1, true);
-        effects = new Dictionary<int, bool>();
-        effects.Add(1, false);
-        effects.Add(2, true);
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.IngredientsInFridge, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.IngredientsInFridge, false);
+        effects.Add(WorldState.myStates.FoodCooked, true);
 
         newAction = new Action("Cook a meal", actionEffects, conditions, effects, fridge);
         myActions[2] = newAction;
@@ -68,10 +70,13 @@ public class PlayerActions : AgentActions
         //Refill ingredients-----------------------------------------------------
         actionEffects = new float[5, 2];
         actionEffects[0, 1] = 1;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(5, true);
-        effects = new Dictionary<int, bool>();
-        effects.Add(1, true);
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.hasMoney, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.IngredientsInFridge, true);
+
         newAction = new Action("Refill ingredients", actionEffects, conditions, effects, fridge);
         myActions[3] = newAction;
         //-----------------------------------------------------------------------
@@ -79,10 +84,12 @@ public class PlayerActions : AgentActions
         //Order a pizza----------------------------------------------------------
         actionEffects = new float[5, 2];
         actionEffects[0, 1] = 1;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(5, true);
-        effects = new Dictionary<int, bool>();
-        effects.Add(8, true);
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.hasMoney, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.pizzaOnTheWay, true);
 
         newAction = new Action("Order a pizza", actionEffects, conditions, effects, player);
         myActions[4] = newAction;
@@ -91,11 +98,13 @@ public class PlayerActions : AgentActions
         //Wait for pizza----------------------------------------------------------
         actionEffects = new float[5, 2];
         actionEffects[0, 1] = 3;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(8, true);
-        effects = new Dictionary<int, bool>();
-        effects.Add(9, true);
-        effects.Add(8, false);
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.pizzaOnTheWay, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.doorBellRang, true);
+        effects.Add(WorldState.myStates.pizzaOnTheWay, false);
 
         newAction = new Action("Wait for pizza", actionEffects, conditions, effects, player);
         myActions[5] = newAction;
@@ -104,10 +113,12 @@ public class PlayerActions : AgentActions
         //Fetch pizza from door--------------------------------------------------
         actionEffects = new float[5, 2];
         actionEffects[0, 1] = 1;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(9, true);
-        effects = new Dictionary<int, bool>();
-        effects.Add(7, true);
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.doorBellRang, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.pizzaIsAvailable, true);
 
         newAction = new Action("Fetch pizza", actionEffects, conditions, effects, door);
         myActions[6] = newAction;
@@ -115,13 +126,15 @@ public class PlayerActions : AgentActions
 
         //Eat a pizza------------------------------------------------------------
         actionEffects = new float[5, 2];
-        actionEffects[0, 0] = -0.2f;
+        actionEffects[0, 0] = -0.3f;
         actionEffects[0, 1] = 3;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(7, true);
-        effects = new Dictionary<int, bool>();
-        effects.Add(6, true);
-        effects.Add(7, false);
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.pizzaIsAvailable, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.playerHasEaten, true);
+        effects.Add(WorldState.myStates.pizzaIsAvailable, false);
 
         newAction = new Action("Eat a pizza",actionEffects, conditions, effects, player);
         myActions[7] = newAction;
@@ -134,12 +147,13 @@ public class PlayerActions : AgentActions
         actionEffects = new float[5, 2];
         actionEffects[1, 0] = -0.1f;
         actionEffects[1, 1] = 8;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(18, false);
 
-        effects = new Dictionary<int, bool>();
-        effects.Add(10, true);
-        effects.Add(17, false);
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.playerIsWearingStreetClothes, false);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.playerSleptThroughNight, true);
+        effects.Add(WorldState.myStates.playerIsTired, false);
 
         newAction = new Action("Sleep", actionEffects, conditions, effects, bed);
         myActions[8] = newAction;
@@ -150,11 +164,11 @@ public class PlayerActions : AgentActions
         actionEffects[1, 0] = -0.2f;
         actionEffects[1, 1] = 2;
 
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(17, true);
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.playerIsTired, true);
 
-        effects = new Dictionary<int, bool>();
-        effects.Add(17, false);
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.playerIsTired, false);
 
         newAction = new Action("Take a nap", actionEffects, conditions, effects, bed);
         myActions[9] = newAction;
@@ -164,12 +178,12 @@ public class PlayerActions : AgentActions
         actionEffects = new float[5, 2];
         actionEffects[1, 0] = 0;
         actionEffects[1, 1] = 0.5f;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(4, false);
-        conditions.Add(18, true);
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.daytime, false);
+        conditions.Add(WorldState.myStates.playerIsWearingStreetClothes, true);
 
-        effects = new Dictionary<int, bool>();
-        effects.Add(18, false);
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.playerIsWearingStreetClothes, false);
 
         newAction = new Action("Put on pyjamas", actionEffects, conditions, effects, drawer);
         myActions[10] = newAction;
@@ -182,10 +196,12 @@ public class PlayerActions : AgentActions
         actionEffects = new float[5, 2];
         actionEffects[3, 0] = -0.1f;
         actionEffects[3, 1] = 3;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(19, true);
-        effects = new Dictionary<int, bool>();
-        effects.Add(19, false);
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.playerHasNothingToDo, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.playerHasNothingToDo, false);
 
         newAction = new Action("Play video games", actionEffects, conditions, effects, computer);
         myActions[11] = newAction;
@@ -195,10 +211,12 @@ public class PlayerActions : AgentActions
         actionEffects = new float[5, 2];
         actionEffects[3, 0] = -0.1f;
         actionEffects[3, 1] = 4;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(19, true);
-        effects = new Dictionary<int, bool>();
-        effects.Add(19, false);
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.playerHasNothingToDo, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.playerHasNothingToDo, false);
 
         newAction = new Action("Watch TV", actionEffects, conditions, effects, couch);
         myActions[12] = newAction;
@@ -213,12 +231,14 @@ public class PlayerActions : AgentActions
         actionEffects[2, 1] = 2;
         actionEffects[4, 0] = 0.15f;
         actionEffects[4, 1] = 2;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(20, true);
-        conditions.Add(3, true);
-        effects = new Dictionary<int, bool>();
-        effects.Add(20, false);
-        effects.Add(14, true);
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.playerNeedsToilet, true);
+        conditions.Add(WorldState.myStates.toiletIsClean, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.playerNeedsToilet, false);
+        effects.Add(WorldState.myStates.playerWasOnToilet, true);
 
         newAction = new Action("Use toilet", actionEffects, conditions, effects, toilet);
         myActions[13] = newAction;
@@ -230,10 +250,10 @@ public class PlayerActions : AgentActions
         actionEffects[3, 1] = 3;
         actionEffects[4, 0] = 0.2f;
         actionEffects[4, 1] = 3;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(3, false);
-        effects = new Dictionary<int, bool>();
-        effects.Add(3, true);
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.toiletIsClean, false);
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.toiletIsClean, true);
 
         newAction = new Action("Clean toilet", actionEffects, conditions, effects, toilet);
         myActions[14] = newAction;
@@ -246,10 +266,12 @@ public class PlayerActions : AgentActions
         actionEffects = new float[5, 2];
         actionEffects[4, 0] = -0.2f;
         actionEffects[4, 1] = 4;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(16, false);
-        effects = new Dictionary<int, bool>();
-        effects.Add(16, true);
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.playerIsClean, false);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.playerIsClean, true);
 
         newAction = new Action("Take a shower", actionEffects, conditions, effects, shower);
         myActions[15] = newAction;
@@ -259,11 +281,13 @@ public class PlayerActions : AgentActions
         actionEffects = new float[5, 2];
         actionEffects[4, 0] = -0.15f;
         actionEffects[4, 1] = 2;
-        conditions = new Dictionary<int, bool>();
-        conditions.Add(14, true);
-        effects = new Dictionary<int, bool>();
-        effects.Add(16, true);
-        effects.Add(14, false);
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.playerWasOnToilet, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.playerIsClean, true);
+        effects.Add(WorldState.myStates.playerWasOnToilet, false);
 
         newAction = new Action("Wash hands", actionEffects, conditions, effects, sink);
         myActions[16] = newAction;

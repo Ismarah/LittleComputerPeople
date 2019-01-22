@@ -3690,7 +3690,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a8d738b43a01944863da5fb013ccf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  states: 
 --- !u!1 &1296579070 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1850234542314984, guid: bf6e12d5aa2b11846a936f7171ce891c,
@@ -4595,7 +4594,8 @@ Prefab:
       propertyPath: myUI
       value: 
       objectReference: {fileID: 482107053}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 65652075083210648, guid: 2f042791463f1014c9907e78c4a93d68, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 2f042791463f1014c9907e78c4a93d68, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &1534458533

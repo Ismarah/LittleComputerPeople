@@ -4,14 +4,11 @@ using UnityEngine;
 
 public class Shower : InteractableItem
 {
-
     void Start()
     {
-        actionCount = 1;
         myFloor = 0;
-
         Init();
     }
 
-    
+
 }

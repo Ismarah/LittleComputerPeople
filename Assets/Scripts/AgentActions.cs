@@ -4,24 +4,13 @@ using UnityEngine;
 
 public class AgentActions : MonoBehaviour
 {
-    protected Action[] myActions;
-    protected float[,] actionEffects;
-    protected Dictionary<WorldState.myStates, bool> conditions;
-    protected Dictionary<WorldState.myStates, bool> effects;
+    protected List<Action> myActions;
+    protected float[] actionEffects;
+    protected Dictionary<WorldState.myStates, bool> conditions, effects;
     protected Action newAction;
     protected GameObject player;
-
-    protected GameObject fridge;
-    protected GameObject bed;
-    protected GameObject toilet;
-    protected GameObject computer;
-    protected GameObject shower;
-    protected GameObject door;
-    protected GameObject petFood;
-    protected GameObject pet;
-    protected GameObject drawer;
-    protected GameObject couch;
-    protected GameObject sink;
+    protected float time;
+    protected GameObject fridge, bed, toilet, computer, shower, door, petFood, pet, drawer, couch, sink;
 
     public void Init()
     {
@@ -39,7 +28,7 @@ public class AgentActions : MonoBehaviour
         shower = GameObject.FindGameObjectWithTag("Shower");
     }
 
-    public Action[] GetAllActions()
+    public List<Action> GetAllActions()
     {
         return myActions;
     }
@@ -51,7 +40,7 @@ public class AgentActions : MonoBehaviour
 
     public Action GetAction(string name)
     {
-        for (int i = 0; i < myActions.Length; i++)
+        for (int i = 0; i < myActions.Count; i++)
         {
             if (myActions[i].GetName() == name)
             {

@@ -14,13 +14,7 @@ public class AgentMovement : MonoBehaviour
     [SerializeField]
     private Animator anim;
     [SerializeField]
-    private Transform firstStairsLower;
-    [SerializeField]
-    private Transform firstStairsUpper;
-    [SerializeField]
-    private Transform secondStairsLower;
-    [SerializeField]
-    private Transform secondStairsUpper;
+    private Transform firstStairsLower, firstStairsUpper, secondStairsLower, secondStairsUpper;
     private Text actionText;
 
     void Start()
@@ -34,23 +28,16 @@ public class AgentMovement : MonoBehaviour
         target = newTarget;
         int targetFloor = -1;
         if (target.GetComponent<InteractableItem>() != null)
-        {
             targetFloor = target.GetComponent<InteractableItem>().GetFloor();
-        }
         else if (target.GetComponent<AgentMovement>() != null)
-        {
             targetFloor = target.GetComponent<AgentMovement>().GetFloor();
-        }
         if (targetFloor == floor)
         {
             //player is already on correct floor
             targetPos = new Vector2(newTarget.transform.position.x, transform.position.y);
             StartCoroutine(MoveToPos(targetPos));
         }
-        else
-        {
-            StartCoroutine(UseStairs(targetFloor));
-        }
+        else StartCoroutine(UseStairs(targetFloor));
     }
 
     public int GetFloor()

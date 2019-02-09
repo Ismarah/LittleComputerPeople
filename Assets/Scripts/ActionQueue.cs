@@ -11,7 +11,6 @@ public class ActionQueue : MonoBehaviour
     private GameObject pet;
     private bool processingActionforPlayer;
     private bool processingActionforPet;
-    public Text actionText;
     bool bored;
     public string[] actionNames;
 
@@ -31,13 +30,8 @@ public class ActionQueue : MonoBehaviour
                 actionNames[i] = playerActionQueue[i].GetName();
             else actionNames[i] = "null";
         }
-        //string name = "";
-        //if (playerActionQueue[0] != null) name = playerActionQueue[0].GetName();
-        //else name = "null";
-        //Debug.Log(name);
         if (playerActionQueue[0] == null && !bored)
         {
-            Debug.Log("boooored");
             bored = true;
             WorldState.state.ChangeState(WorldState.myStates.playerHasNothingToDo, true);
             StartCoroutine(GettingBored());
@@ -50,8 +44,7 @@ public class ActionQueue : MonoBehaviour
 
         if (playerActionQueue[0] == null)
         {
-            Debug.Log("still bored");
-            int action = player.GetComponent<PlayerCharacter>().GetFavoriteAction();
+            string action = player.GetComponent<PlayerCharacter>().GetFavoriteAction();
             Action favoriteAction = player.GetComponent<PlayerActions>().GetAction(action);
             if (!IsEnqueued(favoriteAction))
                 AddToQueue(favoriteAction, player);
@@ -65,16 +58,17 @@ public class ActionQueue : MonoBehaviour
         {
             if (playerActionQueue[0].GetObject().GetComponent<InteractableItem>() != null)
             {
-                Debug.Log("Queue action " + playerActionQueue[0].GetName() + " with an interactable item: " + playerActionQueue[0].GetObject().name);
                 playerActionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(playerActionQueue[0]);
+                player.GetComponent<PlayerVisuals>().ChangeTextColor(false);
             }
+
             else if (playerActionQueue[0].GetObject().GetComponent<PlayerState>() != null)
             {
-                Debug.Log("Queue action " + playerActionQueue[0] + " at players position");
                 player.GetComponent<PlayerState>().ManipulateNeedChange(playerActionQueue[0]);
-
+                player.GetComponent<PlayerVisuals>().ChangeTextColor(true);
             }
-            actionText.text = playerActionQueue[0].GetName();
+
+            player.GetComponent<PlayerVisuals>().ChangeActionText(playerActionQueue[0].GetName());
             player.GetComponent<AgentMovement>().NewTarget(playerActionQueue[0].GetObject());
             processingActionforPlayer = true;
         }
@@ -125,60 +119,17 @@ public class ActionQueue : MonoBehaviour
         }
     }
 
-    public void InsertActionAtStartOfQueue(Action newAction, GameObject agent)
-    {
-        if (agent == player)
-        {
-            for (int i = playerActionQueue.Length - 1; i >= 0; i--)
-            {
-                string name = "";
-                if (playerActionQueue[i] != null)
-                {
-                    name = playerActionQueue[i].GetName();
-                }
-                else
-                {
-                    name = "null";
-                }
-                Debug.Log("Action at index " + i + " is called " + name);
-                if (i == 0)
-                {
-                    playerActionQueue[i] = newAction;
-                    PlayerActionQueue();
-                }
-                else
-                {
-                    playerActionQueue[i] = playerActionQueue[i - 1];
-                    playerActionQueue[i] = null;
-                }
-            }
-        }
-
-        for (int i = 0; i < playerActionQueue.Length; i++)
-        {
-            string name = "";
-            if (playerActionQueue[i] != null)
-            {
-                name = playerActionQueue[i].GetName();
-            }
-            else
-            {
-                name = "null";
-            }
-            Debug.Log("Action at index " + i + " is called " + name);
-        }
-    }
-
     public void FinishedAction(bool finished)
     {
-        Debug.Log("Finished action " + playerActionQueue[0].GetName());
-
         Dictionary<WorldState.myStates, bool> temp = playerActionQueue[0].GetEffects();
         foreach (KeyValuePair<WorldState.myStates, bool> pair in temp)
         {
             WorldState.state.ChangeState(pair.Key, pair.Value);
         }
 
+        player.GetComponent<PlayerVisuals>().SetAnimationState(playerActionQueue[0].GetAnimation().Key, false);
+        if (playerActionQueue[0].GetObject().GetComponent<InteractableItem>().HasAnimation())
+            playerActionQueue[0].GetObject().GetComponent<InteractableItem>().ReverseAnimation();
         playerActionQueue[0] = null;
 
         for (int i = 1; i < playerActionQueue.Length; i++)
@@ -189,18 +140,10 @@ public class ActionQueue : MonoBehaviour
                 playerActionQueue[i] = null;
             }
         }
-        if (finished)
-        {
-            player.GetComponent<PlayerState>().ActionPlanned();
-        }
+        if (finished) player.GetComponent<PlayerState>().ActionPlanned();
         processingActionforPlayer = false;
 
-
-        if (playerActionQueue[0] != null)
-        {
-            Debug.Log("Next action : " + playerActionQueue[0].GetName());
-            PlayerActionQueue();
-        }
+        if (playerActionQueue[0] != null) PlayerActionQueue();
     }
 
     public bool IsEnqueued(Action action)

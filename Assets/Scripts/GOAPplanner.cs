@@ -47,24 +47,21 @@ public class GOAPplanner : MonoBehaviour
                 chain = new ActionChain();
                 completedChain = false;
             }
-            if (possibleActions[i] == player.GetComponent<PlayerActions>().GetAction(13))
-            {
-                chain.Add(player.GetComponent<PlayerActions>().GetAction(16));
-            }
+            if (possibleActions[i] == player.GetComponent<PlayerActions>().GetAction("Use toilet"))
+                chain.Add(player.GetComponent<PlayerActions>().GetAction("Wash hands"));
+            else if (possibleActions[i] == player.GetComponent<PlayerActions>().GetAction("Sleep"))
+                chain.Add(player.GetComponent<PlayerActions>().GetAction("Put on street clothes"));
+
             chain.Add(possibleActions[i]);
 
             if (ConditionsMet(possibleActions[i])) //no further action is required to complete this action
             {
-                allPossibleChains.Add(chain);
                 chain.AddWalkTime(CalculateTimeToMove(possibleActions[i].GetObject()));
-                Debug.Log("Walk time: " + CalculateTimeToMove(possibleActions[i].GetObject()) + " to object: " + possibleActions[i].GetObject());
+                Debug.Log("For action " + possibleActions[i].GetName() + "Time to move to " + possibleActions[i].GetObject() + ": " + CalculateTimeToMove(possibleActions[i].GetObject()));
+                allPossibleChains.Add(chain);
                 completedChain = true;
+                if (allPossibleChains.Count == possibilities) FindBestActionChain();
 
-                if (allPossibleChains.Count == possibilities)
-                {
-                    Debug.Log("Found all possible action chains. Count: " + allPossibleChains.Count);
-                    FindBestActionChain();
-                }
             }
             else //one or more conditions are not met yet
             {
@@ -106,13 +103,8 @@ public class GOAPplanner : MonoBehaviour
                 }
                 break;
             }
-
         }
-        if (bestValue != -1 && bestIndex != -1)
-        {
-            Debug.Log("Decided that action at index " + bestIndex + " is the best option. Value change: " + bestValue + "  Time needed: " + allPossibleChains[bestIndex].GetChainDuration());
-            AddChosenChainToQueue(bestIndex);
-        }
+        if (bestValue != -1 && bestIndex != -1) AddChosenChainToQueue(bestIndex);
         else
         {
             //no action can be done because other needs are more important
@@ -122,6 +114,7 @@ public class GOAPplanner : MonoBehaviour
     private void AddChosenChainToQueue(int index)
     {
         List<Action> newQueue = allPossibleChains[index].GetActions();
+        Debug.Log(allPossibleChains[index].GetChainStateChange());
         newQueue.Reverse();
         for (int i = 0; i < newQueue.Count; i++)
         {
@@ -155,9 +148,9 @@ public class GOAPplanner : MonoBehaviour
     private List<Action> FindActionsToFulfillCondition(GameObject agent, WorldState.myStates newState, bool state)
     {
         List<Action> possibleActions = new List<Action>();
-        Action[] allActions = agent.GetComponent<AgentActions>().GetAllActions();
+        List<Action> allActions = agent.GetComponent<AgentActions>().GetAllActions();
 
-        for (int i = 0; i < allActions.Length; i++)
+        for (int i = 0; i < allActions.Count; i++)
         {
             Dictionary<WorldState.myStates, bool> temp = allActions[i].GetEffects();
 
@@ -248,7 +241,6 @@ public class GOAPplanner : MonoBehaviour
 
     private float CalculateTimeToMove(GameObject target)
     {
-        Debug.Log(target);
         int targetFloor = -1;
         if (target.GetComponent<InteractableItem>() != null)
             targetFloor = target.GetComponent<InteractableItem>().GetFloor();
@@ -336,7 +328,6 @@ public class GOAPplanner : MonoBehaviour
             }
         }
         time = distance / player.GetComponent<AgentMovement>().GetMoveSpeed();
-        Debug.Log("Time: " + time + " Target: " + target);
         return time;
     }
 }

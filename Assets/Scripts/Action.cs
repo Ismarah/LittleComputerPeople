@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class Action
 {
-    private float[,] actionStats; //index 0 = hunger, index 1 = sleep, index 3 = toilet, index 4 = fun; second float: 0 = change, 1 = time
+    private float[] actionStats; //index 0 = hunger, index 1 = sleep, index 3 = toilet, index 4 = fun; second float: 0 = change, 1 = time
     private Dictionary<WorldState.myStates, bool> conditions;
     private Dictionary<WorldState.myStates, bool> effects;
     private GameObject myObject;
     private string name;
+    private float time;
+    private string animation;
+    private bool hasAnimation;
+    private bool animationLeft;
 
-    public Action(string _name, float[,] _actionStats, Dictionary<WorldState.myStates, bool> _conditions, Dictionary<WorldState.myStates, bool> _effects, GameObject obj)
+    public Action(string _name, float _time, float[] _actionStats, Dictionary<WorldState.myStates, bool> _conditions, Dictionary<WorldState.myStates, bool> _effects, GameObject obj)
     {
         actionStats = _actionStats;
         conditions = _conditions;
         effects = _effects;
         myObject = obj;
         name = _name;
+        time = _time;
     }
 
     public Action()
@@ -24,7 +29,24 @@ public class Action
 
     }
 
-    public float[,] GetStats()
+    public bool HasAnimation()
+    {
+        return hasAnimation;
+    }
+
+    public void AddAnimation(string anim, bool left)
+    {
+        animationLeft = left;
+        animation = anim;
+        hasAnimation = true;
+    }
+
+    public KeyValuePair<string, bool> GetAnimation()
+    {
+        return new KeyValuePair<string, bool>(animation, animationLeft);
+    }
+
+    public float[] GetStats()
     {
         return actionStats;
     }
@@ -34,20 +56,8 @@ public class Action
         return name;
     }
 
-    public float GetTime(int i)
-    {
-        return actionStats[i, 1];
-    }
-
     public float GetTime()
     {
-        float time = 0;
-
-        for (int i = 0; i < 5; i++)
-        {
-            time += actionStats[i, 1];
-        }
-
         return time;
     }
 
@@ -57,9 +67,8 @@ public class Action
 
         for (int i = 0; i < 5; i++)
         {
-            cost += actionStats[i, 0] * actionStats[i, 1] * Time.deltaTime;
+            cost += actionStats[i] * time;
         }
-
         return cost;
     }
 

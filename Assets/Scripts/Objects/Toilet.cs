@@ -20,5 +20,7 @@ public class Toilet : InteractableItem
             useCount = 0;
             WorldState.state.ChangeState(WorldState.myStates.toiletIsClean, false);
         }
+
+        GetComponent<Animator>().SetBool("open", true);
     }
 }

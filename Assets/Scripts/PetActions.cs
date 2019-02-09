@@ -7,7 +7,7 @@ public class PetActions : AgentActions
     void Start()
     {
         Init();
-        myActions = new Action[1];
+        myActions = new List<Action>();
 
         CreateActions();
     }
@@ -15,7 +15,8 @@ public class PetActions : AgentActions
     private void CreateActions()
     {
         //Ask player for food
-        actionEffects = new float[4, 2];
+        actionEffects = new float[4];
+        time = 1;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.petIsHungry, true);
@@ -23,7 +24,7 @@ public class PetActions : AgentActions
         effects = new Dictionary<WorldState.myStates, bool>();
         effects.Add(WorldState.myStates.petAskedForFood, true);
 
-        newAction = new Action("Food please", actionEffects, conditions, effects, player);
+        newAction = new Action("Food please", time, actionEffects, conditions, effects, player);
         myActions[0] = newAction;
         //-----------------------------------------------------------------------
     }

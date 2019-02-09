@@ -13,11 +13,25 @@ public class InteractableItem : MonoBehaviour
     protected Action[] nextActions;
     [SerializeField]
     protected int useCount;
+    [SerializeField]
+    protected string animation;
 
     protected void Init()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         nextActions = new Action[10];
+    }
+
+    public bool HasAnimation()
+    {
+        if (animation != "")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public int GetFloor()
@@ -28,11 +42,17 @@ public class InteractableItem : MonoBehaviour
     public virtual void PlayerArrivedAtMyPosition()
     {
         player.GetComponent<PlayerState>().ManipulateNeedChange(nextActions[0]);
+        if (nextActions[0].HasAnimation())
+        {
+            player.GetComponent<PlayerVisuals>().ChangeDirection(nextActions[0].GetAnimation().Value);
+            player.GetComponent<PlayerVisuals>().SetAnimationState(nextActions[0].GetAnimation().Key, true);
+                        }
+        player.GetComponent<PlayerVisuals>().ChangeTextColor(true);
         nextActions[0] = null;
 
         for (int i = 0; i < nextActions.Length; i++)
         {
-            if(nextActions[i] != null)
+            if (nextActions[i] != null)
             {
                 nextActions[i - 1] = nextActions[i];
                 nextActions[i] = null;
@@ -50,5 +70,10 @@ public class InteractableItem : MonoBehaviour
                 break;
             }
         }
+    }
+
+    public void ReverseAnimation()
+    {
+        GetComponent<Animator>().SetBool(animation, false);
     }
 }

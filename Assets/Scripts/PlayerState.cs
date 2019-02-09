@@ -8,17 +8,14 @@ public class PlayerState : MonoBehaviour
 
     [SerializeField]
     private Image hunger, sleep, toilet, fun, hygene;
-
     [SerializeField]
     private float currentHunger, currentSleep, currentToilet, currentFun, currentHygene;
-
     [SerializeField]
     private float hungerChange, sleepChange, toiletChange, funChange, hygeneChange;
-
     [SerializeField]
     private float hungry, sleepy, needsToilet, needsFun, needsHygene;
-
     private GameObject manager;
+    [SerializeField]
     private bool askedForAction;
 
     void Start()
@@ -30,7 +27,7 @@ public class PlayerState : MonoBehaviour
     void Update()
     {
         AdjustNeedBars();
-        CheckNeedStates();        
+        CheckNeedStates();
     }
 
     private void AdjustNeedBars()
@@ -81,6 +78,7 @@ public class PlayerState : MonoBehaviour
 
     public void ActionPlanned()
     {
+        Debug.Log("Player ready for new action");
         askedForAction = false;
     }
 
@@ -96,7 +94,6 @@ public class PlayerState : MonoBehaviour
         if (currentFun > 1) currentFun = 1;
         if (currentHygene < 0) currentHygene = 0;
         if (currentHygene > 1) currentHygene = 1;
-
     }
 
     private IEnumerator NeedChange()
@@ -115,54 +112,42 @@ public class PlayerState : MonoBehaviour
 
     public void ManipulateNeedChange(Action action)
     {
-        if (action.GetTime() != 0)
-        {
-            Debug.Log("Starting coroutine now. Action: " + action.GetName());
-            StartCoroutine(NeedChangeForATime(action));
-        }
+        if (action.GetTime() != 0) StartCoroutine(NeedChangeForATime(action));
     }
 
     private IEnumerator NeedChangeForATime(Action action)
     {
-        float[,] temp = action.GetStats();
+        float[] temp = action.GetStats();
         float time = -1;
         bool needWasChanged = false;
         float change = 0;
 
-        for (int i = 0; i < 5; i++)
+        if (action.GetTime() != 0) time = action.GetTime();
+        hungerChange += temp[0];
+        sleepChange += temp[1];
+        toiletChange += temp[2];
+        funChange += temp[3];
+        hygeneChange += temp[4];
+
+        for (int i = 0; i < temp.Length; i++)
         {
-            change = temp[i, 0];
-            if (temp[i, 1] != 0)
-            {
-                time = temp[i, 1];
-                Debug.Log("Change: " + change + " action: " + action.GetName() + " Time: " + time);
-            }
+            change = temp[i];
             if (change != 0)
             {
                 needWasChanged = true;
-
-                hungerChange += temp[0, 0];
-                sleepChange += temp[1, 0];
-                toiletChange += temp[2, 0];
-                funChange += temp[3, 0];
-                hygeneChange += temp[4, 0];
+                break;
             }
         }
         yield return new WaitForSecondsRealtime(time);
 
-        for (int i = 0; i < 5; i++)
-        {
-            change = temp[i, 0];
+        hungerChange -= temp[0];
+        sleepChange -= temp[1];
+        toiletChange -= temp[2];
+        funChange -= temp[3];
+        hygeneChange -= temp[4];
 
-            if (change != 0)
-            {
-                hungerChange -= temp[0, 0];
-                sleepChange -= temp[1, 0];
-                toiletChange -= temp[2, 0];
-                funChange -= temp[3, 0];
-                hygeneChange -= temp[4, 0];
-            }
-        }
+        Debug.Log("Finished action " + action.GetName() + " finished: " + needWasChanged);
+
         if (needWasChanged) manager.GetComponent<ActionQueue>().FinishedAction(true);
         else manager.GetComponent<ActionQueue>().FinishedAction(false);
     }

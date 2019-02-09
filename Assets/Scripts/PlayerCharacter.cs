@@ -5,9 +5,9 @@ using UnityEngine;
 public class PlayerCharacter : MonoBehaviour
 {
     public string myName;
-    public int favoriteAction;
+    public string favoriteAction;
 
-    public int GetFavoriteAction()
+    public string GetFavoriteAction()
     {
         return favoriteAction;
     }

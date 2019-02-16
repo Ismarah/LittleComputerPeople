@@ -10,9 +10,9 @@ public class Toilet : InteractableItem
         Init();
     }
 
-    public override void PlayerArrivedAtMyPosition()
+    public override void AgentArrivedAtMyPosition(GameObject agent)
     {
-        base.PlayerArrivedAtMyPosition();
+        base.AgentArrivedAtMyPosition(agent);
         useCount++;
 
         if (useCount >= 3)
@@ -21,6 +21,6 @@ public class Toilet : InteractableItem
             WorldState.state.ChangeState(WorldState.myStates.toiletIsClean, false);
         }
 
-        GetComponent<Animator>().SetBool("open", true);
+        GetComponent<Animator>().SetBool(myAnimation, true);
     }
 }

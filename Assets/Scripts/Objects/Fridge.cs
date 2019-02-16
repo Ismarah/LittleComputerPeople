@@ -10,9 +10,9 @@ public class Fridge : InteractableItem
         Init();
     }
 
-    public override void PlayerArrivedAtMyPosition()
+    public override void AgentArrivedAtMyPosition(GameObject agent)
     {
-        base.PlayerArrivedAtMyPosition();
+        base.AgentArrivedAtMyPosition(agent);
         useCount++;
 
         if (useCount >= 1)

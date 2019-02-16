@@ -10,9 +10,9 @@ public class Drawer : InteractableItem
         myFloor = 2;
     }
 
-    public override void PlayerArrivedAtMyPosition()
+    public override void AgentArrivedAtMyPosition(GameObject agent)
     {
-        base.PlayerArrivedAtMyPosition();
+        base.AgentArrivedAtMyPosition(agent);
 
         if (nextActions[0].GetName() == "Put on street clothes")
             Invoke("StreetClothes", 0.5f);

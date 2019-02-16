@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerVisuals : MonoBehaviour
-{ 
+{
     [SerializeField]
     private Material yellow, green, blue, red, orange, violet;
     private Material[] materials;
@@ -57,15 +57,31 @@ public class PlayerVisuals : MonoBehaviour
         actionText.text = newText;
     }
 
+    public void ShowActionText(bool show)
+    {
+        if (!show)
+        {
+            actionText.transform.parent.GetComponent<Image>().enabled = false;
+            actionText.GetComponent<Text>().enabled = false;
+        }
+        else
+        {
+            actionText.transform.parent.GetComponent<Image>().enabled = true;
+            actionText.GetComponent<Text>().enabled = true;
+        }
+    }
+
     public void ChangeDirection(bool left)
     {
         if (left && transform.localEulerAngles.y != 0)
         {
             transform.RotateAround(transform.position, Vector3.up, 180);
+            actionText.transform.parent.RotateAround(transform.position, Vector3.up, 180);
         }
-        else if(!left && transform.localEulerAngles.y == 0)
+        else if (!left && transform.localEulerAngles.y == 0)
         {
             transform.RotateAround(transform.position, Vector3.up, 180);
+            actionText.transform.parent.RotateAround(transform.position, Vector3.up, 180);
         }
     }
 

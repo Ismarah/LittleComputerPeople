@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Action
 {
-    private float[] actionStats; //index 0 = hunger, index 1 = sleep, index 3 = toilet, index 4 = fun; second float: 0 = change, 1 = time
+    private float[] actionStats;
     private Dictionary<WorldState.myStates, bool> conditions;
     private Dictionary<WorldState.myStates, bool> effects;
     private GameObject myObject;
@@ -65,11 +65,16 @@ public class Action
     {
         float cost = 0;
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < actionStats.Length; i++)
         {
             cost += actionStats[i] * time;
         }
         return cost;
+    }
+
+    public void AddEffect(WorldState.myStates worldState, bool state)
+    {
+        effects.Add(worldState, state);
     }
 
     public Dictionary<WorldState.myStates, bool> GetPreconditions()

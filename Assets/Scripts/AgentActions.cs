@@ -14,6 +14,7 @@ public class AgentActions : MonoBehaviour
 
     public void Init()
     {
+        myActions = new List<Action>();
         player = GameObject.FindGameObjectWithTag("Player");
         fridge = GameObject.FindGameObjectWithTag("Fridge");
         toilet = GameObject.FindGameObjectWithTag("Toilet");

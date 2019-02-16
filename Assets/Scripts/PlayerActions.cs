@@ -7,15 +7,12 @@ public class PlayerActions : AgentActions
     void Start()
     {
         Init();
-        myActions = new List<Action>();
-
-        player = this.gameObject;
-
         CreateEatingActions();
         CreateSleepActions();
         CreateFunActions();
         CreateToiletActions();
         CreateHygeneActions();
+        CreatePetActions();
     }
 
     private void CreateEatingActions()
@@ -223,8 +220,8 @@ public class PlayerActions : AgentActions
 
         //Watch TV---------------------------------------------------------------
         actionEffects = new float[5];
-        actionEffects[3] = -0.1f;
-        time = 4;
+        actionEffects[3] = -0.16f;
+        time = 3;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.playerHasNothingToDo, true);
@@ -288,7 +285,7 @@ public class PlayerActions : AgentActions
         effects.Add(WorldState.myStates.playerIsClean, true);
 
         newAction = new Action("Take a shower", time, actionEffects, conditions, effects, shower);
-        myActions[15] = newAction;
+        myActions.Add(newAction);
         //-----------------------------------------------------------------------
 
         //Wash hands---------------------------------------------------------------
@@ -300,7 +297,6 @@ public class PlayerActions : AgentActions
         conditions.Add(WorldState.myStates.playerWasOnToilet, true);
 
         effects = new Dictionary<WorldState.myStates, bool>();
-        effects.Add(WorldState.myStates.playerIsClean, true);
         effects.Add(WorldState.myStates.playerWasOnToilet, false);
 
         newAction = new Action("Wash hands", time, actionEffects, conditions, effects, sink);
@@ -308,4 +304,21 @@ public class PlayerActions : AgentActions
         //-----------------------------------------------------------------------
     }
 
+    private void CreatePetActions()
+    {
+        //Feed pet-----------------------------------------------------------------
+        actionEffects = new float[5];
+        time = 2;
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.petAskedForFood, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.petAskedForFood, false);
+        effects.Add(WorldState.myStates.foodInBowl, true);
+
+        newAction = new Action("Feed pet", time, actionEffects, conditions, effects, petFood);
+        myActions.Add(newAction);
+        //-----------------------------------------------------------------------
+    }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class GOAPplanner : MonoBehaviour
@@ -7,7 +8,6 @@ public class GOAPplanner : MonoBehaviour
     private GameObject player;
     private GameObject petFood;
     private List<ActionChain> allPossibleChains;
-    private int possibilities;
     private bool goalSet;
     private bool completedChain;
     private ActionChain chain;
@@ -20,7 +20,7 @@ public class GOAPplanner : MonoBehaviour
         petFood = GameObject.FindGameObjectWithTag("PetFood");
     }
 
-    public void SetGoal(GameObject agent, WorldState.myStates newState, bool state)
+    public IEnumerator SetGoal(GameObject agent, WorldState.myStates newState, bool state)
     {
         if (!goalSet)
         {
@@ -30,49 +30,60 @@ public class GOAPplanner : MonoBehaviour
             allPossibleChains = new List<ActionChain>();
             chain = new ActionChain();
 
-            FindPossibilities(newState);
-
-            FindActionChain(newState, state);
+            List<Action> possibleActions = FindActionsToFulfillCondition(currentAgent, newState, state);
+            for (int i = 0; i < possibleActions.Count; i++)
+            {
+                yield return StartCoroutine(FindActionChain(possibleActions[i]));
+            }
+            //Debug.Log(allPossibleChains.Count + " chains found");
+            FindBestActionChain();
         }
     }
 
-    private void FindActionChain(WorldState.myStates newState, bool state)
+    private IEnumerator FindActionChain(Action _possibleAction)
     {
-        List<Action> possibleActions = FindActionsToFulfillCondition(currentAgent, newState, state);
+        Action possibleAction = _possibleAction;
+        //while (!completedChain)
+        //{
+        if (possibleAction == player.GetComponent<PlayerActions>().GetAction("Use toilet"))
+            chain.Add(player.GetComponent<PlayerActions>().GetAction("Wash hands"));
+        else if (possibleAction == player.GetComponent<PlayerActions>().GetAction("Sleep"))
+            chain.Add(player.GetComponent<PlayerActions>().GetAction("Put on street clothes"));
 
-        for (int i = 0; i < possibleActions.Count; i++)
+        chain.Add(possibleAction);
+
+        if (ConditionsMet(possibleAction)) //no further action is required to complete this action
         {
-            if (completedChain)
-            {
-                chain = new ActionChain();
-                completedChain = false;
-            }
-            if (possibleActions[i] == player.GetComponent<PlayerActions>().GetAction("Use toilet"))
-                chain.Add(player.GetComponent<PlayerActions>().GetAction("Wash hands"));
-            else if (possibleActions[i] == player.GetComponent<PlayerActions>().GetAction("Sleep"))
-                chain.Add(player.GetComponent<PlayerActions>().GetAction("Put on street clothes"));
+            chain.AddWalkTime(CalculateTimeToMove(possibleAction.GetObject()));
+            allPossibleChains.Add(chain);
 
-            chain.Add(possibleActions[i]);
-
-            if (ConditionsMet(possibleActions[i])) //no further action is required to complete this action
+            completedChain = true;
+        }
+        else //one or more conditions are not met yet
+        {
+            Dictionary<WorldState.myStates, bool> requiredConditions = GetRequiredConditions(possibleAction);
+            foreach (KeyValuePair<WorldState.myStates, bool> conditions in requiredConditions)
             {
-                chain.AddWalkTime(CalculateTimeToMove(possibleActions[i].GetObject()));
-                Debug.Log("For action " + possibleActions[i].GetName() + "Time to move to " + possibleActions[i].GetObject() + ": " + CalculateTimeToMove(possibleActions[i].GetObject()));
-                allPossibleChains.Add(chain);
-                completedChain = true;
-                if (allPossibleChains.Count == possibilities) FindBestActionChain();
-
-            }
-            else //one or more conditions are not met yet
-            {
-                Dictionary<WorldState.myStates, bool> requiredConditions = GetRequiredConditions(possibleActions[i]);
-                foreach (KeyValuePair<WorldState.myStates, bool> conditions in requiredConditions)
+                List<Action> newActions = FindActionsToFulfillCondition(currentAgent, conditions.Key, conditions.Value);
+                if (newActions.Count != 0)
                 {
-                    FindActionChain(conditions.Key, conditions.Value);
+                    for (int i = 0; i < newActions.Count; i++)
+                    {
+                        possibleAction = newActions[i];
+                        yield return StartCoroutine(FindActionChain(newActions[i]));
+                    }
+                }
+                else
+                {
+                    Debug.Log("No action found to fullfill condition " + conditions.Key + " to " + conditions.Value);
                 }
             }
+            //}
         }
+        chain = new ActionChain();
+        completedChain = false;
     }
+
 
     private void FindBestActionChain()
     {
@@ -107,6 +118,7 @@ public class GOAPplanner : MonoBehaviour
         if (bestValue != -1 && bestIndex != -1) AddChosenChainToQueue(bestIndex);
         else
         {
+            Debug.Log("No possible chain :(");
             //no action can be done because other needs are more important
         }
     }
@@ -114,13 +126,15 @@ public class GOAPplanner : MonoBehaviour
     private void AddChosenChainToQueue(int index)
     {
         List<Action> newQueue = allPossibleChains[index].GetActions();
-        Debug.Log(allPossibleChains[index].GetChainStateChange());
         newQueue.Reverse();
         for (int i = 0; i < newQueue.Count; i++)
         {
             if (!GetComponent<ActionQueue>().IsEnqueued(newQueue[i]))
             {
-                GetComponent<ActionQueue>().AddToQueue(newQueue[i], currentAgent);
+                if (currentAgent == player)
+                    GetComponent<PlayerQueue>().AddToQueue(newQueue[i]);
+                else
+                    GetComponent<PetQueue>().AddToQueue(newQueue[i]);
             }
         }
         goalSet = false;
@@ -129,11 +143,11 @@ public class GOAPplanner : MonoBehaviour
     private bool CheckForProblematicNeed(float time)
     {
         bool foundAProblem = false;
-        for (int index = 0; index < 5; index++)
+        for (int index = 0; index < currentAgent.GetComponent<AgentState>().GetActionCount(); index++)
         {
             if (index != currentGoal)
             {
-                float stateAfterAction = player.GetComponent<PlayerState>().GetNeedState(index) + player.GetComponent<PlayerState>().GetNeedChange(index) * time * Time.deltaTime;
+                float stateAfterAction = currentAgent.GetComponent<AgentState>().GetNeedState(index) + currentAgent.GetComponent<AgentState>().GetNeedChange(index) * time * Time.deltaTime;
 
                 if (stateAfterAction >= 0.85f)
                 {
@@ -159,7 +173,7 @@ public class GOAPplanner : MonoBehaviour
                 if (temp[newState] == state)
                 {
                     possibleActions.Add(allActions[i]);
-                    Debug.Log("Found a possible action to change world state " + newState + " to " + state + "  : " + allActions[i].GetName());
+                    //Debug.Log("Found a possible action to change world state " + newState + " to " + state + "  : " + allActions[i].GetName());
                 }
             }
         }
@@ -172,9 +186,9 @@ public class GOAPplanner : MonoBehaviour
         Dictionary<WorldState.myStates, bool> conditions = action.GetPreconditions();
         int conditionCount = conditions.Keys.Count;
         int count = 0;
-
         foreach (KeyValuePair<WorldState.myStates, bool> condition in conditions)
         {
+            //Debug.Log("Action " + action.GetName() + " needs Worldstate " + condition.Key + " to be " + condition.Value + ". It is currently " + WorldState.state.GetState(condition.Key));
             if (WorldState.state.GetState(condition.Key) == condition.Value) count++;
         }
         if (count == conditionCount) return true;
@@ -196,46 +210,37 @@ public class GOAPplanner : MonoBehaviour
         return temp;
     }
 
-    private void FindPossibilities(WorldState.myStates newState)
-    {
-        switch (newState)
-        {
-            case WorldState.myStates.playerHasEaten:
-                possibilities = 3;
-                break;
-            case WorldState.myStates.playerIsTired:
-                possibilities = 2;
-                break;
-            case WorldState.myStates.playerWasOnToilet:
-                possibilities = 1;
-                break;
-            case WorldState.myStates.playerHasNothingToDo:
-                possibilities = 2;
-                break;
-            case WorldState.myStates.playerIsClean:
-                possibilities = 2;
-                break;
-            default:
-                break;
-        }
-    }
-
     private int NeedIndexToFulfillGoal(WorldState.myStates goal)
     {
-        switch (goal)
+        if (currentAgent == player)
         {
-            case WorldState.myStates.playerHasEaten:
-                return 0;
-            case WorldState.myStates.playerIsTired:
-                return 1;
-            case WorldState.myStates.playerWasOnToilet:
-                return 2;
-            case WorldState.myStates.playerHasFun:
-                return 3;
-            case WorldState.myStates.playerIsClean:
-                return 4;
-            default:
-                return -1;
+            switch (goal)
+            {
+                case WorldState.myStates.playerHasEaten:
+                    return 0;
+                case WorldState.myStates.playerIsTired:
+                    return 1;
+                case WorldState.myStates.playerWasOnToilet:
+                    return 2;
+                case WorldState.myStates.playerHasFun:
+                    return 3;
+                case WorldState.myStates.playerIsClean:
+                    return 4;
+                default:
+                    return -1;
+            }
+        }
+        else
+        {
+            switch (goal)
+            {
+                case WorldState.myStates.petHasEaten:
+                    return 0;
+                case WorldState.myStates.petIsTired:
+                    return 1;
+                default:
+                    return -1;
+            }
         }
     }
 
@@ -247,12 +252,12 @@ public class GOAPplanner : MonoBehaviour
         else return 0;
         float distance = 0;
         float time = 0;
-        int playersFloor = player.GetComponent<AgentMovement>().GetFloor();
+        int agentFloor = currentAgent.GetComponent<AgentMovement>().GetFloor();
 
-        Transform firstStairsLower = player.GetComponent<AgentMovement>().GetStairs()[0];
-        Transform firstStairsUpper = player.GetComponent<AgentMovement>().GetStairs()[1];
-        Transform secondStairsLower = player.GetComponent<AgentMovement>().GetStairs()[2];
-        Transform secondStairsUpper = player.GetComponent<AgentMovement>().GetStairs()[3];
+        Transform firstStairsLower = currentAgent.GetComponent<AgentMovement>().GetStairs()[0];
+        Transform firstStairsUpper = currentAgent.GetComponent<AgentMovement>().GetStairs()[1];
+        Transform secondStairsLower = currentAgent.GetComponent<AgentMovement>().GetStairs()[2];
+        Transform secondStairsUpper = currentAgent.GetComponent<AgentMovement>().GetStairs()[3];
 
         if (target.GetComponent<InteractableItem>() != null)
         {
@@ -262,35 +267,35 @@ public class GOAPplanner : MonoBehaviour
         {
             targetFloor = target.GetComponent<AgentMovement>().GetFloor();
         }
-        if (targetFloor == player.GetComponent<AgentMovement>().GetFloor())
+        if (targetFloor == currentAgent.GetComponent<AgentMovement>().GetFloor())
         {
-            distance = Vector2.Distance(player.transform.position, target.transform.position);
+            distance = Vector2.Distance(currentAgent.transform.position, target.transform.position);
         }
         else
         {
-            if (targetFloor > playersFloor)
+            if (targetFloor > agentFloor)
             {
-                if (targetFloor == playersFloor + 1)
+                if (targetFloor == agentFloor + 1)
                 {
                     //target is one floor above player
-                    if (playersFloor == 0)
+                    if (agentFloor == 0)
                     {
-                        distance = Vector2.Distance(player.transform.position, firstStairsLower.position);
+                        distance = Vector2.Distance(currentAgent.transform.position, firstStairsLower.position);
                         distance += Vector2.Distance(firstStairsLower.position, firstStairsUpper.position);
                         distance += Vector2.Distance(firstStairsUpper.position, target.transform.position);
                     }
-                    else if (playersFloor == 1)
+                    else if (agentFloor == 1)
                     {
-                        distance = Vector2.Distance(player.transform.position, secondStairsLower.position);
+                        distance = Vector2.Distance(currentAgent.transform.position, secondStairsLower.position);
                         distance += Vector2.Distance(secondStairsLower.position, secondStairsUpper.position);
                         distance += Vector2.Distance(secondStairsUpper.position, target.transform.position);
                     }
 
                 }
-                else if (targetFloor == playersFloor + 2)
+                else if (targetFloor == agentFloor + 2)
                 {
                     //target is two floors above player
-                    distance = Vector2.Distance(player.transform.position, firstStairsLower.position);
+                    distance = Vector2.Distance(currentAgent.transform.position, firstStairsLower.position);
                     distance += Vector2.Distance(firstStairsLower.position, firstStairsUpper.position);
                     distance += Vector2.Distance(firstStairsUpper.position, secondStairsLower.position);
                     distance += Vector2.Distance(secondStairsLower.position, secondStairsUpper.position);
@@ -299,27 +304,27 @@ public class GOAPplanner : MonoBehaviour
             }
             else
             {
-                if (targetFloor == playersFloor - 1)
+                if (targetFloor == agentFloor - 1)
                 {
                     //target is one floor below player
-                    if (playersFloor == 1)
+                    if (agentFloor == 1)
                     {
-                        distance = Vector2.Distance(player.transform.position, firstStairsUpper.position);
+                        distance = Vector2.Distance(currentAgent.transform.position, firstStairsUpper.position);
                         distance += Vector2.Distance(firstStairsUpper.position, firstStairsLower.position);
                         distance += Vector2.Distance(firstStairsLower.position, target.transform.position);
                     }
-                    else if (playersFloor == 2)
+                    else if (agentFloor == 2)
                     {
-                        distance = Vector2.Distance(player.transform.position, secondStairsUpper.position);
+                        distance = Vector2.Distance(currentAgent.transform.position, secondStairsUpper.position);
                         distance += Vector2.Distance(secondStairsUpper.position, secondStairsLower.position);
                         distance += Vector2.Distance(secondStairsLower.position, target.transform.position);
                     }
 
                 }
-                else if (targetFloor == playersFloor - 2)
+                else if (targetFloor == agentFloor - 2)
                 {
                     //target is two floors below player
-                    distance = Vector2.Distance(player.transform.position, secondStairsUpper.position);
+                    distance = Vector2.Distance(currentAgent.transform.position, secondStairsUpper.position);
                     distance += Vector2.Distance(secondStairsUpper.position, secondStairsLower.position);
                     distance += Vector2.Distance(secondStairsLower.position, firstStairsUpper.position);
                     distance += Vector2.Distance(firstStairsUpper.position, firstStairsLower.position);
@@ -327,7 +332,7 @@ public class GOAPplanner : MonoBehaviour
                 }
             }
         }
-        time = distance / player.GetComponent<AgentMovement>().GetMoveSpeed();
+        time = distance / currentAgent.GetComponent<AgentMovement>().GetMoveSpeed();
         return time;
     }
 }

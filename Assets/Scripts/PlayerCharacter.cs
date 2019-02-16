@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    public string myName;
-    public string favoriteAction;
+    [SerializeField]
+    private string myName;
+    [SerializeField]
+    private string favoriteAction;
+
+    private void Start()
+    {
+        GetComponent<AgentActions>().GetAction(favoriteAction).AddEffect(WorldState.myStates.favoritePlayerAction, true);
+    }
 
     public string GetFavoriteAction()
     {

@@ -2,78 +2,54 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PetState : MonoBehaviour
+public class PetState : AgentState
 {
-
     [SerializeField]
-    private float currentHunger;
+    private float hungerChange, sleepChange;
     [SerializeField]
-    private float currentSleep;
-    [SerializeField]
-    private float currentToilet;
-    [SerializeField]
-    private float currentFun;
-    [SerializeField]
-    private float currentAttention;
-
-    [SerializeField]
-    private float hungerChange;
-    [SerializeField]
-    private float sleepChange;
-    [SerializeField]
-    private float toiletChange;
-    [SerializeField]
-    private float funChange;
-    [SerializeField]
-    private float attentionChange;
-
-    [SerializeField]
-    private float hungry;
-    [SerializeField]
-    private float sleepy;
-    [SerializeField]
-    private float needsToilet;
-    [SerializeField]
-    private float needsFun;
-    [SerializeField]
-    private float needsAttention;
-
-    private bool askedForAction;
-    private GameObject manager;
+    private float hungry, sleepy;
 
     private void Start()
     {
-        manager = GameObject.FindGameObjectWithTag("ActionQueue");
+        base.Init();
+
+        currentNeeds = new float[2];
+        needChanges = new float[2];
+        needChanges[0] = hungerChange;
+        needChanges[1] = sleepChange;
+
+        criticalValues = new float[2];
+        criticalValues[0] = hungry;
+        criticalValues[1] = sleepy;
+
+        stateChanges = new List<Dictionary<WorldState.myStates, bool>>();
+        Dictionary<WorldState.myStates, bool> dict = new Dictionary<WorldState.myStates, bool>();
+        dict.Add(WorldState.myStates.petHasEaten, false);
+        dict.Add(WorldState.myStates.petIsHungry, true);
+        stateChanges.Add(dict);
+        stateChanges.Add(new Dictionary<WorldState.myStates, bool>() { { WorldState.myStates.petIsTired, true } });
+
+        goals = new List<KeyValuePair<WorldState.myStates, bool>>();
+        goals.Add(new KeyValuePair<WorldState.myStates, bool>(WorldState.myStates.petAskedForFood, true));
+        goals.Add(new KeyValuePair<WorldState.myStates, bool>(WorldState.myStates.petIsTired, false));
+
         StartCoroutine(NeedChange());
     }
 
     private void Update()
     {
-        if (askedForAction) return;
+        CheckNeedStates();
+    }
 
-        if (currentHunger >= hungry)
-        {
-            WorldState.state.ChangeState(WorldState.myStates.petHasEaten, false);
-            WorldState.state.ChangeState(WorldState.myStates.petIsHungry, true);
-            askedForAction = true;
-            manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, WorldState.myStates.petHasEaten, true);
-        }
-        if (currentSleep >= sleepy)
-        {
-            //askedForAction = true;
-        }
-        if (currentToilet >= needsToilet)
-        {
-            //askedForAction = true;
-        }
-        if (currentFun >= needsFun)
-        {
-            //askedForAction = true;
-        }
-        if (currentAttention >= needsAttention)
-        {
-            //askedForAction = true;
-        }
+    public void ActionIsPlanned()
+    {
+        askedForAction = true;
+    }
+
+    public void ActionFinished()
+    {
+        Debug.Log("Pet ready for new action");
+        askedForAction = false;
     }
 
     public void ActionPlanned()
@@ -81,33 +57,26 @@ public class PetState : MonoBehaviour
         askedForAction = false;
     }
 
-    private IEnumerator NeedChange()
+    private void LateUpdate()
     {
-        while (true)
+        for (int i = 0; i < currentNeeds.Length; i++)
         {
-            currentHunger += hungerChange * Time.deltaTime;
-            currentSleep += sleepChange * Time.deltaTime;
-            currentToilet += toiletChange * Time.deltaTime;
-            currentFun += funChange * Time.deltaTime;
-            currentAttention += attentionChange * Time.deltaTime;
-
-            yield return null;
+            if (currentNeeds[i] < 0) currentNeeds[i] = 0;
+            else if (currentNeeds[i] > 1) currentNeeds[i] = 1;
         }
     }
 
-    private void LateUpdate()
+    public void ManipulateNeedChange(Action action)
     {
-        if (currentHunger < 0) currentHunger = 0;
-        if (currentHunger > 1) currentHunger = 1;
-        if (currentSleep < 0) currentSleep = 0;
-        if (currentSleep > 1) currentSleep = 1;
-        if (currentToilet < 0) currentToilet = 0;
-        if (currentToilet > 1) currentToilet = 1;
-        if (currentFun < 0) currentFun = 0;
-        if (currentFun > 1) currentFun = 1;
-        if (currentAttention < 0) currentAttention = 0;
-        if (currentAttention > 1) currentAttention = 1;
+        if (action.GetTime() != 0) StartCoroutine(NeedChangeForATime(action));
+    }
 
+    protected override IEnumerator NeedChangeForATime(Action action)
+    {
+        yield return StartCoroutine(base.NeedChangeForATime(action));
+
+        if (needWasChanged) manager.GetComponent<PetQueue>().FinishedAction(true);
+        else manager.GetComponent<PetQueue>().FinishedAction(false);
     }
 
 }

@@ -7,6 +7,10 @@ public class WorldState : MonoBehaviour
     public static WorldState state = null;
     private GameObject player;
     private Dictionary<myStates, bool> stateList;
+    [SerializeField]
+    private List<myStates> showList;
+    [SerializeField]
+    private List<bool> showBoolList;
 
     public enum myStates
     {
@@ -30,7 +34,10 @@ public class WorldState : MonoBehaviour
         playerIsTired,
         playerIsWearingStreetClothes,
         playerHasNothingToDo,
-        playerNeedsToilet
+        playerNeedsToilet,
+        favoritePlayerAction,
+        petIsTired,
+        foodInBowl
     }
 
     void Start()
@@ -60,11 +67,31 @@ public class WorldState : MonoBehaviour
         stateList.Add(myStates.playerIsWearingStreetClothes, true);
         stateList.Add(myStates.playerHasNothingToDo, false);
         stateList.Add(myStates.playerNeedsToilet, false);
+        stateList.Add(myStates.favoritePlayerAction, false);
+        stateList.Add(myStates.petIsTired, false);
+        stateList.Add(myStates.foodInBowl, false);
+
+        showList = new List<myStates>();
+        showBoolList = new List<bool>();
+
+        foreach(myStates s in stateList.Keys)
+        {
+            showList.Add(s);
+            showBoolList.Add(stateList[s]);
+        }
     }
 
     public void ChangeState(myStates state, bool newState)
     {
         stateList[state] = newState;
+        for (int i = 0; i < showList.Count; i++)
+        {
+            if (showList[i] == state)
+                showBoolList[i] = newState;
+        }
+        
+        
+        
     }
 
     public int GetNumberOfStates()

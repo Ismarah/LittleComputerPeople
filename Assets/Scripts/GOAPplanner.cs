@@ -23,9 +23,6 @@ public class GOAPplanner : MonoBehaviour
 
     public IEnumerator SetGoal(GameObject agent, WorldState.myStates newState, bool state, int index)
     {
-        //if (!goalSet)
-        //{
-        //    goalSet = true;
         currentGoal = index;
         //Debug.Log("New goal " + newState + " " + state + "    Goal index: " + currentGoal);
         currentAgent = agent;
@@ -37,18 +34,13 @@ public class GOAPplanner : MonoBehaviour
         {
             yield return StartCoroutine(FindActionChain(possibleActions[i]));
         }
-        if (newState == WorldState.myStates.playerWasOnToilet)
-            Debug.Log("Satisfy toilet: " + allPossibleChains[0].GetName());
-        else Debug.Log(allPossibleChains.Count + " chains found");
+        Debug.Log(allPossibleChains.Count + " chains found");
         FindBestActionChain();
-        //}
     }
 
     private IEnumerator FindActionChain(Action _possibleAction)
     {
         Action possibleAction = _possibleAction;
-        //while (!completedChain)
-        //{
         if (possibleAction == player.GetComponent<PlayerActions>().GetAction("Use toilet"))
             chain.Add(player.GetComponent<PlayerActions>().GetAction("Wash hands"));
         else if (possibleAction == player.GetComponent<PlayerActions>().GetAction("Sleep"))
@@ -89,7 +81,6 @@ public class GOAPplanner : MonoBehaviour
                     Debug.Log("No action found to fullfill condition " + conditions.Key + " to " + conditions.Value);
                 }
             }
-            //}
         }
         chain = new ActionChain();
         completedChain = false;
@@ -109,10 +100,12 @@ public class GOAPplanner : MonoBehaviour
 
         float bestValue = -1;
         int bestIndex = -1;
+        bool overfill = false;
 
         for (int i = 0; i < allValues.Length; i++)
         {
-            if (!CheckAllNeeds(allPossibleChains[i].GetChainDuration() / GetComponent<TimeManager>().GetGameSpeed(), i))
+            float[] states = NeedStatesAfterChain(allPossibleChains[i].GetChainDuration() / GetComponent<TimeManager>().GetGameSpeed(), i);
+            if (states[currentGoal] > -0.5f)
             {
                 bestValue = allValues[i];
                 for (int j = 0; j < allPossibleChains.Count; j++)
@@ -124,13 +117,30 @@ public class GOAPplanner : MonoBehaviour
                 }
                 break;
             }
+            else
+            {
+                overfill = true;
+            }
         }
         if (bestValue != -1 && bestIndex != -1) AddChosenChainToQueue(bestIndex);
         else
         {
-            Debug.Log("No possible chain :( Next most urgent need index: " + mostUrgentNeedIndex);
-            //no action can be done because other needs are more important
-            currentAgent.GetComponent<AgentState>().SatisfySecondMostUrgentNeed(mostUrgentNeedIndex);
+            if (!overfill)
+            {
+                //no action can be done because other needs are more important
+                Debug.Log("No possible chain :( Next most urgent need index: " + mostUrgentNeedIndex);
+                currentAgent.GetComponent<AgentState>().SatisfySecondMostUrgentNeed(mostUrgentNeedIndex);
+            }
+            else
+            {
+                for (int j = 0; j < allPossibleChains.Count; j++)
+                {
+                    if (GetChainStateChange(allPossibleChains[j]) == allValues[0])
+                    {
+                        AddChosenChainToQueue(j);
+                    }
+                }
+            }
         }
     }
 
@@ -141,6 +151,13 @@ public class GOAPplanner : MonoBehaviour
         {
             change += action.GetStats()[k] * action.GetTime() / GetComponent<TimeManager>().GetGameSpeed();
         }
+        return change;
+    }
+
+    private float GetActionStateChange(Action action, int needIndex)
+    {
+        float change = action.GetStats()[needIndex] * action.GetTime() / GetComponent<TimeManager>().GetGameSpeed();
+        if (change != 0) Debug.Log("Action " + action.GetName() + " changes stat " + needIndex + " by " + change);
         return change;
     }
 
@@ -155,27 +172,36 @@ public class GOAPplanner : MonoBehaviour
         return change;
     }
 
-    private bool CheckAllNeeds(float time, int chosenChain)
+    private float[] NeedStatesAfterChain(float time, int chosenChain)
     {
-        bool foundAProblem = false;
+        Debug.Log("Time needed for chain " + allPossibleChains[chosenChain] + "   : " + time);
+        //TODO: Check if action would be more than is needed
         int needCount = currentAgent.GetComponent<AgentState>().GetNeedCount();
         float[] statesAfterChain = new float[needCount];
 
         for (int i = 0; i < needCount; i++)
         {
-            statesAfterChain[i] += currentAgent.GetComponent<AgentState>().GetNeedState(i) + (currentAgent.GetComponent<AgentState>().GetNeedChange(i) * time * (1 / Time.deltaTime) * Time.deltaTime * GetComponent<TimeManager>().GetGameSpeed());
+            statesAfterChain[i] += currentAgent.GetComponent<AgentState>().GetNeedState(i) + (currentAgent.GetComponent<AgentState>().GetNeedChange(i) * (time/ GetComponent<TimeManager>().GetGameSpeed()) * (1 / Time.deltaTime) * Time.deltaTime);
             foreach (Action a in allPossibleChains[chosenChain].GetActions())
             {
-                statesAfterChain[i] += a.GetStats()[i];
-                if (statesAfterChain[i] >= 0.85f)
-                {
-                    Debug.Log("Need " + i + " would be too low after " + time + " seconds. Chain: " + allPossibleChains[chosenChain].GetName() + "   (" + statesAfterChain[i] + ")");
-                    mostUrgentNeedIndex = i;
-                    foundAProblem = true;
-                }
+                //Debug.Log("State after change: " + statesAfterChain[i] + " + " + GetActionStateChange(a, i));
+                statesAfterChain[i] += GetActionStateChange(a, i) * (1 / Time.deltaTime) * Time.deltaTime;
+            }
+            if (statesAfterChain[i] >= 0.85f && i != currentGoal)
+            {
+                //Debug.Log("Need " + i + " would be too low after " + time + " seconds. Chain: " + allPossibleChains[chosenChain].GetName() + "   (" + statesAfterChain[i] + ")");
+                mostUrgentNeedIndex = i;
+            }
+            if (i == currentGoal && statesAfterChain[i] < -0.5f)
+            {
+                Debug.Log("Need at " + i + " overfill for chain " + allPossibleChains[chosenChain].GetName() + " : " + statesAfterChain[i]);
             }
         }
-        return foundAProblem;
+        //for (int j = 0; j < statesAfterChain.Length; j++)
+        //{
+        //    Debug.Log("State " + j + " would be at " + statesAfterChain[j] + " after chain " + allPossibleChains[chosenChain].GetName());
+        //}
+        return statesAfterChain;
     }
     private void AddChosenChainToQueue(int index)
     {

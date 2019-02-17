@@ -2338,7 +2338,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 1208444861651412, guid: 928e10370a656c14a96209e8929f7e1a, type: 2}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 65460382875829152, guid: 928e10370a656c14a96209e8929f7e1a, type: 2}
@@ -2971,7 +2971,7 @@ Prefab:
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: hungerChange
-      value: 0.019
+      value: 0.018
       objectReference: {fileID: 0}
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
@@ -3001,12 +3001,17 @@ Prefab:
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: needsFun
-      value: 0.5
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: needsHygene
       value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
+        type: 2}
+      propertyPath: hungry
+      value: 0.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 657756d42125d8640b7b84374ead4b33, type: 2}
@@ -3758,7 +3763,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timer: {fileID: 515457616}
   factor: 5
-  gameSpeed: 3
+  gameSpeed: 2
   background: {fileID: 1340908410}
 --- !u!1 &1296579070 stripped
 GameObject:

@@ -19,7 +19,7 @@ public class PlayerActions : AgentActions
     {
         //Eat a meal-------------------------------------------------------------
         actionEffects = new float[5];
-        actionEffects[0] = -0.3f;
+        actionEffects[0] = -0.2f;
         time = 4;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
@@ -157,11 +157,11 @@ public class PlayerActions : AgentActions
         //Sleep through night----------------------------------------------------
         actionEffects = new float[5];
         actionEffects[0] = -0.004f;
-        actionEffects[1] = -0.2f;
+        actionEffects[1] = -0.3f;
         actionEffects[2] = -0.004f;
         actionEffects[3] = -0.004f;
         actionEffects[4] = -0.004f;
-        time = 6;
+        time = 5;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.playerIsWearingStreetClothes, false);
@@ -181,6 +181,7 @@ public class PlayerActions : AgentActions
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.playerIsTired, true);
+        conditions.Add(WorldState.myStates.daytime, true);
 
         effects = new Dictionary<WorldState.myStates, bool>();
         effects.Add(WorldState.myStates.playerIsTired, false);

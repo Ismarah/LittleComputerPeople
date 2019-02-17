@@ -88,10 +88,7 @@ public class WorldState : MonoBehaviour
         {
             if (showList[i] == state)
                 showBoolList[i] = newState;
-        }
-        
-        
-        
+        }        
     }
 
     public int GetNumberOfStates()

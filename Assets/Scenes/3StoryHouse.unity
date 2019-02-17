@@ -2334,7 +2334,11 @@ Prefab:
     - target: {fileID: 114869572354066820, guid: 928e10370a656c14a96209e8929f7e1a,
         type: 2}
       propertyPath: hungerChange
-      value: 0.01
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 1208444861651412, guid: 928e10370a656c14a96209e8929f7e1a, type: 2}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 65460382875829152, guid: 928e10370a656c14a96209e8929f7e1a, type: 2}
@@ -2892,27 +2896,42 @@ Prefab:
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: hungerChange
-      value: 0.03
+      value: 0.019
       objectReference: {fileID: 0}
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: sleepChange
-      value: 0.006
+      value: 0.004
       objectReference: {fileID: 0}
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: toiletChange
-      value: 0.01
+      value: 0.011
       objectReference: {fileID: 0}
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: funChange
-      value: 0.04
+      value: 0.013
       objectReference: {fileID: 0}
     - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
         type: 2}
       propertyPath: hygeneChange
-      value: 0.008
+      value: 0.006
+      objectReference: {fileID: 0}
+    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
+        type: 2}
+      propertyPath: sleepy
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
+        type: 2}
+      propertyPath: needsFun
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
+        type: 2}
+      propertyPath: needsHygene
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 657756d42125d8640b7b84374ead4b33, type: 2}
@@ -3556,11 +3575,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1286969267}
   - component: {fileID: 1286969265}
-  - component: {fileID: 1286969268}
-  - component: {fileID: 1286969266}
   - component: {fileID: 1286969269}
+  - component: {fileID: 1286969268}
   - component: {fileID: 1286969270}
   - component: {fileID: 1286969271}
+  - component: {fileID: 1286969266}
   m_Layer: 0
   m_Name: Manager
   m_TagString: ActionQueue
@@ -3614,8 +3633,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8334c0e16351ea74e8512299b63636ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  processingAction: 0
-  bored: 0
   actionNames: []
 --- !u!114 &1286969269
 MonoBehaviour:
@@ -3641,8 +3658,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e672ef7890c86945b27ff9e23f901e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  processingAction: 0
-  bored: 0
   actionNames: []
   canvas: {fileID: 225894952}
 --- !u!114 &1286969271
@@ -3657,6 +3672,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: {fileID: 515457616}
+  factor: 5
+  gameSpeed: 4
 --- !u!1 &1296579070 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1850234542314984, guid: bf6e12d5aa2b11846a936f7171ce891c,

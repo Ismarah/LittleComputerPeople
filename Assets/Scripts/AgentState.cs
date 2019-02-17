@@ -1,9 +1,11 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class AgentState : MonoBehaviour
 {
+    [SerializeField]
     protected bool askedForAction;
     protected GameObject manager;
     [SerializeField]
@@ -27,7 +29,7 @@ public class AgentState : MonoBehaviour
         {
             for (int i = 0; i < needChanges.Length; i++)
             {
-                currentNeeds[i] += needChanges[i] * Time.deltaTime;
+                currentNeeds[i] += needChanges[i] * Time.deltaTime * manager.GetComponent<TimeManager>().GetGameSpeed();
             }
 
             yield return null;
@@ -36,21 +38,41 @@ public class AgentState : MonoBehaviour
 
     protected void CheckNeedStates()
     {
+        int index = -1;
+        float value = 0;
+        //go over all needs and check if they are in critical condition and if so add them to temporary list
         for (int i = 0; i < currentNeeds.Length; i++)
         {
             if (currentNeeds[i] >= criticalValues[i])
             {
-                foreach (KeyValuePair<WorldState.myStates, bool> pair in stateChanges[i])
+                Debug.Log("Need " + i + " is critical. value: " + currentNeeds[i]);
+                if (currentNeeds[i] > value)
                 {
-                    WorldState.state.ChangeState(pair.Key, pair.Value);
-                }
-                if (!askedForAction)
-                {
-                    askedForAction = true;
-                    StartCoroutine(manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, goals[i].Key, goals[i].Value));
+                    Debug.Log("Need at " + i + " is higher.");
+                    value = currentNeeds[i];
+                    index = i;
                 }
             }
         }
+        if (index >= 0)
+        {
+            //add most urgent need to queue
+
+            Debug.Log("Most urgent need is need at index " + index);
+            foreach (KeyValuePair<WorldState.myStates, bool> pair in stateChanges[index])
+            {
+                WorldState.state.ChangeState(pair.Key, pair.Value);
+            }
+            askedForAction = true;
+            StartCoroutine(manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, goals[index].Key, goals[index].Value, index));
+
+        }
+
+    }
+
+    public void SatisfySecondMostUrgentNeed(int mostUrgent)
+    {
+        StartCoroutine(manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, goals[mostUrgent].Key, goals[mostUrgent].Value, mostUrgent));
     }
 
     protected virtual IEnumerator NeedChangeForATime(Action action)
@@ -75,7 +97,7 @@ public class AgentState : MonoBehaviour
                 break;
             }
         }
-        yield return new WaitForSecondsRealtime(time);
+        yield return new WaitForSeconds(time / manager.GetComponent<TimeManager>().GetGameSpeed());
 
         for (int i = 0; i < needChanges.Length; i++)
         {
@@ -83,7 +105,7 @@ public class AgentState : MonoBehaviour
         }
     }
 
-    public int GetActionCount()
+    public int GetNeedCount()
     {
         return currentNeeds.Length;
     }

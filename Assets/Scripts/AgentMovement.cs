@@ -143,7 +143,7 @@ public class AgentMovement : MonoBehaviour
         Vector3 pos = new Vector3(_targetPos.x, _targetPos.y, transform.position.z);
         while (transform.position != pos)
         {
-            transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime * GameObject.FindGameObjectWithTag("ActionQueue").GetComponent<TimeManager>().GetGameSpeed());
             if (tag == "Pet")
             {
                 if (prevPos < transform.position.x && !turned)

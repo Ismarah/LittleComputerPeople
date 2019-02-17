@@ -38,7 +38,8 @@ public class PetState : AgentState
 
     private void Update()
     {
-        CheckNeedStates();
+        if (!askedForAction)
+            CheckNeedStates();
     }
 
     public void ActionIsPlanned()
@@ -48,7 +49,7 @@ public class PetState : AgentState
 
     public void ActionFinished()
     {
-        Debug.Log("Pet ready for new action");
+        //Debug.Log("Pet ready for new action");
         askedForAction = false;
     }
 

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class Action
@@ -61,16 +60,16 @@ public class Action
         return time;
     }
 
-    public float GetStateChange()
-    {
-        float cost = 0;
+    //public float GetStateChange()
+    //{
+    //    float change = 0;
 
-        for (int i = 0; i < actionStats.Length; i++)
-        {
-            cost += actionStats[i] * time;
-        }
-        return cost;
-    }
+    //    for (int i = 0; i < actionStats.Length; i++)
+    //    {
+    //        change += actionStats[i] * time;
+    //    }
+    //    return change;
+    //}
 
     public void AddEffect(WorldState.myStates worldState, bool state)
     {

@@ -12,12 +12,12 @@ public class Drawer : InteractableItem
 
     public override void AgentArrivedAtMyPosition(GameObject agent)
     {
-        base.AgentArrivedAtMyPosition(agent);
 
         if (nextActions[0].GetName() == "Put on street clothes")
             Invoke("StreetClothes", 0.5f);
         else
             Invoke("ChangeClothes", 0.5f);
+        base.AgentArrivedAtMyPosition(agent);
     }
 
     private void ChangeClothes()

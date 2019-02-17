@@ -25,18 +25,20 @@ public class PetQueue : ActionQueue
             else actionNames[i] = "null";
         }
         if (actionQueue[0] == null) canvas.SetActive(false);
-        else canvas.SetActive(true);
+        else
+        {
+            canvas.SetActive(true);
+            actionText.text = actionQueue[0].GetName();
+        }
     }
 
     public override void Queue()
     {
-        Debug.Log("Pet queue " + actionQueue[0].GetName());
-        if (!processingAction)
-        {
+        //if (!processingAction)
+        //{
             if (actionQueue[0].GetObject().GetComponent<InteractableItem>() != null)
             {
                 actionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(actionQueue[0]);
-                //player.GetComponent<PlayerVisuals>().ChangeTextColor(false);
             }
             else if(actionQueue[0].GetObject().GetComponent<PetState>() != null)
             {
@@ -46,10 +48,9 @@ public class PetQueue : ActionQueue
             {
                 pet.GetComponent<PetState>().ManipulateNeedChange(actionQueue[0]);
             }
-            actionText.text = actionQueue[0].GetName();
             pet.GetComponent<AgentMovement>().NewTarget(actionQueue[0].GetObject());
-            processingAction = true;
-        }
+            //processingAction = true;
+        //}
     }
 
     public void FeedingNow()
@@ -75,6 +76,7 @@ public class PetQueue : ActionQueue
 
     public override void FinishedAction(bool finished)
     {
+        Debug.Log("Pet finished action " + actionQueue[0]);
         Dictionary<WorldState.myStates, bool> temp = actionQueue[0].GetEffects();
         foreach (KeyValuePair<WorldState.myStates, bool> pair in temp)
         {
@@ -94,7 +96,7 @@ public class PetQueue : ActionQueue
             }
         }
         if (finished) pet.GetComponent<PetState>().ActionFinished();
-        processingAction = false;
+        //processingAction = false;
         bored = false;
 
         if (actionQueue[0] != null) Queue();

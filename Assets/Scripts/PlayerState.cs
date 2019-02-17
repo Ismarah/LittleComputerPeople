@@ -53,7 +53,8 @@ public class PlayerState : AgentState
     void Update()
     {
         AdjustNeedBars();
-        CheckNeedStates();
+        if (!askedForAction)
+            CheckNeedStates();
     }
 
     private void AdjustNeedBars()

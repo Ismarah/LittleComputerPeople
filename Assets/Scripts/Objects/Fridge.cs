@@ -9,16 +9,4 @@ public class Fridge : InteractableItem
         myFloor = 0;
         Init();
     }
-
-    public override void AgentArrivedAtMyPosition(GameObject agent)
-    {
-        base.AgentArrivedAtMyPosition(agent);
-        useCount++;
-
-        if (useCount >= 1)
-        {
-            useCount = 0;
-            WorldState.state.ChangeState(0, false);
-        }
-    }
 }

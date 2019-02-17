@@ -46,6 +46,7 @@ public class PlayerQueue : ActionQueue
     public void InsertAtStartOfQueue(Action action)
     {
         StopAllCoroutines();
+        player.GetComponent<AgentMovement>().StopAllCoroutines();
 
         for (int i = actionQueue.Length - 1; i >= 0; i--)
         {
@@ -64,8 +65,8 @@ public class PlayerQueue : ActionQueue
 
     public override void Queue()
     {
-        if (!processingAction)
-        {
+        //if (!processingAction)
+        //{
             if (actionQueue[0].GetObject().GetComponent<InteractableItem>() != null)
             {
                 actionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(actionQueue[0]);
@@ -80,8 +81,8 @@ public class PlayerQueue : ActionQueue
 
             player.GetComponent<PlayerVisuals>().ChangeActionText(actionQueue[0].GetName());
             player.GetComponent<AgentMovement>().NewTarget(actionQueue[0].GetObject());
-            processingAction = true;
-        }
+            //processingAction = true;
+        //}
     }
 
     public override void FinishedAction(bool finished)
@@ -112,7 +113,7 @@ public class PlayerQueue : ActionQueue
             }
         }
         if (finished) player.GetComponent<PlayerState>().ActionFinished();
-        processingAction = false;
+        //processingAction = false;
         bored = false;
 
         if (actionQueue[0] != null) Queue();

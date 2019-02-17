@@ -5,6 +5,7 @@ public class ActionChain
 {
     List<Action> myList;
     float wayTime;
+    string chainName;
 
     public ActionChain()
     {
@@ -27,15 +28,25 @@ public class ActionChain
         return myList;
     }
 
-    public float GetChainStateChange()
+    public void SetName(string name)
     {
-        float chainCost = 0;
-        for (int j = 0; j < myList.Count; j++)
-        {
-            chainCost += myList[j].GetStateChange();
-        }
-        return chainCost;
+        chainName = name;
     }
+
+    public string GetName()
+    {
+        return chainName;
+    }
+
+    //public float GetChainStateChange()
+    //{
+    //    float chainCost = 0;
+    //    for (int j = 0; j < myList.Count; j++)
+    //    {
+    //        chainCost += myList[j].GetStateChange();
+    //    }
+    //    return chainCost;
+    //}
 
     public float GetChainDuration()
     {

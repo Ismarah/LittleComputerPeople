@@ -48,7 +48,6 @@ public class AgentState : MonoBehaviour
                 Debug.Log("Need " + i + " is critical. value: " + currentNeeds[i]);
                 if (currentNeeds[i] > value)
                 {
-                    Debug.Log("Need at " + i + " is higher.");
                     value = currentNeeds[i];
                     index = i;
                 }
@@ -57,7 +56,6 @@ public class AgentState : MonoBehaviour
         if (index >= 0)
         {
             //add most urgent need to queue
-
             Debug.Log("Most urgent need is need at index " + index);
             foreach (KeyValuePair<WorldState.myStates, bool> pair in stateChanges[index])
             {
@@ -65,7 +63,6 @@ public class AgentState : MonoBehaviour
             }
             askedForAction = true;
             StartCoroutine(manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, goals[index].Key, goals[index].Value, index));
-
         }
 
     }

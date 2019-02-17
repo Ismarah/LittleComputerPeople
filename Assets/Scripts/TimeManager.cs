@@ -12,6 +12,16 @@ public class TimeManager : MonoBehaviour
     private float factor;
     [SerializeField]
     private float gameSpeed;
+    [SerializeField]
+    private Renderer background;
+    private Color dayTimeColor;
+    private float dayTimeChangeDuration;
+
+    private void Start()
+    {
+        dayTimeColor = background.sharedMaterial.color;
+        dayTimeChangeDuration = 0.004f / gameSpeed; 
+    }
 
     void Update()
     {
@@ -21,10 +31,33 @@ public class TimeManager : MonoBehaviour
         float minute = Mathf.Floor(time / 60);
         string seconds = Mathf.Floor(time % 60).ToString("00");
         float second = Mathf.Floor(time % 60);
-        if (minute >= 6 && minute < 18) WorldState.state.ChangeState(WorldState.myStates.daytime, true);
-        else WorldState.state.ChangeState(WorldState.myStates.daytime, false);
+        if (minute >= 6 && minute < 18)
+        {
+            if (minute < 8)
+            {
+                if (background.sharedMaterial.color.b < dayTimeColor.b)
+                {
+                    background.sharedMaterial.color += new Color(dayTimeChangeDuration, dayTimeChangeDuration, dayTimeChangeDuration);
+                }
+            }
+            if (WorldState.state.GetState(WorldState.myStates.daytime) != true)
+                WorldState.state.ChangeState(WorldState.myStates.daytime, true);
+        }
+        else
+        {
+            if (minute >= 18 && minute < 20)
+            {
+                if (background.sharedMaterial.color.b > 0.15f)
+                {
+                    background.sharedMaterial.color -= new Color(dayTimeChangeDuration, dayTimeChangeDuration, dayTimeChangeDuration);
+                }
+            }
+            if (WorldState.state.GetState(WorldState.myStates.daytime) != false)
+                WorldState.state.ChangeState(WorldState.myStates.daytime, false);
+        }
         if (Mathf.Floor(time / 60) >= 23 && Mathf.Floor(time % 60) == 0)
         {
+            Debug.Log("0 Uhr! " + minutes + " " + seconds);
             time = 0;
         }
         timer.text = string.Format("{0}:{1}", minutes, seconds);
@@ -33,5 +66,10 @@ public class TimeManager : MonoBehaviour
     public float GetGameSpeed()
     {
         return gameSpeed;
+    }
+
+    void OnApplicationQuit()
+    {
+        background.sharedMaterial.color = dayTimeColor;
     }
 }

@@ -27,7 +27,7 @@ public class GOAPplanner : MonoBehaviour
         //{
         //    goalSet = true;
         currentGoal = index;
-        Debug.Log("New goal " + newState + " " + state + "    Goal index: " + currentGoal);
+        //Debug.Log("New goal " + newState + " " + state + "    Goal index: " + currentGoal);
         currentAgent = agent;
         allPossibleChains = new List<ActionChain>();
         chain = new ActionChain();
@@ -63,7 +63,7 @@ public class GOAPplanner : MonoBehaviour
             string name = "";
             for (int i = 0; i < chain.GetActions().Count; i++)
             {
-                name += chain.GetActions()[i].GetName();
+                name += chain.GetActions()[i].GetName() + " ";
             }
             chain.SetName(name);
             allPossibleChains.Add(chain);
@@ -112,7 +112,7 @@ public class GOAPplanner : MonoBehaviour
 
         for (int i = 0; i < allValues.Length; i++)
         {
-            if (!CheckForProblematicNeed(allPossibleChains[i].GetChainDuration() / GetComponent<TimeManager>().GetGameSpeed(), i))
+            if (!CheckAllNeeds(allPossibleChains[i].GetChainDuration() / GetComponent<TimeManager>().GetGameSpeed(), i))
             {
                 bestValue = allValues[i];
                 for (int j = 0; j < allPossibleChains.Count; j++)
@@ -139,7 +139,7 @@ public class GOAPplanner : MonoBehaviour
         float change = 0;
         for (int k = 0; k < action.GetStats().Length; k++)
         {
-            change = action.GetStats()[k] * action.GetTime() / GetComponent<TimeManager>().GetGameSpeed();
+            change += action.GetStats()[k] * action.GetTime() / GetComponent<TimeManager>().GetGameSpeed();
         }
         return change;
     }
@@ -150,52 +150,42 @@ public class GOAPplanner : MonoBehaviour
         List<Action> temp = actionChain.GetActions();
         for (int j = 0; j < temp.Count; j++)
         {
-
             change -= GetActionStateChange(temp[j]);
         }
         return change;
     }
 
-    private bool CheckForProblematicNeed(float time, int chosenChain)
+    private bool CheckAllNeeds(float time, int chosenChain)
     {
-        //TODO calculate in chain change
         bool foundAProblem = false;
-        for (int index = 0; index < currentAgent.GetComponent<AgentState>().GetNeedCount(); index++)
+        int needCount = currentAgent.GetComponent<AgentState>().GetNeedCount();
+        float[] statesAfterChain = new float[needCount];
+
+        for (int i = 0; i < needCount; i++)
         {
-            if (index != currentGoal)
+            statesAfterChain[i] += currentAgent.GetComponent<AgentState>().GetNeedState(i) + (currentAgent.GetComponent<AgentState>().GetNeedChange(i) * time * (1 / Time.deltaTime) * Time.deltaTime * GetComponent<TimeManager>().GetGameSpeed());
+            foreach (Action a in allPossibleChains[chosenChain].GetActions())
             {
-                float stateAfterChain = currentAgent.GetComponent<AgentState>().GetNeedState(index) + (currentAgent.GetComponent<AgentState>().GetNeedChange(index) * time * (1 / Time.deltaTime) * Time.deltaTime * GetComponent<TimeManager>().GetGameSpeed());
-                if (stateAfterChain >= 0.85f)
+                statesAfterChain[i] += a.GetStats()[i];
+                if (statesAfterChain[i] >= 0.85f)
                 {
-                    Debug.Log("Need " + index + " would be too low after " + time + " seconds. Chain: " + allPossibleChains[chosenChain].GetName() + "   (" + stateAfterChain + ")");
-                    mostUrgentNeedIndex = index;
-                    foundAProblem = true;
-                }
-            }
-            else
-            {
-                float stateAfterAction = currentAgent.GetComponent<AgentState>().GetNeedState(currentGoal) + (currentAgent.GetComponent<AgentState>().GetNeedChange(currentGoal) * time * (1 / Time.deltaTime) * Time.deltaTime * GetComponent<TimeManager>().GetGameSpeed());
-                if (stateAfterAction >= 1)
-                {
-                    Debug.Log("Need " + index + " would be too low after chain " + allPossibleChains[chosenChain].GetName() + "   (" + stateAfterAction + ")");
-                    mostUrgentNeedIndex = index;
+                    Debug.Log("Need " + i + " would be too low after " + time + " seconds. Chain: " + allPossibleChains[chosenChain].GetName() + "   (" + statesAfterChain[i] + ")");
+                    mostUrgentNeedIndex = i;
                     foundAProblem = true;
                 }
             }
         }
-        Debug.Log("Found a problem: " + foundAProblem);
         return foundAProblem;
     }
-
     private void AddChosenChainToQueue(int index)
     {
         List<Action> newQueue = allPossibleChains[index].GetActions();
         newQueue.Reverse();
+        Debug.Log("Add chain to queue " + allPossibleChains[index].GetName());
         for (int i = 0; i < newQueue.Count; i++)
         {
             if (!GetComponent<ActionQueue>().IsEnqueued(newQueue[i]))
             {
-                Debug.Log("Add chain to queue " + allPossibleChains[index].GetName());
                 if (currentAgent == player)
                     GetComponent<PlayerQueue>().AddToQueue(newQueue[i]);
                 else

@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class Toilet : InteractableItem
 {
+    private Animator anim;
     void Start()
     {
         myFloor = 0;
         Init();
+        anim = GetComponent<Animator>();
     }
 
     public override void AgentArrivedAtMyPosition(GameObject agent)
@@ -22,7 +24,8 @@ public class Toilet : InteractableItem
                 WorldState.state.ChangeState(WorldState.myStates.toiletIsClean, false);
             }
 
-            GetComponent<Animator>().SetBool(myAnimation, true);
+            anim.SetBool(myAnimation, true);
+            anim.speed = GameObject.FindGameObjectWithTag("ActionQueue").GetComponent<TimeManager>().GetGameSpeed();
         }
 
         base.AgentArrivedAtMyPosition(agent);

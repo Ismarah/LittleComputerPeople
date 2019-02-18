@@ -23,7 +23,7 @@ public class PlayerQueue : ActionQueue
 
         if (actionQueue[0] == null && actionQueue[1] == null && !bored)
         {
-            Debug.Log("Starting to get bored.");
+            //Debug.Log("Starting to get bored.");
             bored = true;
             WorldState.state.ChangeState(WorldState.myStates.playerHasNothingToDo, true);
             StartCoroutine(GettingBored());
@@ -36,7 +36,7 @@ public class PlayerQueue : ActionQueue
 
         if (actionQueue[0] == null && actionQueue[1] == null)
         {
-            Debug.Log("Still bored.");
+            //Debug.Log("Still bored.");
             yield return StartCoroutine(GetComponent<GOAPplanner>().SetGoal(player, WorldState.myStates.favoritePlayerAction, true, 3));
             player.GetComponent<PlayerState>().ActionIsPlanned();
         }
@@ -69,6 +69,11 @@ public class PlayerQueue : ActionQueue
         {
             actionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(actionQueue[0]);
             player.GetComponent<PlayerVisuals>().ChangeTextColor(false);
+
+            if (actionQueue[0] == player.GetComponent<PlayerActions>().GetAction("Feed pet"))
+            {
+                GetComponent<PetQueue>().FeedingNow();
+            }
         }
 
         else if (actionQueue[0].GetObject().GetComponent<PlayerState>() != null)
@@ -92,11 +97,6 @@ public class PlayerQueue : ActionQueue
         player.GetComponent<PlayerVisuals>().SetAnimationState(actionQueue[0].GetAnimation().Key, false);
         if (actionQueue[0].GetObject().GetComponent<InteractableItem>().HasAnimation())
             actionQueue[0].GetObject().GetComponent<InteractableItem>().ReverseAnimation();
-
-        if (actionQueue[0] == player.GetComponent<PlayerActions>().GetAction("Feed pet"))
-        {
-            GetComponent<PetQueue>().FinishedFeeding();
-        }
 
         actionQueue[0] = null;
 

@@ -45,7 +45,7 @@ public class AgentState : MonoBehaviour
         {
             if (currentNeeds[i] >= criticalValues[i])
             {
-                Debug.Log("Need " + i + " is critical. value: " + currentNeeds[i]);
+                //Debug.Log("Need " + i + " is critical. value: " + currentNeeds[i]);
                 if (currentNeeds[i] > value)
                 {
                     value = currentNeeds[i];
@@ -56,7 +56,7 @@ public class AgentState : MonoBehaviour
         if (index >= 0)
         {
             //add most urgent need to queue
-            Debug.Log("Most urgent need is need at index " + index);
+            //Debug.Log("Most urgent need is need at index " + index);
             foreach (KeyValuePair<WorldState.myStates, bool> pair in stateChanges[index])
             {
                 WorldState.state.ChangeState(pair.Key, pair.Value);

@@ -87,8 +87,7 @@ public class PlayerState : AgentState
 
     public virtual void PetArrivedAtMyPosition()
     {
-        manager.GetComponent<PlayerQueue>().InsertAtStartOfQueue(GetComponent<PlayerActions>().GetAction("Feed pet"));
-        manager.GetComponent<PetQueue>().FeedingNow();
+        manager.GetComponent<PlayerQueue>().AddToQueue(GetComponent<PlayerActions>().GetAction("Feed pet"));
     }
 
     public void ManipulateNeedChange(Action action)

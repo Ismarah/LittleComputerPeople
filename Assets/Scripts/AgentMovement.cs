@@ -1,11 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class AgentMovement : MonoBehaviour
 {
-    protected Vector2 targetPos;
+    private Vector2 targetPos;
     protected GameObject target;
     [SerializeField]
     protected int floor = 0;
@@ -13,18 +11,21 @@ public class AgentMovement : MonoBehaviour
     protected float movespeed;
     [SerializeField]
     protected Transform firstStairsLower, firstStairsUpper, secondStairsLower, secondStairsUpper;
-    private Animator anim;
+    protected Animator anim;
     public bool turned;
-    private Text actionText;
 
-    public void Start()
+    private void Start()
+    {
+        Init();
+    }
+
+    public void Init()
     {
         anim = GetComponent<Animator>();
         targetPos = new Vector2();
-        actionText = transform.GetComponentInChildren<Canvas>().transform.GetChild(0).GetChild(0).GetComponent<Text>();
     }
 
-    public void NewTarget(GameObject newTarget)
+    public virtual void NewTarget(GameObject newTarget)
     {
         target = newTarget;
         int targetFloor = -1;
@@ -46,7 +47,7 @@ public class AgentMovement : MonoBehaviour
         return floor;
     }
 
-    private IEnumerator UseStairs(int targetFloor)
+    public virtual IEnumerator UseStairs(int targetFloor)
     {
         while (floor != targetFloor)
         {
@@ -130,34 +131,15 @@ public class AgentMovement : MonoBehaviour
         }
     }
 
-    private IEnumerator MoveToPos(Vector2 _targetPos)
+    public virtual IEnumerator MoveToPos(Vector2 _targetPos)
     {
-        if (tag == "Pet")
-        {
-            if (transform.eulerAngles.y == 0) turned = false;
-            else turned = true;
-        }
         float prevPos = transform.position.x;
         anim.SetBool("isWalking", true);
-        if (tag == "Pet") anim.SetBool("tail", false);
         Vector3 pos = new Vector3(_targetPos.x, _targetPos.y, transform.position.z);
         while (transform.position != pos)
         {
             transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime * GameObject.FindGameObjectWithTag("ActionQueue").GetComponent<TimeManager>().GetGameSpeed());
-            if (tag == "Pet")
-            {
-                if (prevPos < transform.position.x && !turned)
-                {
-                    turned = true;
-                    transform.RotateAround(transform.position, Vector3.up, 180);
-                }
-                if (prevPos > transform.position.x && turned)
-                {
-                    turned = false;
-                    transform.RotateAround(transform.position, Vector3.up, 180);
-                }
-                prevPos = transform.position.x;
-            }
+            
             yield return null;
         }
 
@@ -166,10 +148,6 @@ public class AgentMovement : MonoBehaviour
             if (target.GetComponent<InteractableItem>() != null)
             {
                 target.GetComponent<InteractableItem>().AgentArrivedAtMyPosition(gameObject);
-            }
-            if(target.GetComponent<PlayerState>() != null && tag == "Pet")
-            {
-                target.GetComponent<PlayerState>().PetArrivedAtMyPosition();
             }
             anim.SetBool("isWalking", false);
             if (tag == "Pet") anim.SetBool("tail", true);

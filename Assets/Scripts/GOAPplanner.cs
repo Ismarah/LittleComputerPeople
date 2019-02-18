@@ -34,7 +34,7 @@ public class GOAPplanner : MonoBehaviour
         {
             yield return StartCoroutine(FindActionChain(possibleActions[i]));
         }
-        Debug.Log(allPossibleChains.Count + " chains found");
+        //Debug.Log(allPossibleChains.Count + " chains found");
         FindBestActionChain();
     }
 
@@ -157,7 +157,7 @@ public class GOAPplanner : MonoBehaviour
     private float GetActionStateChange(Action action, int needIndex)
     {
         float change = action.GetStats()[needIndex] * action.GetTime() / GetComponent<TimeManager>().GetGameSpeed();
-        if (change != 0) Debug.Log("Action " + action.GetName() + " changes stat " + needIndex + " by " + change);
+        //if (change != 0) Debug.Log("Action " + action.GetName() + " changes stat " + needIndex + " by " + change);
         return change;
     }
 
@@ -174,7 +174,7 @@ public class GOAPplanner : MonoBehaviour
 
     private float[] NeedStatesAfterChain(float time, int chosenChain)
     {
-        Debug.Log("Time needed for chain " + allPossibleChains[chosenChain] + "   : " + time);
+        //Debug.Log("Time needed for chain " + allPossibleChains[chosenChain] + "   : " + time);
         //TODO: Check if action would be more than is needed
         int needCount = currentAgent.GetComponent<AgentState>().GetNeedCount();
         float[] statesAfterChain = new float[needCount];
@@ -207,7 +207,7 @@ public class GOAPplanner : MonoBehaviour
     {
         List<Action> newQueue = allPossibleChains[index].GetActions();
         newQueue.Reverse();
-        Debug.Log("Add chain to queue " + allPossibleChains[index].GetName());
+        //Debug.Log("Add chain to queue " + allPossibleChains[index].GetName());
         for (int i = 0; i < newQueue.Count; i++)
         {
             if (!GetComponent<ActionQueue>().IsEnqueued(newQueue[i]))

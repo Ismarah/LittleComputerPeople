@@ -28,29 +28,24 @@ public class PetQueue : ActionQueue
         else
         {
             canvas.SetActive(true);
+            canvas.transform.localEulerAngles = Vector3.zero;
             actionText.text = actionQueue[0].GetName();
         }
+        foodInBowl = WorldState.state.GetState(WorldState.myStates.foodInBowl);
     }
 
     public override void Queue()
     {
-        //if (!processingAction)
-        //{
-            if (actionQueue[0].GetObject().GetComponent<InteractableItem>() != null)
-            {
-                actionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(actionQueue[0]);
-            }
-            else if(actionQueue[0].GetObject().GetComponent<PetState>() != null)
-            {
-                pet.GetComponent<PetState>().ManipulateNeedChange(actionQueue[0]);
-            }
-            else if(actionQueue[0].GetObject().GetComponent<PlayerState>() != null)
-            {
-                pet.GetComponent<PetState>().ManipulateNeedChange(actionQueue[0]);
-            }
-            pet.GetComponent<AgentMovement>().NewTarget(actionQueue[0].GetObject());
-            //processingAction = true;
-        //}
+        if (actionQueue[0].GetObject().GetComponent<InteractableItem>() != null)
+        {
+            actionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(actionQueue[0]);
+        }
+        else if (actionQueue[0].GetObject().GetComponent<PetState>() != null)
+        {
+            pet.GetComponent<PetState>().ManipulateNeedChange(actionQueue[0]);
+        }
+        pet.GetComponent<AgentMovement>().NewTarget(actionQueue[0].GetObject());
+
     }
 
     public void FeedingNow()
@@ -66,17 +61,10 @@ public class PetQueue : ActionQueue
         }
 
         AddToQueue(pet.GetComponent<PetActions>().GetAction("Eat"));
-        foodInBowl = false;
-    }
-
-    public void FinishedFeeding()
-    {
-        foodInBowl = true; 
     }
 
     public override void FinishedAction(bool finished)
     {
-        Debug.Log("Pet finished action " + actionQueue[0]);
         Dictionary<WorldState.myStates, bool> temp = actionQueue[0].GetEffects();
         foreach (KeyValuePair<WorldState.myStates, bool> pair in temp)
         {
@@ -96,8 +84,6 @@ public class PetQueue : ActionQueue
             }
         }
         if (finished) pet.GetComponent<PetState>().ActionFinished();
-        //processingAction = false;
-        bored = false;
 
         if (actionQueue[0] != null) Queue();
     }

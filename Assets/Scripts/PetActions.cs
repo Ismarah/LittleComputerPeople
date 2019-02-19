@@ -13,7 +13,7 @@ public class PetActions : AgentActions
     private void CreateActions()
     {
         //Ask player for food
-        actionEffects = new float[2];
+        actionEffects = new float[3];
         time = 1;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
@@ -22,12 +22,12 @@ public class PetActions : AgentActions
         effects = new Dictionary<WorldState.myStates, bool>();
         effects.Add(WorldState.myStates.petAskedForFood, true);
 
-        newAction = new Action("Food\nplease", time, actionEffects, conditions, effects, player);
+        newAction = new Action(gameObject, "Food\nplease", time, actionEffects, conditions, effects, player);
         myActions.Add(newAction);
         //-----------------------------------------------------------------------
 
         //Eat food
-        actionEffects = new float[2];
+        actionEffects = new float[3];
         actionEffects[0] = -0.2f;
         time = 3;
 
@@ -38,8 +38,24 @@ public class PetActions : AgentActions
         effects.Add(WorldState.myStates.foodInBowl, false);
         effects.Add(WorldState.myStates.petHasEaten, true);
         effects.Add(WorldState.myStates.petIsHungry, false);
+        effects.Add(WorldState.myStates.petAskedForFood, false);
 
-        newAction = new Action("Eat", time, actionEffects, conditions, effects, petFood);
+        newAction = new Action(gameObject, "Eat", time, actionEffects, conditions, effects, petFood);
+        myActions.Add(newAction);
+        //-----------------------------------------------------------------------
+
+        //Run around
+        actionEffects = new float[3];
+        actionEffects[2] = -0.1f;
+        time = 1;
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.petIsBored, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.petIsBored, false);
+
+        newAction = new Action(gameObject, "Run around", time, actionEffects, conditions, effects, pet);
         myActions.Add(newAction);
         //-----------------------------------------------------------------------
     }

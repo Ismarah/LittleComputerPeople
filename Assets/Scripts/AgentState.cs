@@ -36,11 +36,20 @@ public class AgentState : MonoBehaviour
         }
     }
 
+    public void ActionIsPlanned()
+    {
+        askedForAction = true;
+    }
+
+    public void ActionFinished()
+    {
+        askedForAction = false;
+    }
+
     protected void CheckNeedStates()
     {
         int index = -1;
         float value = 0;
-        //go over all needs and check if they are in critical condition and if so add them to temporary list
         for (int i = 0; i < currentNeeds.Length; i++)
         {
             if (currentNeeds[i] >= criticalValues[i])
@@ -56,7 +65,8 @@ public class AgentState : MonoBehaviour
         if (index >= 0)
         {
             //add most urgent need to queue
-            //Debug.Log("Most urgent need is need at index " + index);
+            //if (tag == "Pet")
+                //Debug.Log("Most urgent need is need at index " + index);
             foreach (KeyValuePair<WorldState.myStates, bool> pair in stateChanges[index])
             {
                 WorldState.state.ChangeState(pair.Key, pair.Value);

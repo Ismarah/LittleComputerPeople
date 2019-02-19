@@ -67,7 +67,6 @@
     <Compile Include="Assets\Scripts\AgentActions.cs" />
     <Compile Include="Assets\Scripts\AgentMovement.cs" />
     <Compile Include="Assets\Scripts\AgentState.cs" />
-    <Compile Include="Assets\Scripts\EventManager.cs" />
     <Compile Include="Assets\Scripts\GOAPplanner.cs" />
     <Compile Include="Assets\Scripts\Objects\Bed.cs" />
     <Compile Include="Assets\Scripts\Objects\Computer.cs" />
@@ -84,7 +83,6 @@
     <Compile Include="Assets\Scripts\Old\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\Old\PlayerNeeds.cs" />
     <Compile Include="Assets\Scripts\PetActions.cs" />
-    <Compile Include="Assets\Scripts\PetBehaviour.cs" />
     <Compile Include="Assets\Scripts\PetCanvas.cs" />
     <Compile Include="Assets\Scripts\PetMovement.cs" />
     <Compile Include="Assets\Scripts\PetQueue.cs" />

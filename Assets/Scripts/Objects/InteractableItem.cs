@@ -11,7 +11,9 @@ public class InteractableItem : MonoBehaviour
     protected int index;
     protected float change, time;
     [SerializeField]
-    protected Action[] nextActions;
+    protected Action[] nextPlayerActions;
+    [SerializeField]
+    protected Action[] nextPetActions;
     [SerializeField]
     protected int useCount;
     [SerializeField]
@@ -21,7 +23,8 @@ public class InteractableItem : MonoBehaviour
     {
         player = GameObject.FindGameObjectWithTag("Player");
         pet = GameObject.FindGameObjectWithTag("Pet");
-        nextActions = new Action[10];
+        nextPlayerActions = new Action[10];
+        nextPetActions = new Action[10];
     }
 
     public bool HasAnimation()
@@ -43,38 +46,65 @@ public class InteractableItem : MonoBehaviour
 
     public virtual void AgentArrivedAtMyPosition(GameObject agent)
     {
-        if (agent != player) agent.GetComponent<PetState>().ManipulateNeedChange(nextActions[0]);
+        if (agent != player)
+        {
+            agent.GetComponent<PetState>().ManipulateNeedChange(nextPetActions[0]);
+            nextPetActions[0] = null;
+
+            for (int i = 0; i < nextPetActions.Length; i++)
+            {
+                if (nextPetActions[i] != null)
+                {
+                    nextPetActions[i - 1] = nextPetActions[i];
+                    nextPetActions[i] = null;
+                }
+            }
+        }
         else
         {
-            agent.GetComponent<PlayerState>().ManipulateNeedChange(nextActions[0]);
+            agent.GetComponent<PlayerState>().ManipulateNeedChange(nextPlayerActions[0]);
 
-            if (nextActions[0].HasAnimation())
+            if (nextPlayerActions[0].HasAnimation())
             {
-                player.GetComponent<PlayerVisuals>().ChangeDirection(nextActions[0].GetAnimation().Value);
-                player.GetComponent<PlayerVisuals>().SetAnimationState(nextActions[0].GetAnimation().Key, true);
+                player.GetComponent<PlayerVisuals>().ChangeDirection(nextPlayerActions[0].GetAnimation().Value);
+                player.GetComponent<PlayerVisuals>().SetAnimationState(nextPlayerActions[0].GetAnimation().Key, true);
             }
             player.GetComponent<PlayerVisuals>().ChangeTextColor(true);
-        }
-        nextActions[0] = null;
-
-        for (int i = 0; i < nextActions.Length; i++)
-        {
-            if (nextActions[i] != null)
+            nextPlayerActions[0] = null;
+            for (int i = 0; i < nextPlayerActions.Length; i++)
             {
-                nextActions[i - 1] = nextActions[i];
-                nextActions[i] = null;
+                if (nextPlayerActions[i] != null)
+                {
+                    nextPlayerActions[i - 1] = nextPlayerActions[i];
+                    nextPlayerActions[i] = null;
+                }
             }
         }
+
     }
 
     public void PlanAction(Action a)
     {
-        for (int i = 0; i < nextActions.Length; i++)
+        if (a.GetAgent() == player)
         {
-            if (nextActions[i] == null)
+            for (int i = 0; i < nextPlayerActions.Length; i++)
             {
-                nextActions[i] = a;
-                break;
+                if (nextPlayerActions[i] == null)
+                {
+                    nextPlayerActions[i] = a;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            for (int i = 0; i < nextPetActions.Length; i++)
+            {
+                if (nextPetActions[i] == null)
+                {
+                    nextPetActions[i] = a;
+                    break;
+                }
             }
         }
     }

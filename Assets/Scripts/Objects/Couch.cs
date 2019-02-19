@@ -23,7 +23,8 @@ public class Couch : InteractableItem
     {
         base.AgentArrivedAtMyPosition(agent);
 
-        StartCoroutine(AnimateScreen());
+        if (agent == player)
+            StartCoroutine(AnimateScreen());
     }
 
     private IEnumerator AnimateScreen()

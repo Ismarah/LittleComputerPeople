@@ -3456,7 +3456,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4519068280970330, guid: 928e10370a656c14a96209e8929f7e1a, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 5.7200193
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4519068280970330, guid: 928e10370a656c14a96209e8929f7e1a, type: 2}
       propertyPath: m_LocalRotation.x
@@ -3537,9 +3537,19 @@ Prefab:
     - target: {fileID: 114063770081193884, guid: 928e10370a656c14a96209e8929f7e1a,
         type: 2}
       propertyPath: movespeed
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 114869572354066820, guid: 928e10370a656c14a96209e8929f7e1a,
+        type: 2}
+      propertyPath: hungerChange
+      value: 0.008
+      objectReference: {fileID: 0}
+    - target: {fileID: 4519068280970330, guid: 928e10370a656c14a96209e8929f7e1a, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 0.2
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 114996204786853834, guid: 928e10370a656c14a96209e8929f7e1a, type: 2}
   m_SourcePrefab: {fileID: 100100000, guid: 928e10370a656c14a96209e8929f7e1a, type: 2}
   m_IsPrefabAsset: 0
 --- !u!1 &1176879863
@@ -3858,7 +3868,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1286969267}
-  - component: {fileID: 1286969265}
   - component: {fileID: 1286969269}
   - component: {fileID: 1286969268}
   - component: {fileID: 1286969270}
@@ -3871,17 +3880,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1286969265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1286969264}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf03ebfd19e89734fbd04cbab2d9c979, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1286969266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4565,7 +4563,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4436192573748520, guid: bf6e12d5aa2b11846a936f7171ce891c, type: 2}
       propertyPath: m_LocalPosition.z
-      value: -172.42651
+      value: -169.77
       objectReference: {fileID: 0}
     - target: {fileID: 4436192573748520, guid: bf6e12d5aa2b11846a936f7171ce891c, type: 2}
       propertyPath: m_LocalRotation.x

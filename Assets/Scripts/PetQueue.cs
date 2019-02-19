@@ -9,11 +9,20 @@ public class PetQueue : ActionQueue
     private GameObject canvas;
     private Text actionText;
     private bool foodInBowl;
+    private InteractableItem[] interactables;
+    private List<GameObject> objects;
+    private bool startToGetBored;
 
     void Start()
     {
         base.Init();
         actionText = canvas.transform.GetChild(0).GetChild(0).GetComponent<Text>();
+        interactables = FindObjectsOfType<InteractableItem>();
+        objects = new List<GameObject>();
+        foreach (InteractableItem i in interactables)
+        {
+            objects.Add(i.gameObject);
+        }
     }
 
     private void Update()
@@ -24,14 +33,38 @@ public class PetQueue : ActionQueue
                 actionNames[i] = actionQueue[i].GetName();
             else actionNames[i] = "null";
         }
-        if (actionQueue[0] == null) canvas.SetActive(false);
+        if (actionQueue[0] == null)
+        {
+            canvas.SetActive(false);
+
+            if (!startToGetBored && WorldState.state.GetState(WorldState.myStates.petAskedForFood) == false && WorldState.state.GetState(WorldState.myStates.petIsHungry) == false)
+            {
+                //pet has nothing to do and has not asked for food
+                startToGetBored = true;
+                StartCoroutine(StartToRunAround());
+            }
+        }
         else
         {
-            canvas.SetActive(true);
-            canvas.transform.localEulerAngles = Vector3.zero;
-            actionText.text = actionQueue[0].GetName();
+            if (actionQueue[0].GetName() != "Run around")
+            {
+                canvas.SetActive(true);
+                actionText.text = actionQueue[0].GetName();
+            }
         }
         foodInBowl = WorldState.state.GetState(WorldState.myStates.foodInBowl);
+    }
+
+    private IEnumerator StartToRunAround()
+    {
+        yield return new WaitForSeconds(3 / GetComponent<TimeManager>().GetGameSpeed());
+
+        if (WorldState.state.GetState(WorldState.myStates.petAskedForFood) == false && WorldState.state.GetState(WorldState.myStates.petIsHungry) == false)
+        {
+            AddToQueue(pet.GetComponent<PetActions>().GetAction("Run around"));
+            pet.GetComponent<PetState>().ActionIsPlanned();
+        }
+
     }
 
     public override void Queue()
@@ -39,13 +72,18 @@ public class PetQueue : ActionQueue
         if (actionQueue[0].GetObject().GetComponent<InteractableItem>() != null)
         {
             actionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(actionQueue[0]);
+            pet.GetComponent<AgentMovement>().NewTarget(actionQueue[0].GetObject());
         }
         else if (actionQueue[0].GetObject().GetComponent<PetState>() != null)
         {
-            pet.GetComponent<PetState>().ManipulateNeedChange(actionQueue[0]);
+            int rand = Random.Range(0, objects.Count);
+            objects[rand].GetComponent<InteractableItem>().PlanAction(actionQueue[0]);
+            pet.GetComponent<AgentMovement>().NewTarget(objects[rand]);
         }
-        pet.GetComponent<AgentMovement>().NewTarget(actionQueue[0].GetObject());
-
+        else if (actionQueue[0].GetObject().GetComponent<PlayerState>() != null)
+        {
+            pet.GetComponent<AgentMovement>().NewTarget(actionQueue[0].GetObject());
+        }
     }
 
     public void FeedingNow()
@@ -73,6 +111,11 @@ public class PetQueue : ActionQueue
 
         pet.GetComponent<Animator>().SetBool("tail", true);
 
+        if (finished) pet.GetComponent<PetState>().ActionFinished();
+        if (actionQueue[0] == pet.GetComponent<PetActions>().GetAction("Run around"))
+        {
+            pet.GetComponent<PetState>().ActionFinished();
+        }
         actionQueue[0] = null;
 
         for (int i = 1; i < actionQueue.Length; i++)
@@ -83,8 +126,7 @@ public class PetQueue : ActionQueue
                 actionQueue[i] = null;
             }
         }
-        if (finished) pet.GetComponent<PetState>().ActionFinished();
-
+        startToGetBored = false;
         if (actionQueue[0] != null) Queue();
     }
 }

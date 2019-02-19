@@ -66,16 +66,6 @@ public class PlayerState : AgentState
         hygene.fillAmount = 1 - currentNeeds[4];
     }
 
-    public void ActionIsPlanned()
-    {
-        askedForAction = true;
-    }
-
-    public void ActionFinished()
-    {
-        askedForAction = false;
-    }
-
     private void LateUpdate()
     {
         for (int i = 0; i < currentNeeds.Length; i++)

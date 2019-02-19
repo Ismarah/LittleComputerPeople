@@ -24,8 +24,9 @@ public class GOAPplanner : MonoBehaviour
     public IEnumerator SetGoal(GameObject agent, WorldState.myStates newState, bool state, int index)
     {
         currentGoal = index;
-        //Debug.Log("New goal " + newState + " " + state + "    Goal index: " + currentGoal);
         currentAgent = agent;
+        //if (agent.tag == "Pet")
+        //    Debug.Log("New goal " + agent + "  " + newState + " " + state + "    Goal index: " + currentGoal);
         allPossibleChains = new List<ActionChain>();
         chain = new ActionChain();
 
@@ -175,13 +176,12 @@ public class GOAPplanner : MonoBehaviour
     private float[] NeedStatesAfterChain(float time, int chosenChain)
     {
         //Debug.Log("Time needed for chain " + allPossibleChains[chosenChain] + "   : " + time);
-        //TODO: Check if action would be more than is needed
         int needCount = currentAgent.GetComponent<AgentState>().GetNeedCount();
         float[] statesAfterChain = new float[needCount];
 
         for (int i = 0; i < needCount; i++)
         {
-            statesAfterChain[i] += currentAgent.GetComponent<AgentState>().GetNeedState(i) + (currentAgent.GetComponent<AgentState>().GetNeedChange(i) * (time/ GetComponent<TimeManager>().GetGameSpeed()) * (1 / Time.deltaTime) * Time.deltaTime);
+            statesAfterChain[i] += currentAgent.GetComponent<AgentState>().GetNeedState(i) + (currentAgent.GetComponent<AgentState>().GetNeedChange(i) * (time / GetComponent<TimeManager>().GetGameSpeed()) * (1 / Time.deltaTime) * Time.deltaTime);
             foreach (Action a in allPossibleChains[chosenChain].GetActions())
             {
                 //Debug.Log("State after change: " + statesAfterChain[i] + " + " + GetActionStateChange(a, i));

@@ -37,7 +37,8 @@ public class WorldState : MonoBehaviour
         playerNeedsToilet,
         favoritePlayerAction,
         petIsTired,
-        foodInBowl
+        foodInBowl, 
+        petIsBored
     }
 
     void Start()
@@ -70,6 +71,7 @@ public class WorldState : MonoBehaviour
         stateList.Add(myStates.favoritePlayerAction, false);
         stateList.Add(myStates.petIsTired, false);
         stateList.Add(myStates.foodInBowl, false);
+        stateList.Add(myStates.petIsBored, false);
 
         showList = new List<myStates>();
         showBoolList = new List<bool>();

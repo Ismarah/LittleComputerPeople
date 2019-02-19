@@ -133,6 +133,7 @@ public class AgentMovement : MonoBehaviour
 
     public virtual IEnumerator MoveToPos(Vector2 _targetPos)
     {
+        anim.speed = GameObject.FindGameObjectWithTag("ActionQueue").GetComponent<TimeManager>().GetGameSpeed();
         float prevPos = transform.position.x;
         anim.SetBool("isWalking", true);
         Vector3 pos = new Vector3(_targetPos.x, _targetPos.y, transform.position.z);
@@ -150,7 +151,6 @@ public class AgentMovement : MonoBehaviour
                 target.GetComponent<InteractableItem>().AgentArrivedAtMyPosition(gameObject);
             }
             anim.SetBool("isWalking", false);
-            if (tag == "Pet") anim.SetBool("tail", true);
         }
     }
 

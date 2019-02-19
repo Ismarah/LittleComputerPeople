@@ -14,18 +14,21 @@ public class Toilet : InteractableItem
 
     public override void AgentArrivedAtMyPosition(GameObject agent)
     {
-        if(nextActions[0].GetName() != "Clean toilet")
+        if (agent == player)
         {
-            useCount++;
-
-            if (useCount >= 3)
+            if (nextPlayerActions[0].GetName() != "Clean toilet")
             {
-                useCount = 0;
-                WorldState.state.ChangeState(WorldState.myStates.toiletIsClean, false);
-            }
+                useCount++;
 
-            anim.SetBool(myAnimation, true);
-            anim.speed = GameObject.FindGameObjectWithTag("ActionQueue").GetComponent<TimeManager>().GetGameSpeed();
+                if (useCount >= 3)
+                {
+                    useCount = 0;
+                    WorldState.state.ChangeState(WorldState.myStates.toiletIsClean, false);
+                }
+
+                anim.SetBool(myAnimation, true);
+                anim.speed = GameObject.FindGameObjectWithTag("ActionQueue").GetComponent<TimeManager>().GetGameSpeed();
+            }
         }
 
         base.AgentArrivedAtMyPosition(agent);

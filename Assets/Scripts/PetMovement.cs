@@ -5,11 +5,13 @@ using UnityEngine.UI;
 public class PetMovement : AgentMovement
 {
     private GameObject player;
+    private GameObject manager;
 
     void Start()
     {
         base.Init();
         player = GameObject.FindGameObjectWithTag("Player");
+        manager = GameObject.FindGameObjectWithTag("ActionQueue");
     }
 
     public override void NewTarget(GameObject newTarget)
@@ -20,23 +22,25 @@ public class PetMovement : AgentMovement
     private IEnumerator Move(GameObject newTarget)
     {
         target = newTarget;
-        while (Vector2.Distance(transform.position, target.transform.position) >= 0.3f)
+
+        int targetFloor = -1;
+        if (target.GetComponent<InteractableItem>() != null)
+            targetFloor = target.GetComponent<InteractableItem>().GetFloor();
+        else if (target.GetComponent<AgentMovement>() != null)
+            targetFloor = target.GetComponent<AgentMovement>().GetFloor();
+
+        while (floor != targetFloor)
         {
-            int targetFloor = -1;
-            if (target.GetComponent<InteractableItem>() != null)
-                targetFloor = target.GetComponent<InteractableItem>().GetFloor();
-            else if (target.GetComponent<AgentMovement>() != null)
-                targetFloor = target.GetComponent<AgentMovement>().GetFloor();
-
-            if (targetFloor == floor)
-            {
-                Vector2 targetPos = new Vector2(newTarget.transform.position.x, transform.position.y);
-                yield return StartCoroutine(MoveToPos(targetPos));
-            }
-            else yield return StartCoroutine(UseStairs(targetFloor));
-
-            yield return null;
+            yield return StartCoroutine(UseStairs(targetFloor));
         }
+
+        Vector2 targetPos = new Vector2(newTarget.transform.position.x, transform.position.y);
+
+        yield return StartCoroutine(MoveToPos(targetPos));
+
+        anim.SetBool("isWalking", false);
+        anim.speed = 1;
+        anim.SetBool("tail", true);
 
         if (target.GetComponent<InteractableItem>() != null)
         {
@@ -47,8 +51,6 @@ public class PetMovement : AgentMovement
             target.GetComponent<PlayerState>().PetArrivedAtMyPosition();
             GetComponent<PetState>().ManipulateNeedChange(GetComponent<PetActions>().GetAction("Food\nplease"));
         }
-        anim.SetBool("isWalking", false);
-        if (tag == "Pet") anim.SetBool("tail", true);
     }
 
     public override IEnumerator UseStairs(int targetFloor)
@@ -88,12 +90,13 @@ public class PetMovement : AgentMovement
         if (transform.eulerAngles.y == 0) turned = false;
         else turned = true;
         float prevPos = transform.position.x;
+        anim.speed = manager.GetComponent<TimeManager>().GetGameSpeed();
         anim.SetBool("isWalking", true);
-        if (tag == "Pet") anim.SetBool("tail", false);
+        anim.SetBool("tail", false);
         Vector3 pos = new Vector3(_targetPos.x, _targetPos.y, transform.position.z);
         while (transform.position != pos)
         {
-            transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime * GameObject.FindGameObjectWithTag("ActionQueue").GetComponent<TimeManager>().GetGameSpeed());
+            transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime * manager.GetComponent<TimeManager>().GetGameSpeed());
 
             if (prevPos < transform.position.x && !turned)
             {

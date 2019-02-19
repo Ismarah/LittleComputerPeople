@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Action
 {
+    private GameObject agent;
     private float[] actionStats;
     private Dictionary<WorldState.myStates, bool> conditions;
     private Dictionary<WorldState.myStates, bool> effects;
@@ -13,8 +14,9 @@ public class Action
     private bool hasAnimation;
     private bool animationLeft;
 
-    public Action(string _name, float _time, float[] _actionStats, Dictionary<WorldState.myStates, bool> _conditions, Dictionary<WorldState.myStates, bool> _effects, GameObject obj)
+    public Action(GameObject _agent, string _name, float _time, float[] _actionStats, Dictionary<WorldState.myStates, bool> _conditions, Dictionary<WorldState.myStates, bool> _effects, GameObject obj)
     {
+        agent = _agent;
         actionStats = _actionStats;
         conditions = _conditions;
         effects = _effects;
@@ -26,6 +28,11 @@ public class Action
     public Action()
     {
 
+    }
+
+    public GameObject GetAgent()
+    {
+        return agent;
     }
 
     public bool HasAnimation()

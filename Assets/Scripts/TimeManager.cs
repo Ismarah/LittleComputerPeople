@@ -55,7 +55,7 @@ public class TimeManager : MonoBehaviour
             if (WorldState.state.GetState(WorldState.myStates.daytime) != false)
                 WorldState.state.ChangeState(WorldState.myStates.daytime, false);
         }
-        if (Mathf.Floor(time / 60) >= 23 && Mathf.Floor(time % 60) == 0)
+        if (minute > 23 && second == 0)
         {
             Debug.Log("0 Uhr! " + minutes + " " + seconds);
             time = 0;

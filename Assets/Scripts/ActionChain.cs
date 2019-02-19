@@ -38,16 +38,6 @@ public class ActionChain
         return chainName;
     }
 
-    //public float GetChainStateChange()
-    //{
-    //    float chainCost = 0;
-    //    for (int j = 0; j < myList.Count; j++)
-    //    {
-    //        chainCost += myList[j].GetStateChange();
-    //    }
-    //    return chainCost;
-    //}
-
     public float GetChainDuration()
     {
         float chainDuration = 0;

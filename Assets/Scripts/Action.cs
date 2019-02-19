@@ -67,17 +67,6 @@ public class Action
         return time;
     }
 
-    //public float GetStateChange()
-    //{
-    //    float change = 0;
-
-    //    for (int i = 0; i < actionStats.Length; i++)
-    //    {
-    //        change += actionStats[i] * time;
-    //    }
-    //    return change;
-    //}
-
     public void AddEffect(WorldState.myStates worldState, bool state)
     {
         effects.Add(worldState, state);

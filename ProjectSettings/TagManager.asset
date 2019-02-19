@@ -19,6 +19,7 @@ TagManager:
   - Couch
   - BathSink
   - Shower
+  - PetBed
   layers:
   - Default
   - TransparentFX

@@ -49,6 +49,12 @@ public class InteractableItem : MonoBehaviour
         if (agent != player)
         {
             agent.GetComponent<PetState>().ManipulateNeedChange(nextPetActions[0]);
+
+            if (nextPetActions[0].HasAnimation())
+            {
+                pet.GetComponent<AgentVisuals>().SetAnimationState(nextPetActions[0].GetAnimation().Key, true);
+            }
+
             nextPetActions[0] = null;
 
             for (int i = 0; i < nextPetActions.Length; i++)
@@ -66,7 +72,7 @@ public class InteractableItem : MonoBehaviour
 
             if (nextPlayerActions[0].HasAnimation())
             {
-                player.GetComponent<PlayerVisuals>().ChangeDirection(nextPlayerActions[0].GetAnimation().Value);
+                //player.GetComponent<PlayerVisuals>().ChangeDirection(nextPlayerActions[0].GetAnimation().Value);
                 player.GetComponent<PlayerVisuals>().SetAnimationState(nextPlayerActions[0].GetAnimation().Key, true);
             }
             player.GetComponent<PlayerVisuals>().ChangeTextColor(true);

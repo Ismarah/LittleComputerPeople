@@ -19,8 +19,8 @@ public class PlayerActions : AgentActions
     {
         //Eat a meal-------------------------------------------------------------
         actionEffects = new float[5];
-        actionEffects[0] = -0.2f;
-        time = 4;
+        actionEffects[0] = -0.25f;
+        time = 5;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.FoodCooked, true);
@@ -65,7 +65,7 @@ public class PlayerActions : AgentActions
 
         //Cook a meal------------------------------------------------------------
         actionEffects = new float[5];
-        time = 4;
+        time = 5;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.IngredientsInFridge, true);
@@ -80,7 +80,7 @@ public class PlayerActions : AgentActions
 
         //Refill ingredients-----------------------------------------------------
         actionEffects = new float[5];
-        time = 1;
+        time = 2;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.hasMoney, true);
@@ -156,12 +156,12 @@ public class PlayerActions : AgentActions
     {
         //Sleep through night----------------------------------------------------
         actionEffects = new float[5];
-        actionEffects[0] = -0.004f;
-        actionEffects[1] = -0.3f;
-        actionEffects[2] = -0.004f;
-        actionEffects[3] = -0.004f;
-        actionEffects[4] = -0.004f;
-        time = 5;
+        actionEffects[0] = -0.0006f;
+        actionEffects[1] = -0.08f;
+        actionEffects[2] = -0.0004f;
+        actionEffects[3] = -0.0004f;
+        actionEffects[4] = -0.0004f;
+        time = 12;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.playerIsWearingStreetClothes, false);
@@ -225,7 +225,7 @@ public class PlayerActions : AgentActions
         //Play video games-------------------------------------------------------
         actionEffects = new float[5];
         actionEffects[3] = -0.12f;
-        time = 4;
+        time = 3;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.playerHasNothingToDo, true);
@@ -239,8 +239,8 @@ public class PlayerActions : AgentActions
 
         //Watch TV---------------------------------------------------------------
         actionEffects = new float[5];
-        actionEffects[3] = -0.35f;
-        time = 2;
+        actionEffects[3] = -0.3f;
+        time = 5;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.playerHasNothingToDo, true);

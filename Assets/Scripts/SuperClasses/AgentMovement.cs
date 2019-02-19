@@ -12,7 +12,7 @@ public class AgentMovement : MonoBehaviour
     [SerializeField]
     protected Transform firstStairsLower, firstStairsUpper, secondStairsLower, secondStairsUpper;
     protected Animator anim;
-    public bool turned;
+    protected bool turned;
     protected GameObject manager;
 
     private void Start()

@@ -10,11 +10,8 @@ public class InteractableItem : MonoBehaviour
     protected GameObject pet;
     protected int index;
     protected float change, time;
-    [SerializeField]
     protected Action[] nextPlayerActions;
-    [SerializeField]
     protected Action[] nextPetActions;
-    [SerializeField]
     protected int useCount;
     [SerializeField]
     protected string myAnimation;
@@ -72,7 +69,6 @@ public class InteractableItem : MonoBehaviour
 
             if (nextPlayerActions[0].HasAnimation())
             {
-                //player.GetComponent<PlayerVisuals>().ChangeDirection(nextPlayerActions[0].GetAnimation().Value);
                 player.GetComponent<PlayerVisuals>().SetAnimationState(nextPlayerActions[0].GetAnimation().Key, true);
             }
             player.GetComponent<PlayerVisuals>().ChangeTextColor(true);

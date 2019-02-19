@@ -8,7 +8,6 @@ public class GOAPplanner : MonoBehaviour
     private GameObject player;
     private GameObject petFood;
     private List<ActionChain> allPossibleChains;
-    //private bool goalSet;
     private bool completedChain;
     private ActionChain chain;
     private int currentGoal;
@@ -25,8 +24,6 @@ public class GOAPplanner : MonoBehaviour
     {
         currentGoal = index;
         currentAgent = agent;
-        //if (agent.tag == "Pet")
-        //    Debug.Log("New goal " + agent + "  " + newState + " " + state + "    Goal index: " + currentGoal);
         allPossibleChains = new List<ActionChain>();
         chain = new ActionChain();
 
@@ -35,7 +32,6 @@ public class GOAPplanner : MonoBehaviour
         {
             yield return StartCoroutine(FindActionChain(possibleActions[i]));
         }
-        //Debug.Log(allPossibleChains.Count + " chains found");
         FindBestActionChain();
     }
 
@@ -77,10 +73,6 @@ public class GOAPplanner : MonoBehaviour
                         yield return StartCoroutine(FindActionChain(newActions[i]));
                     }
                 }
-                else
-                {
-                    Debug.Log("No action found to fullfill condition " + conditions.Key + " to " + conditions.Value);
-                }
             }
         }
         chain = new ActionChain();
@@ -95,10 +87,8 @@ public class GOAPplanner : MonoBehaviour
         {
             allValues[i] = GetChainStateChange(allPossibleChains[i]);
         }
-
         Array.Sort(allValues);
         Array.Reverse(allValues);
-
         float bestValue = -1;
         int bestIndex = -1;
         bool overfill = false;
@@ -106,7 +96,7 @@ public class GOAPplanner : MonoBehaviour
         for (int i = 0; i < allValues.Length; i++)
         {
             float[] states = NeedStatesAfterChain(allPossibleChains[i].GetChainDuration() / GetComponent<TimeManager>().GetGameSpeed(), i);
-            if (states[currentGoal] > -0.5f)
+            if (states[currentGoal] > -0.1f)
             {
                 bestValue = allValues[i];
                 for (int j = 0; j < allPossibleChains.Count; j++)
@@ -129,7 +119,6 @@ public class GOAPplanner : MonoBehaviour
             if (!overfill)
             {
                 //no action can be done because other needs are more important
-                Debug.Log("No possible chain :( Next most urgent need index: " + mostUrgentNeedIndex);
                 currentAgent.GetComponent<AgentState>().SatisfySecondMostUrgentNeed(mostUrgentNeedIndex);
             }
             else
@@ -158,7 +147,6 @@ public class GOAPplanner : MonoBehaviour
     private float GetActionStateChange(Action action, int needIndex)
     {
         float change = action.GetStats()[needIndex] * action.GetTime() / GetComponent<TimeManager>().GetGameSpeed();
-        //if (change != 0) Debug.Log("Action " + action.GetName() + " changes stat " + needIndex + " by " + change);
         return change;
     }
 
@@ -175,7 +163,6 @@ public class GOAPplanner : MonoBehaviour
 
     private float[] NeedStatesAfterChain(float time, int chosenChain)
     {
-        //Debug.Log("Time needed for chain " + allPossibleChains[chosenChain] + "   : " + time);
         int needCount = currentAgent.GetComponent<AgentState>().GetNeedCount();
         float[] statesAfterChain = new float[needCount];
 
@@ -184,30 +171,17 @@ public class GOAPplanner : MonoBehaviour
             statesAfterChain[i] += currentAgent.GetComponent<AgentState>().GetNeedState(i) + (currentAgent.GetComponent<AgentState>().GetNeedChange(i) * (time / GetComponent<TimeManager>().GetGameSpeed()) * (1 / Time.deltaTime) * Time.deltaTime);
             foreach (Action a in allPossibleChains[chosenChain].GetActions())
             {
-                //Debug.Log("State after change: " + statesAfterChain[i] + " + " + GetActionStateChange(a, i));
                 statesAfterChain[i] += GetActionStateChange(a, i) * (1 / Time.deltaTime) * Time.deltaTime;
             }
-            if (statesAfterChain[i] >= 0.85f && i != currentGoal)
-            {
-                //Debug.Log("Need " + i + " would be too low after " + time + " seconds. Chain: " + allPossibleChains[chosenChain].GetName() + "   (" + statesAfterChain[i] + ")");
-                mostUrgentNeedIndex = i;
-            }
-            if (i == currentGoal && statesAfterChain[i] < -0.5f)
-            {
-                Debug.Log("Need at " + i + " overfill for chain " + allPossibleChains[chosenChain].GetName() + " : " + statesAfterChain[i]);
-            }
+            if (statesAfterChain[i] >= 0.85f && i != currentGoal) mostUrgentNeedIndex = i;
         }
-        //for (int j = 0; j < statesAfterChain.Length; j++)
-        //{
-        //    Debug.Log("State " + j + " would be at " + statesAfterChain[j] + " after chain " + allPossibleChains[chosenChain].GetName());
-        //}
+
         return statesAfterChain;
     }
     private void AddChosenChainToQueue(int index)
     {
         List<Action> newQueue = allPossibleChains[index].GetActions();
         newQueue.Reverse();
-        //Debug.Log("Add chain to queue " + allPossibleChains[index].GetName());
         for (int i = 0; i < newQueue.Count; i++)
         {
             if (!GetComponent<ActionQueue>().IsEnqueued(newQueue[i]))
@@ -234,7 +208,6 @@ public class GOAPplanner : MonoBehaviour
                 if (temp[newState] == state)
                 {
                     possibleActions.Add(allActions[i]);
-                    //Debug.Log("Found a possible action to change world state " + newState + " to " + state + "  : " + allActions[i].GetName());
                 }
             }
         }
@@ -249,7 +222,6 @@ public class GOAPplanner : MonoBehaviour
         int count = 0;
         foreach (KeyValuePair<WorldState.myStates, bool> condition in conditions)
         {
-            //Debug.Log("Action " + action.GetName() + " needs Worldstate " + condition.Key + " to be " + condition.Value + ". It is currently " + WorldState.state.GetState(condition.Key));
             if (WorldState.state.GetState(condition.Key) == condition.Value) count++;
         }
         if (count == conditionCount) return true;

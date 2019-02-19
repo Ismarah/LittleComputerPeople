@@ -46,7 +46,7 @@ public class PetActions : AgentActions
 
         //Run around
         actionEffects = new float[3];
-        actionEffects[2] = -0.1f;
+        actionEffects[2] = -0.8f;
         time = 1;
 
         conditions = new Dictionary<WorldState.myStates, bool>();

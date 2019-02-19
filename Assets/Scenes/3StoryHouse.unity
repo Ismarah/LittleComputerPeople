@@ -526,6 +526,11 @@ Prefab:
       propertyPath: m_LocalScale.z
       value: 0.47757345
       objectReference: {fileID: 0}
+    - target: {fileID: 114018638092215470, guid: 657756d42125d8640b7b84374ead4b33,
+        type: 2}
+      propertyPath: hungerChange
+      value: 0.019
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 657756d42125d8640b7b84374ead4b33, type: 2}
   m_IsPrefabAsset: 0
@@ -1315,7 +1320,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53cb80c4a9f2ab14d905b08af9497e93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCount: 0
   myAnimation: 
 --- !u!1001 &300856538
 Prefab:
@@ -1560,7 +1564,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc43d4848adc65947974fae478554a76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCount: 0
   myAnimation: 
 --- !u!1 &416288769
 GameObject:
@@ -2290,7 +2293,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3982d886166e10c42aeba3631e353962, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCount: 0
   myAnimation: 
 --- !u!1 &574898336
 GameObject:
@@ -3926,6 +3928,16 @@ Prefab:
       propertyPath: sleepChange
       value: 0.008
       objectReference: {fileID: 0}
+    - target: {fileID: 114869572354066820, guid: 928e10370a656c14a96209e8929f7e1a,
+        type: 2}
+      propertyPath: funChange
+      value: 0.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 114869572354066820, guid: 928e10370a656c14a96209e8929f7e1a,
+        type: 2}
+      propertyPath: bored
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 928e10370a656c14a96209e8929f7e1a, type: 2}
   m_IsPrefabAsset: 0
@@ -4226,7 +4238,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dddc15bf8b09fc4bbfdf08156fb34cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCount: 0
   myAnimation: 
   tv: {fileID: 960526722}
   screens:
@@ -4332,7 +4343,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timer: {fileID: 515457616}
   factor: 5
-  gameSpeed: 2
+  gameSpeed: 3
   background: {fileID: 1340908410}
 --- !u!1 &1296579070 stripped
 GameObject:
@@ -4350,7 +4361,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4b495768e5e32949acfce9fb53eb504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCount: 0
   myAnimation: 
 --- !u!1 &1312460776
 GameObject:
@@ -4784,7 +4794,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 574f368f01abd5a4eb05b705416058b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCount: 0
   myAnimation: 
 --- !u!4 &1351686103 stripped
 Transform:
@@ -5530,7 +5539,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff4ab0e249c18a249b797c8a4f4df87e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  useCount: 0
   myAnimation: 
 --- !u!23 &1535907387
 MeshRenderer:

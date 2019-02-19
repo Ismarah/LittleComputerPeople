@@ -48,7 +48,7 @@ public class PlayerVisuals : AgentVisuals
 
     public void ChangeTextColor(bool arrived)
     {
-        if (arrived) actionText.color = new Color(0, 220, 30);
+        if (arrived) actionText.color = new Color(0, 255, 1);
         else actionText.color = Color.blue;
     }
 
@@ -69,21 +69,5 @@ public class PlayerVisuals : AgentVisuals
             actionText.transform.parent.GetComponent<Image>().enabled = true;
             actionText.GetComponent<Text>().enabled = true;
         }
-    }
-
-    //public void ChangeDirection(bool left)
-    //{
-    //    if (left && transform.localEulerAngles.y != 0)
-    //    {
-    //        transform.RotateAround(transform.position, Vector3.up, 180);
-    //        actionText.transform.parent.RotateAround(transform.position, Vector3.up, 180);
-    //    }
-    //    else if (!left && transform.localEulerAngles.y == 0)
-    //    {
-    //        transform.RotateAround(transform.position, Vector3.up, 180);
-    //        actionText.transform.parent.RotateAround(transform.position, Vector3.up, 180);
-    //    }
-    //}
-
-    
+    }    
 }

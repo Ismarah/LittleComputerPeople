@@ -11,7 +11,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField]
     private float factor;
     [SerializeField]
-    private float gameSpeed;
+    private static float gameSpeed;
     [SerializeField]
     private Renderer background;
     private Color dayTimeColor;
@@ -20,7 +20,8 @@ public class TimeManager : MonoBehaviour
     private void Start()
     {
         dayTimeColor = background.sharedMaterial.color;
-        dayTimeChangeDuration = 0.004f / gameSpeed; 
+        dayTimeChangeDuration = 0.004f / gameSpeed;
+        Time.timeScale = gameSpeed;
     }
 
     void Update()
@@ -57,16 +58,15 @@ public class TimeManager : MonoBehaviour
         }
         if (minute > 23 && second == 0)
         {
-            Debug.Log("0 Uhr! " + minutes + " " + seconds);
             time = 0;
         }
         timer.text = string.Format("{0}:{1}", minutes, seconds);
     }
 
-    public float GetGameSpeed()
-    {
-        return gameSpeed;
-    }
+    //public float GetGameSpeed()
+    //{
+    //    return gameSpeed;
+    //}
 
     void OnApplicationQuit()
     {

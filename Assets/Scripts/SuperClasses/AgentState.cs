@@ -28,7 +28,7 @@ public class AgentState : MonoBehaviour
         {
             for (int i = 0; i < needChanges.Length; i++)
             {
-                currentNeeds[i] += needChanges[i] * Time.deltaTime * manager.GetComponent<TimeManager>().GetGameSpeed();
+                currentNeeds[i] += needChanges[i] * Time.deltaTime;
             }
 
             yield return null;
@@ -99,7 +99,7 @@ public class AgentState : MonoBehaviour
                 break;
             }
         }
-        yield return new WaitForSeconds(time / manager.GetComponent<TimeManager>().GetGameSpeed());
+        yield return new WaitForSeconds(time);
 
         for (int i = 0; i < needChanges.Length; i++)
         {

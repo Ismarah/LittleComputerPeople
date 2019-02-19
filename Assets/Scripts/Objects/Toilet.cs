@@ -27,7 +27,6 @@ public class Toilet : InteractableItem
                 }
 
                 anim.SetBool(myAnimation, true);
-                anim.speed = GameObject.FindGameObjectWithTag("ActionQueue").GetComponent<TimeManager>().GetGameSpeed();
             }
         }
 

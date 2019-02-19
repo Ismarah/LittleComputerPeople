@@ -30,13 +30,12 @@ public class Couch : InteractableItem
     private IEnumerator AnimateScreen()
     {
         float time = 0;
-        float gameSpeed = GameObject.FindGameObjectWithTag("ActionQueue").GetComponent<TimeManager>().GetGameSpeed();
-        float duration = player.GetComponent<PlayerActions>().GetAction("Watch TV").GetTime() / gameSpeed;
+        float duration = player.GetComponent<PlayerActions>().GetAction("Watch TV").GetTime();
         float delay = 0.1f;
 
         while (time <= duration)
         {
-            time += Time.deltaTime * gameSpeed;
+            time += Time.deltaTime;
             time += delay;
             int rand = Random.Range(0, screens.Length);
             tvScreen.sharedMaterial = screens[rand];

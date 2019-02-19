@@ -95,7 +95,7 @@ public class GOAPplanner : MonoBehaviour
 
         for (int i = 0; i < allValues.Length; i++)
         {
-            float[] states = NeedStatesAfterChain(allPossibleChains[i].GetChainDuration() / GetComponent<TimeManager>().GetGameSpeed(), i);
+            float[] states = NeedStatesAfterChain(allPossibleChains[i].GetChainDuration(), i);
             if (states[currentGoal] > -0.1f)
             {
                 bestValue = allValues[i];
@@ -139,14 +139,14 @@ public class GOAPplanner : MonoBehaviour
         float change = 0;
         for (int k = 0; k < action.GetStats().Length; k++)
         {
-            change += action.GetStats()[k] * action.GetTime() / GetComponent<TimeManager>().GetGameSpeed();
+            change += action.GetStats()[k] * action.GetTime();
         }
         return change;
     }
 
     private float GetActionStateChange(Action action, int needIndex)
     {
-        float change = action.GetStats()[needIndex] * action.GetTime() / GetComponent<TimeManager>().GetGameSpeed();
+        float change = action.GetStats()[needIndex] * action.GetTime();
         return change;
     }
 
@@ -168,7 +168,7 @@ public class GOAPplanner : MonoBehaviour
 
         for (int i = 0; i < needCount; i++)
         {
-            statesAfterChain[i] += currentAgent.GetComponent<AgentState>().GetNeedState(i) + (currentAgent.GetComponent<AgentState>().GetNeedChange(i) * (time / GetComponent<TimeManager>().GetGameSpeed()) * (1 / Time.deltaTime) * Time.deltaTime);
+            statesAfterChain[i] += currentAgent.GetComponent<AgentState>().GetNeedState(i) + (currentAgent.GetComponent<AgentState>().GetNeedChange(i) * (time) * (1 / Time.deltaTime) * Time.deltaTime);
             foreach (Action a in allPossibleChains[chosenChain].GetActions())
             {
                 statesAfterChain[i] += GetActionStateChange(a, i) * (1 / Time.deltaTime) * Time.deltaTime;

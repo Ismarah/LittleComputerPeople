@@ -101,13 +101,12 @@ public class AgentMovement : MonoBehaviour
 
     public virtual IEnumerator MoveToPos(Vector2 _targetPos)
     {
-        anim.speed = manager.GetComponent<TimeManager>().GetGameSpeed();
         float prevPos = transform.position.x;
         anim.SetBool("isWalking", true);
         Vector3 pos = new Vector3(_targetPos.x, _targetPos.y, transform.position.z);
         while (transform.position != pos)
         {
-            transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime * anim.speed);
+            transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime);
 
             yield return null;
         }

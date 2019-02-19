@@ -11,7 +11,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField]
     private float factor;
     [SerializeField]
-    private static float gameSpeed;
+    private float gameSpeed;
     [SerializeField]
     private Renderer background;
     private Color dayTimeColor;

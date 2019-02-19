@@ -57,7 +57,7 @@ public class PetQueue : ActionQueue
 
     private IEnumerator StartToRunAround()
     {
-        yield return new WaitForSeconds(3 / GetComponent<TimeManager>().GetGameSpeed());
+        yield return new WaitForSeconds(3);
 
         if (WorldState.state.GetState(WorldState.myStates.petAskedForFood) == false && WorldState.state.GetState(WorldState.myStates.petIsHungry) == false)
         {

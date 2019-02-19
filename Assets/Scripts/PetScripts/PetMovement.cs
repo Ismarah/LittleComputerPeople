@@ -60,13 +60,12 @@ public class PetMovement : AgentMovement
         if (transform.eulerAngles.y == 0) turned = false;
         else turned = true;
         float prevPos = transform.position.x;
-        anim.speed = manager.GetComponent<TimeManager>().GetGameSpeed();
         anim.SetBool("isWalking", true);
         anim.SetBool("tail", false);
         Vector3 pos = new Vector3(_targetPos.x, _targetPos.y, transform.position.z);
         while (transform.position != pos)
         {
-            transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime * manager.GetComponent<TimeManager>().GetGameSpeed());
+            transform.position = Vector3.MoveTowards(transform.position, pos, movespeed * Time.deltaTime);
 
             if (prevPos < transform.position.x && !turned)
             {

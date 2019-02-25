@@ -5,10 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class StartGame : MonoBehaviour
 {
-    public string favoriteAction;
-    public int index;
-    public int material;
-    public string playerName;
+    private string favoriteAction;
+    private int index;
+    private int material;
+    private string playerName;
 
     private void Start()
     {
@@ -30,11 +30,10 @@ public class StartGame : MonoBehaviour
 
     public void StartTheGame()
     {
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(1);
     }
     void OnSceneLoad(Scene scene, LoadSceneMode mode)
     {
-        //Invoke("InitialiseStuff", 0.5f);
         InitialiseStuff();
         for (int i = 0; i < transform.childCount; i++)
         {

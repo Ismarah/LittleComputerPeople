@@ -4,11 +4,8 @@ using UnityEngine;
 
 public class PlayerCharacter : MonoBehaviour
 {
-    [SerializeField]
     private string myName;
-    [SerializeField]
     private string favoriteAction;
-    [SerializeField]
     private Material myClothes;
     private KeyValuePair<WorldState.myStates, bool> myCondition;
     private int favActionIndex;

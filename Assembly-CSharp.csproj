@@ -78,10 +78,6 @@
     <Compile Include="Assets\Scripts\Objects\Shower.cs" />
     <Compile Include="Assets\Scripts\Objects\Sink.cs" />
     <Compile Include="Assets\Scripts\Objects\Toilet.cs" />
-    <Compile Include="Assets\Scripts\Old\InputManager.cs" />
-    <Compile Include="Assets\Scripts\Old\Player.cs" />
-    <Compile Include="Assets\Scripts\Old\PlayerMovement.cs" />
-    <Compile Include="Assets\Scripts\Old\PlayerNeeds.cs" />
     <Compile Include="Assets\Scripts\PetScripts\PetActions.cs" />
     <Compile Include="Assets\Scripts\PetScripts\PetMovement.cs" />
     <Compile Include="Assets\Scripts\PetScripts\PetQueue.cs" />

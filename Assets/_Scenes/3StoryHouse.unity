@@ -6228,7 +6228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: {fileID: 515457616}
-  factor: 2
+  factor: 5
   gameSpeed: 3
   background: {fileID: 1340908410}
 --- !u!1 &1296579070 stripped

@@ -18,9 +18,6 @@ public class PlayerQueue : ActionQueue
             else actionNames[i] = "null";
         }
 
-        //if (actionQueue[0] == null) 
-        //else 
-
         if (actionQueue[0] == null && actionQueue[1] == null && !bored)
         {
             bored = true;

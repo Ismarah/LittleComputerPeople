@@ -35,7 +35,7 @@ public class PlayerActions : AgentActions
 
         //Eat a snack------------------------------------------------------------
         actionEffects = new float[5];
-        actionEffects[0] = -0.2f;
+        actionEffects[0] = -0.16f;
         time = 2f;
 
         conditions = new Dictionary<WorldState.myStates, bool>();

@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class AgentMovement : MonoBehaviour
 {
-    private Vector2 targetPos;
     protected GameObject target;
     [SerializeField]
     protected int floor = 0;
@@ -23,7 +22,6 @@ public class AgentMovement : MonoBehaviour
     public void Init()
     {
         anim = GetComponent<Animator>();
-        targetPos = new Vector2();
         manager = GameObject.FindGameObjectWithTag("ActionQueue");
     }
 

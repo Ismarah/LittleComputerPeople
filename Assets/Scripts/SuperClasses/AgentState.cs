@@ -5,14 +5,10 @@ using UnityEngine;
 
 public class AgentState : MonoBehaviour
 {
-    [SerializeField]
     protected bool askedForAction;
     protected GameObject manager;
-    [SerializeField]
     protected float[] currentNeeds;
-    [SerializeField]
     protected float[] needChanges;
-    [SerializeField]
     protected float[] criticalValues;
     protected List<Dictionary<WorldState.myStates, bool>> stateChanges;
     protected List<KeyValuePair<WorldState.myStates, bool>> goals;

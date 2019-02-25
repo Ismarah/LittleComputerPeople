@@ -29,7 +29,7 @@ public class Drawer : InteractableItem
 
     private void StreetClothes()
     {
-        player.GetComponent<PlayerVisuals>().ReturnToYellow();
+        player.GetComponent<PlayerVisuals>().ReturnToDefaultClothes();
     }
 
 }

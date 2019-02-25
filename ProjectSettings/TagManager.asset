@@ -20,6 +20,8 @@ TagManager:
   - BathSink
   - Shower
   - PetBed
+  - Bookshelf
+  - Armchair
   layers:
   - Default
   - TransparentFX

@@ -6,7 +6,7 @@ public class PlayerQueue : ActionQueue
 {
     void Start()
     {
-        base.Init();
+        Init();
     }
 
     private void Update()
@@ -18,13 +18,12 @@ public class PlayerQueue : ActionQueue
             else actionNames[i] = "null";
         }
 
-        if (actionQueue[0] == null) player.GetComponent<PlayerVisuals>().ShowActionText(false);
-        else player.GetComponent<PlayerVisuals>().ShowActionText(true);
+        //if (actionQueue[0] == null) 
+        //else 
 
         if (actionQueue[0] == null && actionQueue[1] == null && !bored)
         {
             bored = true;
-            WorldState.state.ChangeState(WorldState.myStates.playerHasNothingToDo, true);
             StartCoroutine(GettingBored());
         }
     }
@@ -35,14 +34,17 @@ public class PlayerQueue : ActionQueue
 
         if (actionQueue[0] == null && actionQueue[1] == null)
         {
-            yield return StartCoroutine(GetComponent<GOAPplanner>().SetGoal(player, WorldState.myStates.favoritePlayerAction, true, 3));
+            KeyValuePair<WorldState.myStates, bool> temp = player.GetComponent<PlayerCharacter>().GetMyCondition();
+            WorldState.state.ChangeState(temp.Key, temp.Value);
             player.GetComponent<PlayerState>().ActionIsPlanned();
+            yield return StartCoroutine(GetComponent<GOAPplanner>().SetGoal(player, WorldState.myStates.favoritePlayerAction, true, player.GetComponent<PlayerCharacter>().GetFavActionIndex()));
         }
         bored = false;
     }
 
     public override void Queue()
     {
+        player.GetComponent<PlayerVisuals>().ShowActionText(true);
         if (actionQueue[0].GetObject().GetComponent<InteractableItem>() != null)
         {
             actionQueue[0].GetObject().GetComponent<InteractableItem>().PlanAction(actionQueue[0]);
@@ -64,6 +66,7 @@ public class PlayerQueue : ActionQueue
 
     public override void FinishedAction(bool finished)
     {
+        player.GetComponent<PlayerVisuals>().ShowActionText(false);
         Dictionary<WorldState.myStates, bool> temp = actionQueue[0].GetEffects();
         foreach (KeyValuePair<WorldState.myStates, bool> pair in temp)
         {

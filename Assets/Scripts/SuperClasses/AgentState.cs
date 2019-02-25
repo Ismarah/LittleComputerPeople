@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class AgentState : MonoBehaviour
 {
+    [SerializeField]
     protected bool askedForAction;
     protected GameObject manager;
     [SerializeField]
@@ -69,7 +70,6 @@ public class AgentState : MonoBehaviour
             askedForAction = true;
             StartCoroutine(manager.GetComponent<GOAPplanner>().SetGoal(this.gameObject, goals[index].Key, goals[index].Value, index));
         }
-
     }
 
     public void SatisfySecondMostUrgentNeed(int mostUrgent)

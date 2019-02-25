@@ -72,6 +72,11 @@ public class Action
         effects.Add(worldState, state);
     }
 
+    public void RemoveCondition(WorldState.myStates worldState)
+    {
+        conditions.Remove(worldState);
+    }
+
     public Dictionary<WorldState.myStates, bool> GetPreconditions()
     {
         return conditions;

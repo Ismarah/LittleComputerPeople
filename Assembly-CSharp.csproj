@@ -64,10 +64,13 @@
     <Compile Include="Assets\Scripts\Action.cs" />
     <Compile Include="Assets\Scripts\ActionChain.cs" />
     <Compile Include="Assets\Scripts\GOAPplanner.cs" />
+    <Compile Include="Assets\Scripts\Objects\Armchair.cs" />
     <Compile Include="Assets\Scripts\Objects\Bed.cs" />
+    <Compile Include="Assets\Scripts\Objects\Bookshelf.cs" />
     <Compile Include="Assets\Scripts\Objects\CanvasFollowAgent.cs" />
     <Compile Include="Assets\Scripts\Objects\Computer.cs" />
     <Compile Include="Assets\Scripts\Objects\Couch.cs" />
+    <Compile Include="Assets\Scripts\Objects\Door.cs" />
     <Compile Include="Assets\Scripts\Objects\Drawer.cs" />
     <Compile Include="Assets\Scripts\Objects\FoodBowl.cs" />
     <Compile Include="Assets\Scripts\Objects\Fridge.cs" />
@@ -88,6 +91,8 @@
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerQueue.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerState.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerVisuals.cs" />
+    <Compile Include="Assets\Scripts\StartGame.cs" />
+    <Compile Include="Assets\Scripts\StartScreen.cs" />
     <Compile Include="Assets\Scripts\SuperClasses\ActionQueue.cs" />
     <Compile Include="Assets\Scripts\SuperClasses\AgentActions.cs" />
     <Compile Include="Assets\Scripts\SuperClasses\AgentMovement.cs" />

@@ -10,7 +10,7 @@ public class AgentActions : MonoBehaviour
     protected Action newAction;
     protected GameObject player;
     protected float time;
-    protected GameObject fridge, bed, toilet, computer, shower, door, petFood, pet, drawer, couch, sink, petBed;
+    protected GameObject fridge, bed, toilet, computer, shower, door, petFood, pet, drawer, couch, sink, petBed, bookshelf, armChair;
 
     public void Init()
     {
@@ -28,6 +28,8 @@ public class AgentActions : MonoBehaviour
         sink = GameObject.FindGameObjectWithTag("BathSink");
         shower = GameObject.FindGameObjectWithTag("Shower");
         petBed = GameObject.FindGameObjectWithTag("PetBed");
+        bookshelf = GameObject.FindGameObjectWithTag("Bookshelf");
+        armChair = GameObject.FindGameObjectWithTag("Armchair");
     }
 
     public List<Action> GetAllActions()

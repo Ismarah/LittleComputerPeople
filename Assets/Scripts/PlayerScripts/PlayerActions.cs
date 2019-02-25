@@ -35,8 +35,8 @@ public class PlayerActions : AgentActions
 
         //Eat a snack------------------------------------------------------------
         actionEffects = new float[5];
-        actionEffects[0] = -0.1f;
-        time = 2;
+        actionEffects[0] = -0.2f;
+        time = 2f;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.snackInFridge, true);
@@ -55,6 +55,7 @@ public class PlayerActions : AgentActions
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.snackInFridge, false);
+        conditions.Add(WorldState.myStates.hasMoney, true);
 
         effects = new Dictionary<WorldState.myStates, bool>();
         effects.Add(WorldState.myStates.snackInFridge, true);
@@ -65,7 +66,7 @@ public class PlayerActions : AgentActions
 
         //Cook a meal------------------------------------------------------------
         actionEffects = new float[5];
-        time = 5;
+        time = 3;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.IngredientsInFridge, true);
@@ -84,6 +85,7 @@ public class PlayerActions : AgentActions
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.hasMoney, true);
+        conditions.Add(WorldState.myStates.IngredientsInFridge, false);
 
         effects = new Dictionary<WorldState.myStates, bool>();
         effects.Add(WorldState.myStates.IngredientsInFridge, true);
@@ -94,7 +96,7 @@ public class PlayerActions : AgentActions
 
         //Order a pizza----------------------------------------------------------
         actionEffects = new float[5];
-        time = 1;
+        time = 2;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.hasMoney, true);
@@ -103,12 +105,12 @@ public class PlayerActions : AgentActions
         effects.Add(WorldState.myStates.pizzaOnTheWay, true);
 
         newAction = new Action(gameObject, "Order a pizza", time, actionEffects, conditions, effects, player);
-        //myActions.Add(newAction);
+        myActions.Add(newAction);
         //-----------------------------------------------------------------------
 
         //Wait for pizza----------------------------------------------------------
         actionEffects = new float[5];
-        time = 3;
+        time = 4;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.pizzaOnTheWay, true);
@@ -118,7 +120,7 @@ public class PlayerActions : AgentActions
         effects.Add(WorldState.myStates.pizzaOnTheWay, false);
 
         newAction = new Action(gameObject, "Wait for pizza", time, actionEffects, conditions, effects, player);
-       // myActions.Add(newAction);
+        myActions.Add(newAction);
         //-----------------------------------------------------------------------
 
         //Fetch pizza from door--------------------------------------------------
@@ -130,14 +132,15 @@ public class PlayerActions : AgentActions
 
         effects = new Dictionary<WorldState.myStates, bool>();
         effects.Add(WorldState.myStates.pizzaIsAvailable, true);
+        effects.Add(WorldState.myStates.doorBellRang, false);
 
         newAction = new Action(gameObject, "Fetch pizza", time, actionEffects, conditions, effects, door);
-        //myActions.Add(newAction);
+        myActions.Add(newAction);
         //-----------------------------------------------------------------------
 
         //Eat a pizza------------------------------------------------------------
         actionEffects = new float[5];
-        actionEffects[0] = -0.1f;
+        actionEffects[0] = -0.2f;
         time = 3;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
@@ -148,7 +151,8 @@ public class PlayerActions : AgentActions
         effects.Add(WorldState.myStates.pizzaIsAvailable, false);
 
         newAction = new Action(gameObject, "Eat a pizza", time, actionEffects, conditions, effects, player);
-        //myActions.Add(newAction);
+        newAction.AddAnimation("Pizza", true);
+        myActions.Add(newAction);
         //-----------------------------------------------------------------------
     }
 
@@ -156,11 +160,11 @@ public class PlayerActions : AgentActions
     {
         //Sleep through night----------------------------------------------------
         actionEffects = new float[5];
-        actionEffects[0] = -0.0006f;
+        actionEffects[0] = -0.001f;
         actionEffects[1] = -0.08f;
-        actionEffects[2] = -0.0004f;
-        actionEffects[3] = -0.0004f;
-        actionEffects[4] = -0.0004f;
+        actionEffects[2] = -0.0005f;
+        actionEffects[3] = -0.0005f;
+        actionEffects[4] = -0.0005f;
         time = 12;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
@@ -224,7 +228,7 @@ public class PlayerActions : AgentActions
     {
         //Play video games-------------------------------------------------------
         actionEffects = new float[5];
-        actionEffects[3] = -0.15f;
+        actionEffects[3] = -0.2f;
         time = 2;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
@@ -239,8 +243,8 @@ public class PlayerActions : AgentActions
 
         //Watch TV---------------------------------------------------------------
         actionEffects = new float[5];
-        actionEffects[3] = -0.2f;
-        time = 6;
+        actionEffects[3] = -0.1f;
+        time = 7;
 
         conditions = new Dictionary<WorldState.myStates, bool>();
         conditions.Add(WorldState.myStates.playerHasNothingToDo, true);
@@ -249,6 +253,36 @@ public class PlayerActions : AgentActions
         effects.Add(WorldState.myStates.playerHasNothingToDo, false);
 
         newAction = new Action(gameObject, "Watch TV", time, actionEffects, conditions, effects, couch);
+        myActions.Add(newAction);
+        //-----------------------------------------------------------------------
+
+        //Read book---------------------------------------------------------------
+        actionEffects = new float[5];
+        actionEffects[3] = -0.2f;
+        time = 3;
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.playerHasBook, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.playerHasNothingToDo, false);
+        effects.Add(WorldState.myStates.playerHasBook, false);
+
+        newAction = new Action(gameObject, "Read a book", time, actionEffects, conditions, effects, armChair);
+        myActions.Add(newAction);
+        //-----------------------------------------------------------------------
+
+        //Grab book---------------------------------------------------------------
+        actionEffects = new float[5];
+        time = 1;
+
+        conditions = new Dictionary<WorldState.myStates, bool>();
+        conditions.Add(WorldState.myStates.playerHasNothingToDo, true);
+
+        effects = new Dictionary<WorldState.myStates, bool>();
+        effects.Add(WorldState.myStates.playerHasBook, true);
+
+        newAction = new Action(gameObject, "Grab a book", time, actionEffects, conditions, effects, bookshelf);
         myActions.Add(newAction);
         //-----------------------------------------------------------------------
     }
@@ -336,6 +370,7 @@ public class PlayerActions : AgentActions
 
         effects = new Dictionary<WorldState.myStates, bool>();
         effects.Add(WorldState.myStates.foodInBowl, true);
+        effects.Add(WorldState.myStates.petAskedForFood, false);
 
         newAction = new Action(gameObject, "Feed pet", time, actionEffects, conditions, effects, petFood);
         myActions.Add(newAction);

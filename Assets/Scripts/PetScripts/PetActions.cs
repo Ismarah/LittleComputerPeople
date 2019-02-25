@@ -38,7 +38,7 @@ public class PetActions : AgentActions
         effects.Add(WorldState.myStates.foodInBowl, false);
         effects.Add(WorldState.myStates.petHasEaten, true);
         effects.Add(WorldState.myStates.petIsHungry, false);
-        effects.Add(WorldState.myStates.petAskedForFood, false);
+        //effects.Add(WorldState.myStates.petAskedForFood, false);
 
         newAction = new Action(gameObject, "Eat", time, actionEffects, conditions, effects, petFood);
         myActions.Add(newAction);

@@ -6,16 +6,13 @@ using UnityEngine.UI;
 public class PlayerVisuals : AgentVisuals
 {
     [SerializeField]
-    private Material yellow, green, blue, red, orange, violet;
-    private Material[] materials;
-    [SerializeField]
     private Text actionText;
 
-    private void Start()
+    public void Init()
     {
-        materials = new Material[] { yellow, green, blue, red, orange, violet };
         actionText.text = "Hello, my name is " + GetComponent<PlayerCharacter>().GetName();
         actionText.color = Color.blue;
+        ChangeColor(GetComponent<PlayerCharacter>().GetClothes());
     }
 
     public void ChangeClothes()
@@ -31,13 +28,9 @@ public class PlayerVisuals : AgentVisuals
         if (temp[0].sharedMaterial == current) ChangeClothes();
     }
 
-    public void ReturnToYellow()
+    public void ReturnToDefaultClothes()
     {
-        Renderer[] temp = GetComponentsInChildren<Renderer>();
-        for (int i = 0; i < temp.Length; i++)
-        {
-            temp[i].sharedMaterial = materials[0];
-        }
+        ChangeColor(GetComponent<PlayerCharacter>().GetClothes());
     }
 
     private int GetRandomNumber()
@@ -69,5 +62,5 @@ public class PlayerVisuals : AgentVisuals
             actionText.transform.parent.GetComponent<Image>().enabled = true;
             actionText.GetComponent<Text>().enabled = true;
         }
-    }    
+    }
 }

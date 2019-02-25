@@ -48,7 +48,6 @@ public class GOAPplanner : MonoBehaviour
         if (ConditionsMet(possibleAction)) //no further action is required to complete this action
         {
             chain.AddWalkTime(CalculateTimeToMove(possibleAction.GetObject()));
-
             string name = "";
             for (int i = 0; i < chain.GetActions().Count; i++)
             {
@@ -79,6 +78,19 @@ public class GOAPplanner : MonoBehaviour
         completedChain = false;
     }
 
+    private bool ProblematicNeed(float[] states)
+    {
+        bool problem = false;
+        for (int k = 0; k < states.Length; k++)
+        {
+            if (states[k] >= 0.85f)
+            {
+                Debug.Log("States[" + k + "] would be " + states[k]);
+            }
+
+        }
+        return problem;
+    }
 
     private void FindBestActionChain()
     {
@@ -92,11 +104,10 @@ public class GOAPplanner : MonoBehaviour
         float bestValue = -1;
         int bestIndex = -1;
         bool overfill = false;
-
         for (int i = 0; i < allValues.Length; i++)
         {
             float[] states = NeedStatesAfterChain(allPossibleChains[i].GetChainDuration(), i);
-            if (states[currentGoal] > -0.1f)
+            if (states[currentGoal] > -0.1f && !ProblematicNeed(states))
             {
                 bestValue = allValues[i];
                 for (int j = 0; j < allPossibleChains.Count; j++)
@@ -134,12 +145,30 @@ public class GOAPplanner : MonoBehaviour
         }
     }
 
+    private float GetTimeUntilNeedChanges(int chosenChain)
+    {
+        float time = 0;
+
+        for (int i = 0; i < allPossibleChains[chosenChain].GetActions().Count; i++)
+        {
+            foreach (Action a in allPossibleChains[chosenChain].GetActions())
+            {
+                foreach (float change in a.GetStats())
+                {
+                    if (change != 0) time += a.GetTime();
+                }
+            }
+        }
+        time = allPossibleChains[chosenChain].GetChainDuration() - time;
+        return time;
+    }
+
     private float GetActionStateChange(Action action)
     {
         float change = 0;
         for (int k = 0; k < action.GetStats().Length; k++)
         {
-            change += action.GetStats()[k] * action.GetTime();
+            change += Mathf.Abs(action.GetStats()[k]) * action.GetTime();
         }
         return change;
     }
@@ -156,7 +185,7 @@ public class GOAPplanner : MonoBehaviour
         List<Action> temp = actionChain.GetActions();
         for (int j = 0; j < temp.Count; j++)
         {
-            change -= GetActionStateChange(temp[j]);
+            change += GetActionStateChange(temp[j]);
         }
         return change;
     }
@@ -165,16 +194,30 @@ public class GOAPplanner : MonoBehaviour
     {
         int needCount = currentAgent.GetComponent<AgentState>().GetNeedCount();
         float[] statesAfterChain = new float[needCount];
+        float chainTime;
 
         for (int i = 0; i < needCount; i++)
         {
-            statesAfterChain[i] += currentAgent.GetComponent<AgentState>().GetNeedState(i) + (currentAgent.GetComponent<AgentState>().GetNeedChange(i) * (time) * (1 / Time.deltaTime) * Time.deltaTime);
+            if (i == currentGoal)
+                chainTime = GetTimeUntilNeedChanges(chosenChain);
+            else chainTime = time;
+            statesAfterChain[i] += currentAgent.GetComponent<AgentState>().GetNeedState(i) + ((currentAgent.GetComponent<AgentState>().GetNeedChange(i) * time * (1 / Time.deltaTime) * Time.deltaTime));
             foreach (Action a in allPossibleChains[chosenChain].GetActions())
             {
                 statesAfterChain[i] += GetActionStateChange(a, i) * (1 / Time.deltaTime) * Time.deltaTime;
             }
             if (statesAfterChain[i] >= 0.85f && i != currentGoal) mostUrgentNeedIndex = i;
         }
+
+        //for (int i = 0; i < statesAfterChain.Length; i++)
+        //{
+        //    string s = "";
+        //    foreach (Action a in allPossibleChains[chosenChain].GetActions())
+        //    {
+        //        s += a.GetName() + " ";
+        //    }
+        //    Debug.Log("Need at " + i + " would be " + statesAfterChain[i] + " after chain " + s);
+        //}
 
         return statesAfterChain;
     }
@@ -331,7 +374,7 @@ public class GOAPplanner : MonoBehaviour
                 }
             }
         }
-        time = distance / currentAgent.GetComponent<AgentMovement>().GetMoveSpeed();
+        time = distance / currentAgent.GetComponent<AgentMovement>().GetMoveSpeed() * (1 / Time.deltaTime) * Time.deltaTime / GetComponent<TimeManager>().GetGameSpeed();
         return time;
     }
 }

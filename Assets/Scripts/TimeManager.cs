@@ -20,53 +20,50 @@ public class TimeManager : MonoBehaviour
     private void Start()
     {
         dayTimeColor = background.sharedMaterial.color;
-        dayTimeChangeDuration = 0.004f / gameSpeed;
+        dayTimeChangeDuration = 0.004f;
         Time.timeScale = gameSpeed;
     }
 
     void Update()
     {
-        time += Time.deltaTime * factor * gameSpeed;
+        time += Time.deltaTime * factor;
 
-        string minutes = Mathf.Floor(time / 60).ToString("00");
-        float minute = Mathf.Floor(time / 60);
-        string seconds = Mathf.Floor(time % 60).ToString("00");
-        float second = Mathf.Floor(time % 60);
-        if (minute >= 6 && minute < 18)
+        string hours = Mathf.Floor(time / 60).ToString("00");
+        float hour = Mathf.Floor(time / 60);
+        string minutes = Mathf.Floor(time % 60).ToString("00");
+        float minute = Mathf.Floor(time % 60);
+        if (hour >= 6 && hour < 18)
         {
-            if (minute < 8)
+            if (background.sharedMaterial.color.b < dayTimeColor.b)
             {
-                if (background.sharedMaterial.color.b < dayTimeColor.b)
-                {
-                    background.sharedMaterial.color += new Color(dayTimeChangeDuration, dayTimeChangeDuration, dayTimeChangeDuration);
-                }
+                background.sharedMaterial.color += new Color(dayTimeChangeDuration, dayTimeChangeDuration, dayTimeChangeDuration) * Time.deltaTime;
             }
             if (WorldState.state.GetState(WorldState.myStates.daytime) != true)
                 WorldState.state.ChangeState(WorldState.myStates.daytime, true);
         }
         else
         {
-            if (minute >= 18 && minute < 20)
+            if (hour >= 18 && hour < 20)
             {
                 if (background.sharedMaterial.color.b > 0.15f)
                 {
-                    background.sharedMaterial.color -= new Color(dayTimeChangeDuration, dayTimeChangeDuration, dayTimeChangeDuration);
+                    background.sharedMaterial.color -= new Color(dayTimeChangeDuration, dayTimeChangeDuration, dayTimeChangeDuration) * Time.deltaTime;
                 }
             }
             if (WorldState.state.GetState(WorldState.myStates.daytime) != false)
                 WorldState.state.ChangeState(WorldState.myStates.daytime, false);
         }
-        if (minute > 23 && second == 0)
+        if (hour > 23 && minute == 0)
         {
             time = 0;
         }
-        timer.text = string.Format("{0}:{1}", minutes, seconds);
+        timer.text = string.Format("{0}:{1}", hours, minutes);
     }
 
-    //public float GetGameSpeed()
-    //{
-    //    return gameSpeed;
-    //}
+    public float GetGameSpeed()
+    {
+        return gameSpeed;
+    }
 
     void OnApplicationQuit()
     {

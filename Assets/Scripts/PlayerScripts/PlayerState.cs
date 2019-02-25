@@ -53,7 +53,7 @@ public class PlayerState : AgentState
     void Update()
     {
         AdjustNeedBars();
-        if (!askedForAction)
+        if (!askedForAction && !WorldState.state.GetState(WorldState.myStates.petAskedForFood))
             CheckNeedStates();
     }
 

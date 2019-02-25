@@ -68,4 +68,35 @@ public class PetState : AgentState
         else manager.GetComponent<PetQueue>().FinishedAction(false);
     }
 
+    public override void SatisfyMostUrgentNeed(int mostUrgent)
+    {
+        StartCoroutine(manager.GetComponent<PetGOAP>().SetGoal(this.gameObject, goals[mostUrgent].Key, goals[mostUrgent].Value, mostUrgent));
+    }
+
+    protected override void CheckNeedStates()
+    {
+        int index = -1;
+        float value = 0;
+        for (int i = 0; i < currentNeeds.Length; i++)
+        {
+            if (currentNeeds[i] >= criticalValues[i])
+            {
+                if (currentNeeds[i] > value)
+                {
+                    value = currentNeeds[i];
+                    index = i;
+                }
+            }
+        }
+        if (index >= 0)
+        {
+            foreach (KeyValuePair<WorldState.myStates, bool> pair in stateChanges[index])
+            {
+                WorldState.state.ChangeState(pair.Key, pair.Value);
+            }
+            askedForAction = true;
+            StartCoroutine(manager.GetComponent<PetGOAP>().SetGoal(this.gameObject, goals[index].Key, goals[index].Value, index));
+        }
+    }
+
 }

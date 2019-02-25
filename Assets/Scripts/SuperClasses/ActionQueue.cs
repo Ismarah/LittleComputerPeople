@@ -7,17 +7,13 @@ public class ActionQueue : MonoBehaviour
 {
     protected GameObject player;
     protected GameObject pet;
-    //protected bool processingAction;
     protected bool bored;
-    [SerializeField]
-    protected string[] actionNames;
     protected Action[] actionQueue;
 
     public void Init()
     {
         player = GameObject.FindGameObjectWithTag("Player");
         pet = GameObject.FindGameObjectWithTag("Pet");
-        actionNames = new string[10];
         actionQueue = new Action[10];
     }
 

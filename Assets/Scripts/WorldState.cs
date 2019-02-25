@@ -7,10 +7,6 @@ public class WorldState : MonoBehaviour
     public static WorldState state = null;
     private GameObject player;
     private Dictionary<myStates, bool> stateList;
-    [SerializeField]
-    private List<myStates> showList;
-    [SerializeField]
-    private List<bool> showBoolList;
 
     public enum myStates
     {
@@ -74,25 +70,11 @@ public class WorldState : MonoBehaviour
         stateList.Add(myStates.foodInBowl, false);
         stateList.Add(myStates.petIsBored, false);
         stateList.Add(myStates.playerHasBook, false);
-
-        showList = new List<myStates>();
-        showBoolList = new List<bool>();
-
-        foreach(myStates s in stateList.Keys)
-        {
-            showList.Add(s);
-            showBoolList.Add(stateList[s]);
-        }
     }
 
     public void ChangeState(myStates state, bool newState)
     {
-        stateList[state] = newState;
-        for (int i = 0; i < showList.Count; i++)
-        {
-            if (showList[i] == state)
-                showBoolList[i] = newState;
-        }        
+        stateList[state] = newState;      
     }
 
     public int GetNumberOfStates()

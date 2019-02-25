@@ -5,27 +5,24 @@ using UnityEngine;
 
 public class GOAPplanner : MonoBehaviour
 {
-    private GameObject player;
-    private GameObject petFood;
-    private List<ActionChain> allPossibleChains;
-    private bool completedChain;
-    private ActionChain chain;
-    private int currentPlayerGoal;
-    private int currentPetGoal;
-    private GameObject currentAgent;
-    private int mostUrgentNeedIndex;
+    protected GameObject player;
+    protected GameObject petFood;
+    protected List<ActionChain> allPossibleChains;
+    protected bool completedChain;
+    protected ActionChain chain;
+    protected int currentGoal;
+    protected GameObject currentAgent;
+    protected int mostUrgentNeedIndex;
+    protected bool specialPermission;
 
-    void Start()
+    public void Init()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        petFood = GameObject.FindGameObjectWithTag("PetFood");
     }
 
     public IEnumerator SetGoal(GameObject agent, WorldState.myStates newState, bool state, int index)
     {
-        if (agent == player)
-            Debug.Log("New goal! " + newState + " " + state);
-        currentPlayerGoal = index;
+        currentGoal = index;
         currentAgent = agent;
         allPossibleChains = new List<ActionChain>();
         chain = new ActionChain();
@@ -35,7 +32,24 @@ public class GOAPplanner : MonoBehaviour
         {
             yield return StartCoroutine(FindActionChain(possibleActions[i]));
         }
-        FindBestActionChain();
+        if (!specialPermission)
+            FindBestActionChain();
+        else
+        {
+            float fastestChain = float.MaxValue;
+            int j = 0;
+            for (int i = 0; i < allPossibleChains.Count; i++)
+            {
+                if (allPossibleChains[i].GetChainDuration() < fastestChain)
+                {
+                    fastestChain = allPossibleChains[i].GetChainDuration();
+                    j = i;
+                }
+            }
+            AddChosenChainToQueue(j);
+            specialPermission = false;
+        }
+
     }
 
     private IEnumerator FindActionChain(Action _possibleAction)
@@ -114,7 +128,7 @@ public class GOAPplanner : MonoBehaviour
         for (int i = 0; i < allValues.Length; i++)
         {
             float[] states = NeedStatesAfterChain(times[i], i);
-            if (states[currentPlayerGoal] > -0.1f)
+            if (states[currentGoal] > -0.1f)
             {
                 if (!ProblematicNeed(states))
                 {
@@ -138,11 +152,17 @@ public class GOAPplanner : MonoBehaviour
         if (bestValue != -1 && bestIndex != -1) AddChosenChainToQueue(bestIndex);
         else
         {
-            Debug.Log("No action could be done.   " + currentPlayerGoal + "   Nextmost urgent: " + mostUrgentNeedIndex + " overfill: " + overfill);
             if (!overfill)
             {
                 //no action can be done because other needs are more important
-                currentAgent.GetComponent<AgentState>().SatisfySecondMostUrgentNeed(mostUrgentNeedIndex);
+                List<int> criticalNeeds = new List<int>();
+                for (int i = 0; i < currentAgent.GetComponent<AgentState>().GetNeedCount(); i++)
+                {
+                    if (currentAgent.GetComponent<AgentState>().GetNeedState(i) > currentAgent.GetComponent<AgentState>().GetCriticalValue(i))
+                        criticalNeeds.Add(i);
+                }
+                specialPermission = true;
+                currentAgent.GetComponent<AgentState>().SatisfyMostUrgentNeed(criticalNeeds[0]);
             }
             else
             {
@@ -210,7 +230,7 @@ public class GOAPplanner : MonoBehaviour
 
         for (int i = 0; i < needCount; i++)
         {
-            if (i == currentPlayerGoal)
+            if (i == currentGoal)
                 chainTime = GetTimeUntilNeedChanges(chosenChain);
             else chainTime = time;
             statesAfterChain[i] += currentAgent.GetComponent<AgentState>().GetNeedState(i) + ((currentAgent.GetComponent<AgentState>().GetNeedChange(i) * time * (1 / Time.deltaTime) * Time.deltaTime));
@@ -218,7 +238,7 @@ public class GOAPplanner : MonoBehaviour
             {
                 statesAfterChain[i] += GetActionStateChange(a, i) * (1 / Time.deltaTime) * Time.deltaTime;
             }
-            if (statesAfterChain[i] >= 0.85f && i != currentPlayerGoal) mostUrgentNeedIndex = i;
+            if (statesAfterChain[i] >= 0.85f && i != currentGoal) mostUrgentNeedIndex = i;
         }
 
         return statesAfterChain;

@@ -10,7 +10,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace>
     </RootNamespace>
-    <ProjectGuid>{D93F546A-670F-6764-15DA-7295BBE75062}</ProjectGuid>
+    <ProjectGuid>{C854F419-706B-1166-621A-D2D8A4FC2C6C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -78,10 +78,12 @@
     <Compile Include="Assets\Scripts\Objects\Shower.cs" />
     <Compile Include="Assets\Scripts\Objects\Sink.cs" />
     <Compile Include="Assets\Scripts\Objects\Toilet.cs" />
+    <Compile Include="Assets\Scripts\PetGOAP.cs" />
     <Compile Include="Assets\Scripts\PetScripts\PetActions.cs" />
     <Compile Include="Assets\Scripts\PetScripts\PetMovement.cs" />
     <Compile Include="Assets\Scripts\PetScripts\PetQueue.cs" />
     <Compile Include="Assets\Scripts\PetScripts\PetState.cs" />
+    <Compile Include="Assets\Scripts\PlayerGOAP.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerActions.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerCharacter.cs" />
     <Compile Include="Assets\Scripts\PlayerScripts\PlayerQueue.cs" />
@@ -98,16 +100,16 @@
     <Compile Include="Assets\Scripts\TimeManager.cs" />
     <Compile Include="Assets\Scripts\WorldState.cs" />
     <Reference Include="UnityEditor.StandardEvents">
-      <HintPath>C:/Users/Isi/Documents/Unity/LittleComputerPeople/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
+      <HintPath>C:/Users/Isi/Documents/Unity/Bachelorarbeit_IsmarahMaier_s0553455/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/Isi/Documents/Unity/LittleComputerPeople/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/Isi/Documents/Unity/Bachelorarbeit_IsmarahMaier_s0553455/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.PackageManagerUI.Editor">
-      <HintPath>C:/Users/Isi/Documents/Unity/LittleComputerPeople/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
+      <HintPath>C:/Users/Isi/Documents/Unity/Bachelorarbeit_IsmarahMaier_s0553455/Library/ScriptAssemblies/Unity.PackageManagerUI.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/Isi/Documents/Unity/LittleComputerPeople/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/Isi/Documents/Unity/Bachelorarbeit_IsmarahMaier_s0553455/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.AIModule">
       <HintPath>C:/Program Files/Unity2018/Editor/Data/Managed/UnityEngine/UnityEngine.AIModule.dll</HintPath>

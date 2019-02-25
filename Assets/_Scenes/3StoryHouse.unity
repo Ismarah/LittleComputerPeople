@@ -6147,6 +6147,7 @@ GameObject:
   - component: {fileID: 1286969270}
   - component: {fileID: 1286969271}
   - component: {fileID: 1286969266}
+  - component: {fileID: 1286969265}
   m_Layer: 0
   m_Name: Manager
   m_TagString: ActionQueue
@@ -6154,6 +6155,17 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1286969265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1286969264}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a57ec664098d96c4ca6ddc73e01df826, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1286969266
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6162,7 +6174,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1286969264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aad2ab82458361d4baa05d8c2f2a0f81, type: 3}
+  m_Script: {fileID: 11500000, guid: fe96236bab868b748a078e264181e944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &1286969267
@@ -6189,7 +6201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8334c0e16351ea74e8512299b63636ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionNames: []
 --- !u!114 &1286969269
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6201,8 +6212,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14a8d738b43a01944863da5fb013ccf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showList: 
-  showBoolList: 
 --- !u!114 &1286969270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6214,7 +6223,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e672ef7890c86945b27ff9e23f901e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionNames: []
   canvas: {fileID: 225894952}
 --- !u!114 &1286969271
 MonoBehaviour:
@@ -6228,8 +6236,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: {fileID: 515457616}
-  factor: 5
-  gameSpeed: 3
+  factor: 10
+  gameSpeed: 1
   background: {fileID: 1340908410}
 --- !u!1 &1296579070 stripped
 GameObject:
@@ -6863,8 +6871,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1391387201}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.93799996, z: 2.58}
-  m_LocalScale: {x: 1.301, y: 2.216, z: 1}
+  m_LocalPosition: {x: 0, y: 0.93799996, z: 2.92}
+  m_LocalScale: {x: 1.301, y: 2.216, z: 0.12}
   m_Children: []
   m_Father: {fileID: 1507782378}
   m_RootOrder: 0

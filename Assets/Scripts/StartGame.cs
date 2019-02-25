@@ -56,7 +56,7 @@ public class StartGame : MonoBehaviour
         player.GetComponent<PlayerCharacter>().SetName(playerName);
         player.GetComponent<PlayerCharacter>().SetClothes(player.GetComponent<PlayerVisuals>().GetAllClothes()[index]);
 
-        gameObject.SetActive(false);
+        Destroy(gameObject);
     }
 
 }

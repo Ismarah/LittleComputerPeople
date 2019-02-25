@@ -27,12 +27,6 @@ public class PetQueue : ActionQueue
 
     private void Update()
     {
-        for (int i = 0; i < actionQueue.Length; i++)
-        {
-            if (actionQueue[i] != null)
-                actionNames[i] = actionQueue[i].GetName();
-            else actionNames[i] = "null";
-        }
         if (actionQueue[0] == null)
         {
             canvas.SetActive(false);

@@ -11,13 +11,6 @@ public class PlayerQueue : ActionQueue
 
     private void Update()
     {
-        for (int i = 0; i < actionQueue.Length; i++)
-        {
-            if (actionQueue[i] != null)
-                actionNames[i] = actionQueue[i].GetName();
-            else actionNames[i] = "null";
-        }
-
         if (actionQueue[0] == null && actionQueue[1] == null && !bored)
         {
             bored = true;
@@ -34,7 +27,7 @@ public class PlayerQueue : ActionQueue
             KeyValuePair<WorldState.myStates, bool> temp = player.GetComponent<PlayerCharacter>().GetMyCondition();
             WorldState.state.ChangeState(temp.Key, temp.Value);
             player.GetComponent<PlayerState>().ActionIsPlanned();
-            yield return StartCoroutine(GetComponent<GOAPplanner>().SetGoal(player, WorldState.myStates.favoritePlayerAction, true, player.GetComponent<PlayerCharacter>().GetFavActionIndex()));
+            yield return StartCoroutine(GetComponent<PlayerGOAP>().SetGoal(player, WorldState.myStates.favoritePlayerAction, true, player.GetComponent<PlayerCharacter>().GetFavActionIndex()));
         }
         bored = false;
     }
